@@ -19,7 +19,8 @@
 
 # production
 /build
-/scripts
+/scripts/*
+!/scripts/seed-blog-posts.mjs
 
 # misc
 .DS_Store

@@ -56,21 +56,24 @@ export default function AdminInquiriesPage() {
     filter === 'all' ? inquiries : inquiries.filter((i) => i.inquiryType === filter)
 
   return (
-    <div className="p-8 max-w-5xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full min-w-0">
       <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1
+            className="text-xl sm:text-2xl font-bold text-[#01255f]"
+            style={{ fontFamily: 'var(--font-heading)' }}
+          >
             Inquiries
           </h1>
           <p className="text-[#5a6478] text-sm mt-1">Volunteer and partnership submissions</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {(['all', 'volunteer', 'partnership'] as const).map((f) => (
             <button
               key={f}
               type="button"
               onClick={() => setFilter(f)}
-              className={`px-4 py-2 text-xs font-bold uppercase tracking-widest border transition-colors ${
+              className={`px-3 sm:px-4 py-2 text-xs font-bold uppercase tracking-widest border transition-colors ${
                 filter === f
                   ? 'bg-[#01255f] text-white border-[#01255f]'
                   : 'bg-white text-[#5a6478] border-gray-200'

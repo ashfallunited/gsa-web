@@ -34,8 +34,8 @@ export default function AdminTeam() {
   }
 
   return (
-    <div className="p-8 max-w-4xl">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
             Management Members

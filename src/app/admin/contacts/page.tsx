@@ -47,10 +47,13 @@ export default function AdminContacts() {
   }
 
   return (
-    <div className="p-8 max-w-5xl">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full min-w-0">
+      <div className="mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1
+            className="text-xl sm:text-2xl font-bold text-[#01255f]"
+            style={{ fontFamily: 'var(--font-heading)' }}
+          >
             Enquiries
           </h1>
           <p className="text-[#5a6478] text-sm mt-1">
@@ -68,7 +71,7 @@ export default function AdminContacts() {
           No enquiries yet.
         </div>
       ) : (
-        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-4">
           <div className="bg-white border border-gray-100 overflow-hidden">
             {contacts.map((c) => (
               <button
@@ -83,7 +86,7 @@ export default function AdminContacts() {
                     <p className={`text-sm ${c.read ? 'font-medium text-[#5a6478]' : 'font-bold text-[#01255f]'}`}>
                       {c.firstName} {c.lastName}
                     </p>
-                    <p className="text-xs text-[#5a6478] truncate max-w-[180px]">{c.email}</p>
+                    <p className="text-xs text-[#5a6478] truncate max-w-full sm:max-w-[200px]">{c.email}</p>
                   </div>
                   <div className="flex-shrink-0 flex flex-col items-end gap-1">
                     <span className="text-[10px] text-gray-400">{formatDate(c.submittedAt)}</span>

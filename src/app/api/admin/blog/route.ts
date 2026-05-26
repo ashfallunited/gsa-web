@@ -22,7 +22,8 @@ export async function POST(req: NextRequest) {
   if (denied) return denied
 
   const body = await req.json()
-  const slug = String(body.title ?? '')
+  const slugSource = typeof body.slug === 'string' && body.slug.trim() ? body.slug : body.title
+  const slug = String(slugSource ?? '')
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')

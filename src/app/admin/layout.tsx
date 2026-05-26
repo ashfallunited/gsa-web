@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -20,6 +21,8 @@ import {
   ArrowUpRight,
   ClipboardList,
   Newspaper,
+  Menu,
+  X,
 } from 'lucide-react'
 
 const navItems = [
@@ -37,8 +40,13 @@ const navItems = [
   { href: '/admin/board', label: 'Board', Icon: Users },
 ]
 
-function AdminNav() {
-  const pathname = usePathname()
+function AdminNav({
+  pathname,
+  onNavigate,
+}: {
+  pathname: string
+  onNavigate: () => void
+}) {
   const router = useRouter()
 
   const logout = async () => {
@@ -47,38 +55,45 @@ function AdminNav() {
     router.refresh()
   }
 
-  if (pathname === '/admin/login') return null
-
   return (
-    <aside className="fixed top-0 left-0 h-full w-56 bg-[#01255f] flex flex-col z-40 overflow-y-auto">
-      <div className="p-5 border-b border-white/10">
-        <div className="relative h-12 w-44">
+    <>
+      <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between lg:block">
+        <div className="relative h-10 w-36 sm:h-12 sm:w-44">
           <Image src="/Logo.png" alt={ORG_NAME} fill className="object-contain object-left" sizes="176px" />
         </div>
-        <p className="text-white/40 text-[10px] mt-2 uppercase tracking-widest">Admin Portal</p>
+        <button
+          type="button"
+          onClick={onNavigate}
+          className="lg:hidden text-white/80 hover:text-white p-2 -mr-2 min-h-0 min-w-0"
+          aria-label="Close menu"
+        >
+          <X size={22} />
+        </button>
+        <p className="hidden lg:block text-white/40 text-[10px] mt-2 uppercase tracking-widest">Admin Portal</p>
       </div>
 
-      <nav className="flex-1 py-4 overflow-y-auto">
+      <nav className="flex-1 py-3 sm:py-4 overflow-y-auto overscroll-contain">
         {navItems.map(({ href, label, Icon }) => {
           const active = pathname === href || (href !== '/admin' && pathname.startsWith(href))
           return (
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors ${
+              onClick={onNavigate}
+              className={`flex items-center gap-3 px-4 sm:px-5 py-3 text-sm font-medium transition-colors ${
                 active
                   ? 'bg-[#fee11b] text-[#01255f]'
                   : 'text-white/70 hover:text-white hover:bg-white/5'
               }`}
             >
-              <Icon size={16} strokeWidth={active ? 2.5 : 1.8} />
+              <Icon size={16} strokeWidth={active ? 2.5 : 1.8} className="shrink-0" />
               {label}
             </Link>
           )
         })}
       </nav>
 
-      <div className="p-5 border-t border-white/10 space-y-3">
+      <div className="p-4 sm:p-5 border-t border-white/10 space-y-3">
         <a
           href="https://server393.web-hosting.com:2096/"
           target="_blank"
@@ -89,12 +104,18 @@ function AdminNav() {
           Webmail
           <ArrowUpRight size={11} />
         </a>
-        <Link href="/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/40 hover:text-white text-xs transition-colors">
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 text-white/40 hover:text-white text-xs transition-colors"
+        >
           <Globe size={13} />
           View Site
           <ArrowUpRight size={11} />
         </Link>
         <button
+          type="button"
           onClick={logout}
           className="flex items-center gap-2 text-white/40 hover:text-red-400 text-xs transition-colors"
         >
@@ -102,18 +123,78 @@ function AdminNav() {
           Sign Out
         </button>
       </div>
-    </aside>
+    </>
   )
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isLogin = pathname === '/admin/login'
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
+
+  useEffect(() => {
+    if (!menuOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [menuOpen])
+
+  if (isLogin) {
+    return (
+      <div className="min-h-screen bg-[#f5f7fc]" style={{ fontFamily: 'var(--font-body)' }}>
+        {children}
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-[#f5f7fc]" style={{ fontFamily: 'var(--font-body)' }}>
-      <AdminNav />
-      <main className={isLogin ? '' : 'ml-56'}>
+      {/* Mobile top bar */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#01255f] border-b border-white/10 flex items-center justify-between px-4">
+        <button
+          type="button"
+          onClick={() => setMenuOpen(true)}
+          className="text-white p-2 -ml-2 min-h-0 min-w-0"
+          aria-label="Open menu"
+          aria-expanded={menuOpen}
+        >
+          <Menu size={22} />
+        </button>
+        <span className="text-white text-xs font-bold uppercase tracking-widest">Admin</span>
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white/70 hover:text-white p-2 -mr-2 text-xs font-semibold min-h-0 min-w-0"
+        >
+          Site
+        </Link>
+      </header>
+
+      {menuOpen && (
+        <button
+          type="button"
+          className="lg:hidden fixed inset-0 z-40 bg-black/50"
+          aria-label="Close menu backdrop"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+
+      <aside
+        className={`fixed top-0 left-0 z-50 h-full w-[min(100vw-3rem,17rem)] sm:w-56 bg-[#01255f] flex flex-col shadow-xl transition-transform duration-200 ease-out lg:translate-x-0 ${
+          menuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <AdminNav pathname={pathname} onNavigate={() => setMenuOpen(false)} />
+      </aside>
+
+      <main className="min-w-0 w-full lg:ml-56 pt-14 lg:pt-0 overflow-x-hidden">
         {children}
       </main>
     </div>

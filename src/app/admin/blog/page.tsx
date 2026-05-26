@@ -34,17 +34,20 @@ export default function AdminBlog() {
     ts ? new Date(ts.seconds * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'
 
   return (
-    <div className="p-8 max-w-5xl">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full min-w-0">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1
+            className="text-xl sm:text-2xl font-bold text-[#01255f]"
+            style={{ fontFamily: 'var(--font-heading)' }}
+          >
             Blog Posts
           </h1>
           <p className="text-[#5a6478] text-sm mt-1">{posts.length} total posts</p>
         </div>
         <Link
           href="/admin/blog/new"
-          className="bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
+          className="bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors text-center shrink-0"
         >
           + New Post
         </Link>
@@ -64,9 +67,9 @@ export default function AdminBlog() {
           {posts.map((post) => (
             <div
               key={post.id}
-              className="flex items-start justify-between gap-4 px-6 py-5 border-b border-gray-50 last:border-0 hover:bg-[#f5f7fc] transition-colors"
+              className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-50 last:border-0 hover:bg-[#f5f7fc] transition-colors"
             >
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <span
                     className={`text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 ${
@@ -79,10 +82,10 @@ export default function AdminBlog() {
                   </span>
                   <span className="text-[#5a6478] text-xs">{formatDate(post.createdAt)}</span>
                 </div>
-                <h3 className="font-bold text-[#01255f] text-sm truncate">{post.title}</h3>
-                <p className="text-[#5a6478] text-xs mt-0.5 truncate">{post.excerpt}</p>
+                <h3 className="font-bold text-[#01255f] text-sm break-words">{post.title}</h3>
+                <p className="text-[#5a6478] text-xs mt-0.5 line-clamp-2">{post.excerpt}</p>
               </div>
-              <div className="flex gap-2 flex-shrink-0">
+              <div className="flex flex-wrap gap-x-3 gap-y-1 shrink-0 sm:justify-end">
                 <Link
                   href={`/admin/blog/${post.id}`}
                   className="text-xs font-bold text-[#01255f] hover:underline"

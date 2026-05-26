@@ -42,7 +42,7 @@ function BoardForm({ initial, memberId, onSaved, onCancel }: {
     <div className="bg-white border border-gray-200 p-6 space-y-5">
       {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">{error}</div>}
       <ImageUpload label="Photo" value={data.image} onChange={(url) => setData((d) => ({ ...d, image: url }))} bucket="team-images" folder="board" />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Full Name</label>
           <input type="text" value={data.name} onChange={set('name')} className={inputClass} placeholder="Full name" />
@@ -91,8 +91,8 @@ export default function AdminBoard() {
   const onSaved = () => { setAdding(false); setEditing(null); setLoading(true); load() }
 
   return (
-    <div className="p-8 max-w-4xl">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Board of Directors</h1>
           <p className="text-[#5a6478] text-sm mt-1">{members.length} members</p>

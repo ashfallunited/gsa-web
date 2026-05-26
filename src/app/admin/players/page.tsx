@@ -81,7 +81,7 @@ function PlayerForm({ initial, playerId, onSaved, onCancel }: {
         folder="players"
       />
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Full Name</label>
           <input type="text" value={data.name} onChange={set('name')} className={inputClass} placeholder="Player full name" />
@@ -92,7 +92,7 @@ function PlayerForm({ initial, playerId, onSaved, onCancel }: {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Position</label>
           <select value={data.position} onChange={set('position')} className={inputClass}>
@@ -165,8 +165,8 @@ export default function AdminPlayers() {
   const filtered = players.filter((p) => playerMatchesTeamFilter(p.team, teamFilter))
 
   return (
-    <div className="p-8 max-w-4xl">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Players</h1>
           <p className="text-[#5a6478] text-sm mt-1">{players.length} total players</p>

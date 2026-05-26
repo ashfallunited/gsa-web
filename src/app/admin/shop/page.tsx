@@ -65,7 +65,7 @@ function ProductForm({ initial, productId, onSaved, onCancel }: {
     <div className="bg-white border border-gray-200 p-6 space-y-5">
       {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">{error}</div>}
       <ImageUpload label="Product Image" value={data.image} onChange={(url) => setData((d) => ({ ...d, image: url }))} bucket="website_files" folder="products" />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Product Name</label>
           <input type="text" value={data.name} onChange={set('name')} className={inputClass} placeholder="e.g. Home Jersey 2024" />
@@ -75,7 +75,7 @@ function ProductForm({ initial, productId, onSaved, onCancel }: {
           <input type="number" value={data.price} onChange={set('price')} className={inputClass} min={0} step="0.01" placeholder="0.00" />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Category</label>
           <select value={data.category} onChange={set('category')} className={inputClass}>
@@ -179,8 +179,8 @@ export default function AdminShop() {
   const onSaved = () => { setAdding(false); setEditing(null); setLoadingProducts(true); loadProducts() }
 
   return (
-    <div className="p-8 max-w-4xl">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Shop</h1>
           <p className="text-[#5a6478] text-sm mt-1">Manage products and orders</p>
