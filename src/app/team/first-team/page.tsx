@@ -4,10 +4,15 @@ import Footer from '@/components/Footer'
 import { getPlayersByTeam } from '@/lib/data/team'
 import { loadPublicData } from '@/lib/public-data'
 
-export const metadata = {
-  title: 'First Team | Asfall United',
-  description: 'Meet the Asfall United First Team squad.',
-}
+import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
+
+export const metadata = buildPageMetadata({
+  title: 'First Team',
+  description:
+    'Meet the Asfall United first team — players, positions, and profiles from our senior squad in Monrovia, Liberia.',
+  path: '/team/first-team',
+  keywords: SEO_KEYWORDS.team,
+})
 
 export default async function FirstTeamPage() {
   const players = (await loadPublicData(

@@ -4,10 +4,15 @@ import GalleryClient from './client'
 import { getGalleryItems } from '@/lib/data/gallery'
 import { loadPublicData } from '@/lib/public-data'
 
-export const metadata = {
-  title: 'Gallery | Asfall United',
-  description: 'Photos and videos from Asfall United programmes in Monrovia, Liberia.',
-}
+import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
+
+export const metadata = buildPageMetadata({
+  title: 'Gallery',
+  description:
+    'Photos and videos from Asfall United — football training, community programmes, and youth development in Monrovia, Liberia.',
+  path: '/gallery',
+  keywords: SEO_KEYWORDS.gallery,
+})
 
 export default async function GalleryPage() {
   const items = await loadPublicData('gallery', () => getGalleryItems(), [])

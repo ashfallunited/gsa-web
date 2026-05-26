@@ -1,13 +1,14 @@
-import type { Metadata } from 'next'
 import LegalPage from '@/components/LegalPage'
 import { ORG_NAME } from '@/lib/constants'
+import { buildPageMetadata } from '@/lib/seo'
 
 const LAST_UPDATED = '26 May 2026'
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: 'Terms of Use',
-  description: `Terms and conditions for using the ${ORG_NAME} website and services.`,
-}
+  description: `Terms and conditions for using the ${ORG_NAME} website, donations, and club shop.`,
+  path: '/terms',
+})
 
 const sections = [
   {

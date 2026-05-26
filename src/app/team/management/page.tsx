@@ -6,10 +6,15 @@ import { getManagementStaff } from '@/lib/data/team'
 import { IMAGE_PLACEHOLDER } from '@/lib/constants'
 import { loadPublicData } from '@/lib/public-data'
 
-export const metadata = {
-  title: 'Management | Asfall United',
-  description: 'Meet the management and coaching staff of Asfall United.',
-}
+import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
+
+export const metadata = buildPageMetadata({
+  title: 'Management',
+  description:
+    'Meet the board, management, and coaching staff leading Asfall United programmes in Monrovia, Liberia.',
+  path: '/team/management',
+  keywords: SEO_KEYWORDS.team,
+})
 
 function MemberCard({
   person,

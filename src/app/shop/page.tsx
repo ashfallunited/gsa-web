@@ -3,11 +3,15 @@ import Footer from '@/components/Footer'
 import ShopGrid from '@/components/ShopGrid'
 import { getActiveProducts } from '@/lib/data/shop'
 import { loadPublicData } from '@/lib/public-data'
+import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
 
-export const metadata = {
+export const metadata = buildPageMetadata({
   title: 'Shop',
-  description: 'Official Asfall United merchandise. Support our programmes with every purchase.',
-}
+  description:
+    'Official Asfall United merchandise and kits. Every purchase supports youth football and development programmes in Liberia.',
+  path: '/shop',
+  keywords: SEO_KEYWORDS.shop,
+})
 
 export default async function ShopPage() {
   const raw = await loadPublicData('shop-products', () => getActiveProducts(), [])

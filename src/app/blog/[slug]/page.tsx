@@ -1,10 +1,12 @@
-import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { getBlogPostBySlug } from '@/lib/data/blog'
+import { SITE_OG_IMAGE } from '@/lib/constants'
+import StructuredData from '@/components/StructuredData'
+import { buildBlogPostingJsonLd, buildPageMetadata, normalizePageTitle } from '@/lib/seo'
 
 function formatDate(ts: { seconds: number } | null | undefined) {
   if (!ts?.seconds) return ''
@@ -15,29 +17,24 @@ function formatDate(ts: { seconds: number } | null | undefined) {
   })
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = await getBlogPostBySlug(slug).catch(() => null)
-  if (!post) return { title: 'Post Not Found | Asfall United' }
+  if (!post) return { title: 'Post Not Found' }
 
-  const title = post.seoTitle || `${post.title} | Asfall United`
+  const title = normalizePageTitle(post.seoTitle || post.title)
   const description = post.seoDescription || post.excerpt
-  const image = post.featuredImage
 
-  return {
+  return buildPageMetadata({
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      type: 'article',
-      images: image ? [{ url: image }] : undefined,
-    },
-  }
+    path: `/blog/${slug}`,
+    openGraphType: 'article',
+    openGraphTitle: `${title} | Ashfall United`,
+    image: post.featuredImage
+      ? { url: post.featuredImage, alt: post.title }
+      : { url: SITE_OG_IMAGE, alt: post.title },
+  })
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -47,6 +44,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <>
+      <StructuredData id={`article-jsonld-${post.slug}`} data={buildBlogPostingJsonLd(post)} />
       <Navbar />
       <main className="pt-16 lg:pt-[70px]">
         <article>

@@ -3,16 +3,17 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DonateForm from '@/components/DonateForm'
 import { DONATE_OG_IMAGE, ORG_NAME } from '@/lib/constants'
-import { buildPageSocialMetadata } from '@/lib/social-metadata'
+import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
 
 const DONATE_DESCRIPTION =
   'Support Asfall United. Your donation helps young people access football, education, and community programmes that create lasting opportunity.'
 
-export const metadata: Metadata = buildPageSocialMetadata({
+export const metadata: Metadata = buildPageMetadata({
   title: 'Donate',
   openGraphTitle: `Donate — Make an impact with ${ORG_NAME}`,
   description: DONATE_DESCRIPTION,
   path: '/donate',
+  keywords: SEO_KEYWORDS.donate,
   image: {
     url: DONATE_OG_IMAGE,
     alt: `Donate to ${ORG_NAME} — support youth football and development in Monrovia, Liberia`,

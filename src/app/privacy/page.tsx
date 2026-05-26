@@ -1,13 +1,14 @@
-import type { Metadata } from 'next'
 import LegalPage from '@/components/LegalPage'
 import { ORG_NAME } from '@/lib/constants'
+import { buildPageMetadata } from '@/lib/seo'
 
 const LAST_UPDATED = '26 May 2026'
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: 'Privacy Policy',
-  description: `How ${ORG_NAME} collects, uses, and protects your personal information.`,
-}
+  description: `How ${ORG_NAME} collects, uses, and protects your personal information on ashfallunited.com.`,
+  path: '/privacy',
+})
 
 const sections = [
   {

@@ -42,7 +42,7 @@ export default function LiberiaSection() {
             Monrovia, Liberia
           </h2>
           <p className="mt-5 text-[#5a6478] text-sm sm:text-base max-w-xl">
-            Asfall United is rooted in Monrovia — the capital and largest city of Liberia — where we deliver all of our current programmes.
+            Asfall United is based in Monrovia — the capital and largest city of Liberia — where we deliver all of our current programmes.
           </p>
         </div>
 

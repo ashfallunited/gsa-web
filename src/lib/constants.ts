@@ -1,5 +1,11 @@
 export const ORG_NAME = 'Asfall United'
 
+/** Homepage `<title>` and default Google / social preview headline. */
+export const SITE_HOME_TITLE = 'Ashfall United | Sports for social Impact'
+
+/** Inner pages: layout template renders `{segment} | Ashfall United` (e.g. Shop | Ashfall United). */
+export const SITE_PAGE_TITLE_SUFFIX = 'Ashfall United'
+
 export const SITE_URL = 'https://www.ashfallunited.com'
 
 export const ORG_EMAIL = 'info@gayduosa.org'

@@ -4,13 +4,16 @@ import Footer from '@/components/Footer'
 import { getPlayersByTeam } from '@/lib/data/team'
 import { loadPublicData } from '@/lib/public-data'
 import { TEAM_SLUG, TEAM_LABELS } from '@/lib/teams'
+import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
 
 const teamName = TEAM_LABELS[TEAM_SLUG.academy]
 
-export const metadata = {
-  title: `${teamName} | Asfall United`,
-  description: `Meet the Asfall United ${teamName} squad.`,
-}
+export const metadata = buildPageMetadata({
+  title: teamName,
+  description: `Meet the Asfall United ${teamName} — youth players and development pathway in Monrovia, Liberia.`,
+  path: '/team/academy',
+  keywords: [...SEO_KEYWORDS.team, 'youth academy football Liberia'],
+})
 
 export default async function AcademyPage() {
   const players = (await loadPublicData(

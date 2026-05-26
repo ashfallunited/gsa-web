@@ -1,21 +1,20 @@
-import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { getPublishedBlogPosts } from '@/lib/data/blog'
 import { loadPublicData } from '@/lib/public-data'
+import StructuredData from '@/components/StructuredData'
+import { buildBlogIndexJsonLd, buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Blog & News | Asfall United',
+export const metadata = buildPageMetadata({
+  title: 'Blog & News',
   description:
-    'Stories, updates, and insights from Asfall United — empowering youth in Monrovia, Liberia through sport, education, and health.',
-  openGraph: {
-    title: 'Blog & News | Asfall United',
-    description: 'Stories, updates, and insights from Asfall United.',
-    type: 'website',
-  },
-}
+    'Stories, updates, and insights from Asfall United — youth football, education, and community programmes in Monrovia, Liberia.',
+  path: '/blog',
+  openGraphTitle: 'Blog & News | Ashfall United',
+  keywords: SEO_KEYWORDS.blog,
+})
 
 function formatDate(ts: { seconds: number } | null | undefined) {
   if (!ts?.seconds) return ''
@@ -31,6 +30,7 @@ export default async function BlogPage() {
 
   return (
     <>
+      <StructuredData id="blog-index-jsonld" data={buildBlogIndexJsonLd()} />
       <Navbar />
       <main className="pt-16 lg:pt-[70px]">
         <div className="bg-[#01255f] py-16 sm:py-20">

@@ -1,6 +1,14 @@
 import type { Metadata } from 'next'
 import { DM_Sans, Syne } from 'next/font/google'
-import { ORG_DESCRIPTION, ORG_NAME, SITE_OG_IMAGE, SITE_URL } from '@/lib/constants'
+import GlobalJsonLd from '@/components/GlobalJsonLd'
+import {
+  ORG_DESCRIPTION,
+  ORG_NAME,
+  SITE_HOME_TITLE,
+  SITE_OG_IMAGE,
+  SITE_PAGE_TITLE_SUFFIX,
+  SITE_URL,
+} from '@/lib/constants'
 import './globals.css'
 
 const body = DM_Sans({
@@ -20,12 +28,18 @@ const heading = Syne({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${ORG_NAME} | Liberia`,
-    template: `%s | ${ORG_NAME}`,
+    default: SITE_HOME_TITLE,
+    template: `%s | ${SITE_PAGE_TITLE_SUFFIX}`,
+  },
+  alternates: {
+    canonical: SITE_URL,
   },
   description: ORG_DESCRIPTION,
   keywords: [
     'Asfall United',
+    'Asfall United Football Club',
+    'Asfall United Youth Development',
+    'Asfall United Football Academy',
     'football club Liberia',
     'youth sport Monrovia',
     'Liberia football',
@@ -43,7 +57,7 @@ export const metadata: Metadata = {
     locale: 'en_GB',
     url: SITE_URL,
     siteName: ORG_NAME,
-    title: `${ORG_NAME} | Football & Youth Development in Monrovia, Liberia`,
+    title: SITE_HOME_TITLE,
     description: ORG_DESCRIPTION,
     images: [
       {
@@ -56,7 +70,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${ORG_NAME} | Football & Youth Development`,
+    title: SITE_HOME_TITLE,
     description: ORG_DESCRIPTION,
     images: [SITE_OG_IMAGE],
   },
@@ -81,7 +95,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="shortcut icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
-      <body>{children}</body>
+      <body>
+        <GlobalJsonLd />
+        {children}
+      </body>
     </html>
   )
 }
