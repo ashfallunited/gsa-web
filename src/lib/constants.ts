@@ -4,7 +4,11 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://gayduosa.or
 
 export const ORG_EMAIL = process.env.NEXT_PUBLIC_ORG_EMAIL ?? 'info@gayduosa.org'
 
-export const ORG_INSTAGRAM = process.env.NEXT_PUBLIC_ORG_INSTAGRAM ?? 'https://instagram.com/gsa.liberia'
+export const ORG_INSTAGRAM =
+  process.env.NEXT_PUBLIC_ORG_INSTAGRAM ?? 'https://www.instagram.com/ashfallunited'
+
+export const ORG_FACEBOOK =
+  process.env.NEXT_PUBLIC_ORG_FACEBOOK ?? 'https://www.facebook.com/ashfallunited'
 
 export const ORG_INSTAGRAM_HANDLE =
   process.env.NEXT_PUBLIC_ORG_INSTAGRAM_HANDLE ?? '@asfallunited'
