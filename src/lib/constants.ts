@@ -1,8 +1,8 @@
 export const ORG_NAME = 'Asfall United'
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://gayduosa.org'
+export const SITE_URL = 'https://www.ashfallunited.com'
 
-export const ORG_EMAIL = process.env.NEXT_PUBLIC_ORG_EMAIL ?? 'info@gayduosa.org'
+export const ORG_EMAIL = 'info@gayduosa.org'
 
 export const ORG_INSTAGRAM =
   process.env.NEXT_PUBLIC_ORG_INSTAGRAM ?? 'https://www.instagram.com/ashfallunited'
@@ -14,11 +14,14 @@ export const ORG_INSTAGRAM_HANDLE =
   process.env.NEXT_PUBLIC_ORG_INSTAGRAM_HANDLE ?? '@asfallunited'
 
 export const ORG_DESCRIPTION =
-  'Asfall United — football and youth development in Monrovia, Liberia through sport, education, and community programmes.'
+  'Asfall United — football and youth development through sport, education, and community programmes.'
 
-/** Social preview image for /donate (1200×630+ recommended for link previews). */
-export const DONATE_OG_IMAGE =
+/** Default social preview image (1200×630+). Used site-wide and on /donate. */
+export const SITE_OG_IMAGE =
   'https://fckzyvkbthqvmmjpvfxr.supabase.co/storage/v1/object/public/website_files/gallery/1775475072579-6n88a265wr5.jpg'
+
+/** @deprecated Use SITE_OG_IMAGE */
+export const DONATE_OG_IMAGE = SITE_OG_IMAGE
 
 /** Marketing assets on Supabase Storage (public `website_files` bucket). */
 export const STATIC_ASSETS = {

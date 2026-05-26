@@ -140,8 +140,12 @@ export default function Footer() {
           &copy; {year} {ORG_NAME}. All rights reserved.
         </p>
         <div className="flex gap-4 sm:gap-6 flex-wrap justify-center">
-          <a href="#" className="text-white/30 hover:text-white/60 text-[11px] sm:text-xs transition-colors">Privacy Policy</a>
-          <a href="#" className="text-white/30 hover:text-white/60 text-[11px] sm:text-xs transition-colors">Terms of Use</a>
+          <Link href="/privacy" className="text-white/30 hover:text-white/60 text-[11px] sm:text-xs transition-colors">
+            Privacy Policy
+          </Link>
+          <Link href="/terms" className="text-white/30 hover:text-white/60 text-[11px] sm:text-xs transition-colors">
+            Terms of Use
+          </Link>
           <span className="text-white/30 text-[11px] sm:text-xs">Monrovia, Liberia</span>
         </div>
       </div>

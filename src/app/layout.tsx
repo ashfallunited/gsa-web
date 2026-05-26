@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { DM_Sans, Syne } from 'next/font/google'
-import { ORG_DESCRIPTION, ORG_NAME, SITE_URL } from '@/lib/constants'
+import { ORG_DESCRIPTION, ORG_NAME, SITE_OG_IMAGE, SITE_URL } from '@/lib/constants'
 import './globals.css'
 
 const body = DM_Sans({
@@ -20,7 +20,7 @@ const heading = Syne({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${ORG_NAME} | Monrovia, Liberia`,
+    default: `${ORG_NAME} | Liberia`,
     template: `%s | ${ORG_NAME}`,
   },
   description: ORG_DESCRIPTION,
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     description: ORG_DESCRIPTION,
     images: [
       {
-        url: '/og-image.jpg',
+        url: SITE_OG_IMAGE,
         width: 1200,
         height: 630,
         alt: `${ORG_NAME} — Monrovia, Liberia`,
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `${ORG_NAME} | Football & Youth Development`,
     description: ORG_DESCRIPTION,
-    images: ['/og-image.jpg'],
+    images: [SITE_OG_IMAGE],
   },
   robots: {
     index: true,

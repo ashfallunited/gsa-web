@@ -5,7 +5,7 @@ import { getActiveProducts } from '@/lib/data/shop'
 import { loadPublicData } from '@/lib/public-data'
 
 export const metadata = {
-  title: 'Shop | Asfall United',
+  title: 'Shop',
   description: 'Official Asfall United merchandise. Support our programmes with every purchase.',
 }
 

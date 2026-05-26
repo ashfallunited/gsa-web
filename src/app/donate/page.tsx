@@ -6,7 +6,7 @@ import { DONATE_OG_IMAGE, ORG_NAME } from '@/lib/constants'
 import { buildPageSocialMetadata } from '@/lib/social-metadata'
 
 const DONATE_DESCRIPTION =
-  'Support Asfall United in Monrovia, Liberia. Your donation helps young people access football, education, and community programmes that create lasting opportunity.'
+  'Support Asfall United. Your donation helps young people access football, education, and community programmes that create lasting opportunity.'
 
 export const metadata: Metadata = buildPageSocialMetadata({
   title: 'Donate',

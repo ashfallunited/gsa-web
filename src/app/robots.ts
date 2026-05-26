@@ -6,10 +6,11 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: ['/', '/llms.txt'],
         disallow: ['/admin/', '/api/'],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL.replace(/^https?:\/\//, ''),
   }
 }

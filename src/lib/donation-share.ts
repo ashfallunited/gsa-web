@@ -1,4 +1,4 @@
-import { ORG_NAME } from '@/lib/constants'
+import { ORG_NAME, SITE_URL } from '@/lib/constants'
 
 export type DonationShareVariant = 'completed' | 'invite'
 
@@ -8,10 +8,7 @@ export type DonationShareOptions = {
 }
 
 export function getDonatePageUrl(): string {
-  const base = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '')
-  if (base) return `${base}/donate`
-  if (typeof window !== 'undefined') return `${window.location.origin}/donate`
-  return '/donate'
+  return `${SITE_URL}/donate`
 }
 
 export function buildDonationShareMessage(

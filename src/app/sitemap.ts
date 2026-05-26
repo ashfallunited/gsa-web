@@ -9,6 +9,8 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/shop`, changeFrequency: 'weekly', priority: 0.7 },
   { url: `${SITE_URL}/donate`, changeFrequency: 'monthly', priority: 0.8 },
   { url: `${SITE_URL}/get-involved`, changeFrequency: 'monthly', priority: 0.8 },
+  { url: `${SITE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
+  { url: `${SITE_URL}/terms`, changeFrequency: 'yearly', priority: 0.3 },
   { url: `${SITE_URL}/team/first-team`, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${SITE_URL}/team/academy`, changeFrequency: 'monthly', priority: 0.6 },
   { url: `${SITE_URL}/team/management`, changeFrequency: 'monthly', priority: 0.6 },
