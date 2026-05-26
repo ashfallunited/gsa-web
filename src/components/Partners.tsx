@@ -1,6 +1,7 @@
 import { getPartners } from '@/lib/data/partners'
 import { getAmbassadors } from '@/lib/data/ambassadors'
 import { loadPublicData } from '@/lib/public-data'
+import PartnerMarquee from '@/components/PartnerMarquee'
 
 export default async function Partners() {
   const [partners, ambassadors] = await Promise.all([
@@ -24,39 +25,7 @@ export default async function Partners() {
           </p>
         </div>
 
-        {partners.length > 0 && (
-          <div
-            className={`grid gap-px bg-gray-200 mb-16 sm:mb-20 ${
-              partners.length <= 3
-                ? 'grid-cols-3'
-                : partners.length <= 4
-                  ? 'grid-cols-2 sm:grid-cols-4'
-                  : 'grid-cols-3 lg:grid-cols-6'
-            }`}
-          >
-            {partners.map((p) => {
-              const inner = (
-                <div
-                  className="bg-white flex items-center justify-center px-5 py-7 sm:px-6 sm:py-8 group hover:bg-[#f5f7fc] transition-colors"
-                  title={p.name}
-                >
-                  <img
-                    src={p.logo}
-                    alt={p.name}
-                    className="max-h-9 sm:max-h-11 w-auto max-w-[90px] sm:max-w-[110px] object-contain grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                  />
-                </div>
-              )
-              return p.url ? (
-                <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer">
-                  {inner}
-                </a>
-              ) : (
-                <div key={p.id}>{inner}</div>
-              )
-            })}
-          </div>
-        )}
+        <PartnerMarquee partners={partners} />
 
         {ambassadors.length > 0 && (
           <div className="grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-12 items-start">

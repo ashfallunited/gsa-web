@@ -261,3 +261,38 @@ body, html {
   min-height: 0;
   min-width: 0;
 }
+
+/* Partner logo marquee */
+@keyframes partner-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.partner-marquee-track {
+  animation: partner-marquee-scroll var(--marquee-duration, 36s) linear infinite;
+}
+
+.partner-marquee:hover .partner-marquee-track,
+.partner-marquee:focus-within .partner-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    gap: 1rem;
+  }
+
+  .partner-marquee .pointer-events-none {
+    display: none;
+  }
+}
