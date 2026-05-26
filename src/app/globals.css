@@ -1,0 +1,263 @@
+@import "tailwindcss";
+
+:root {
+  --blue: #01255f;
+  --blue-dark: #011840;
+  --blue-mid: #1a3a7a;
+  --yellow: #fee11b;
+  --yellow-dark: #e5ca10;
+  --off-white: #f5f7fc;
+  --text: #0d0d0d;
+  --text-muted: #5a6478;
+}
+
+@theme inline {
+  --color-background: #ffffff;
+  --color-foreground: var(--text);
+  --color-blue: var(--blue);
+  --color-blue-dark: var(--blue-dark);
+  --color-yellow: var(--yellow);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fixed navbar: anchor links land below the header */
+#about,
+#model,
+#impact,
+#partners,
+#contact,
+#blog {
+  scroll-margin-top: 5.5rem;
+}
+
+@media (min-width: 1024px) {
+  #about,
+  #model,
+  #impact,
+  #partners,
+  #contact,
+  #blog {
+    scroll-margin-top: 5.75rem;
+  }
+}
+
+body {
+  background: #ffffff;
+  color: var(--text);
+  font-family: var(--font-body), 'DM Sans', sans-serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 2px; }
+
+/* Hide scrollbar for tab overflow on mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hero overlay */
+.hero-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(1, 37, 95, 0.92) 0%,
+    rgba(1, 37, 95, 0.7) 55%,
+    rgba(1, 37, 95, 0.25) 100%
+  );
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeUp 0.65s ease forwards; }
+
+/* Section label pill */
+.label {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: rgba(1, 37, 95, 0.07);
+  padding: 4px 10px;
+  margin-bottom: 1rem;
+}
+
+.label-light {
+  color: var(--yellow);
+  background: rgba(254, 225, 27, 0.12);
+}
+
+/* Yellow underline heading */
+.heading-underline {
+  position: relative;
+  padding-bottom: 12px;
+}
+.heading-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 36px;
+  height: 3px;
+  background: var(--yellow);
+}
+.heading-underline.center::after {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Prevent text overflow on small screens */
+* {
+  word-break: break-word;
+}
+
+/* Touch-friendly tap targets */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Prevent horizontal overflow globally */
+body, html {
+  overflow-x: hidden;
+}
+
+/* TipTap editor + rendered blog HTML (no @tailwindcss/typography — prose classes are inert) */
+.tiptap,
+.blog-content {
+  color: var(--text);
+  line-height: 1.65;
+}
+
+.tiptap:focus {
+  outline: none;
+}
+
+.tiptap > * + *,
+.blog-content > * + * {
+  margin-top: 0.75em;
+}
+
+.tiptap h1,
+.blog-content h1 {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1.875rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--blue);
+}
+
+.tiptap h2,
+.blog-content h2 {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--blue);
+}
+
+.tiptap h3,
+.blog-content h3 {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--blue);
+}
+
+.tiptap p,
+.blog-content p {
+  margin: 0.5em 0;
+}
+
+.tiptap ul,
+.blog-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 0.75em 0;
+}
+
+.tiptap ol,
+.blog-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 0.75em 0;
+}
+
+.tiptap li,
+.blog-content li {
+  margin: 0.25em 0;
+}
+
+.tiptap li > p,
+.blog-content li > p {
+  margin: 0;
+}
+
+.tiptap blockquote,
+.blog-content blockquote {
+  border-left: 4px solid var(--yellow);
+  padding-left: 1rem;
+  margin: 1em 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.tiptap a,
+.blog-content a {
+  color: var(--blue);
+  text-decoration: underline;
+}
+
+.tiptap img,
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.tiptap hr,
+.blog-content hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1.5em 0;
+}
+
+/* TextAlign extension */
+.tiptap [style*='text-align: left'],
+.blog-content [style*='text-align: left'] {
+  text-align: left;
+}
+
+.tiptap [style*='text-align: center'],
+.blog-content [style*='text-align: center'] {
+  text-align: center;
+}
+
+.tiptap [style*='text-align: right'],
+.blog-content [style*='text-align: right'] {
+  text-align: right;
+}
+
+.tiptap [style*='text-align: justify'],
+.blog-content [style*='text-align: justify'] {
+  text-align: justify;
+}
+
+/* Toolbar buttons should stay compact (override global 44px tap target) */
+.rich-text-toolbar button {
+  min-height: 0;
+  min-width: 0;
+}
