@@ -12,7 +12,6 @@ const teamDropdown = [...TEAM_NAV_LINKS]
 const aboutDropdown = [
   { label: 'Who we are', href: '/#about' },
   { label: 'Our Model', href: '/#model' },
-  { label: 'Impact', href: '/#impact' },
 ] as const
 
 export default function Navbar() {

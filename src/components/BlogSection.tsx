@@ -110,7 +110,7 @@ export default async function BlogSection() {
   )
 
   return (
-    <section id="blog" className="py-16 sm:py-24 lg:py-32 bg-white overflow-hidden">
+    <section id="blog" className="py-12 sm:py-16 lg:py-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-10">
           <div className="min-w-0">

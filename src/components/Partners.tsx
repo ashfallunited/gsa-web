@@ -10,9 +10,9 @@ export default async function Partners() {
   ])
 
   return (
-    <section id="partners" className="py-16 sm:py-24 lg:py-32 bg-[#f5f7fc]">
+    <section id="partners" className="py-12 sm:py-16 lg:py-20 bg-[#f5f7fc]">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
-        <div className="mb-10 sm:mb-14">
+        <div className="mb-7 sm:mb-10">
           <span className="label">Our Network</span>
           <h2
             className="heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#01255f] leading-tight"

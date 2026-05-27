@@ -15,7 +15,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section id="hero" className="relative min-h-[100svh] flex items-center">
+    <section id="hero" className="relative min-h-[70svh] sm:min-h-[100svh] flex items-center">
       <div className="absolute inset-0">
         <Image
           src={STATIC_ASSETS.hero}

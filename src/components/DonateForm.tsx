@@ -29,7 +29,7 @@ const IMPACT_TIERS = [
   { amount: '$25', label: 'Training kit for one youth player' },
   { amount: '$50', label: 'A week of meals for programme participants' },
   { amount: '$100', label: 'Educational materials for an entire cohort' },
-  { amount: '$250+', label: 'Supports coaches and community sessions' },
+  { amount: '$250+', label: 'Supports volunteers and community sessions' },
 ] as const
 
 const STEPS: { id: Step; label: string }[] = [
@@ -211,7 +211,7 @@ export default function DonateForm() {
                 >
                   Choose your gift
                 </h2>
-                <p className="text-sm text-[#5a6478]">All amounts in USD. Every dollar supports youth in Monrovia.</p>
+                <p className="text-sm text-[#5a6478]">All amounts in USD. Every dollar supports our youth programmes.</p>
               </div>
 
               <div className="flex gap-2 p-1 bg-[#f5f7fc] border border-gray-100">
