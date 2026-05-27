@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { DM_Sans, Syne } from 'next/font/google'
 import GlobalJsonLd from '@/components/GlobalJsonLd'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 import {
   ORG_DESCRIPTION,
   ORG_NAME,
@@ -96,6 +97,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
       <body>
+        <GoogleAnalytics />
         <GlobalJsonLd />
         {children}
       </body>
