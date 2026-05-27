@@ -5,6 +5,7 @@ import { serializeFirestoreData } from '@/lib/serialize-firestore'
 import { sortPlayersByPosition, type SortablePlayer } from '@/lib/player-sort'
 import { normalizeTeamSlug, playerMatchesTeamFilter } from '@/lib/teams'
 import { revalidateTeam } from '@/lib/revalidate'
+import { playerSchema } from '@/lib/schemas'
 
 export async function GET(req: NextRequest) {
   return runAdminApiWithDb(req, async (db) => {
@@ -25,14 +26,19 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   return runAdminApiWithDb(req, async (db) => {
-    const body = await req.json()
+    const body = await req.json().catch(() => null)
+    const parsed = playerSchema.safeParse(body)
+    if (!parsed.success) {
+      return Response.json({ error: 'Validation failed', details: parsed.error.flatten() }, { status: 400 })
+    }
+
+    const { source, showOnSite, team, ...rest } = parsed.data
+    const nextSource = source === 'trial' ? 'trial' : 'official'
     const ref = await db.collection('players').add({
-      name: body.name ?? '',
-      number: body.number ?? 0,
-      position: body.position ?? 'midfielder',
-      team: normalizeTeamSlug(body.team ?? 'first-team'),
-      image: body.image ?? '',
-      order: body.order ?? 99,
+      ...rest,
+      team: normalizeTeamSlug(team),
+      source: nextSource,
+      showOnSite: nextSource === 'trial' ? false : showOnSite,
       createdAt: FieldValue.serverTimestamp(),
     })
 

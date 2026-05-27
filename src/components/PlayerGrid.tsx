@@ -16,6 +16,12 @@ export type Player = {
   position: Position
   team: string
   image: string
+  stats?: {
+    goals: number
+    assists: number
+    appearances: number
+    minutes: number
+  }
 }
 
 const POSITIONS: { key: Position | 'all'; label: string; short: string }[] = [
@@ -28,9 +34,9 @@ const POSITIONS: { key: Position | 'all'; label: string; short: string }[] = [
 
 const POSITION_COLORS: Record<Position, string> = {
   goalkeeper: 'bg-[#fee11b] text-[#01255f]',
-  defender: 'bg-[#01255f] text-white',
-  midfielder: 'bg-[#01255f]/80 text-white',
-  forward: 'bg-[#c0392b] text-white',
+  defender: 'bg-[#fee11b] text-[#01255f]',
+  midfielder: 'bg-[#fee11b] text-[#01255f]',
+  forward: 'bg-[#fee11b] text-[#01255f]',
 }
 
 export default function PlayerGrid({ players }: { players: Player[] }) {
@@ -117,6 +123,20 @@ export default function PlayerGrid({ players }: { players: Player[] }) {
                 >
                   {player.name}
                 </h3>
+                {player.stats && (player.stats.goals > 0 || player.stats.assists > 0) && (
+                  <div className="flex gap-2 mt-2">
+                    {player.stats.goals > 0 && (
+                      <span className="text-[9px] font-bold uppercase tracking-wider bg-[#fee11b]/20 text-[#fee11b] px-1.5 py-0.5">
+                        {player.stats.goals}G
+                      </span>
+                    )}
+                    {player.stats.assists > 0 && (
+                      <span className="text-[9px] font-bold uppercase tracking-wider bg-white/10 text-white/80 px-1.5 py-0.5">
+                        {player.stats.assists}A
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}

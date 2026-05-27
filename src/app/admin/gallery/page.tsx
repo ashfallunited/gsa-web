@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { Trash2 } from 'lucide-react'
 import { parseYoutubeId } from '@/lib/youtube'
 
 type GalleryItem = {
@@ -104,9 +105,9 @@ export default function AdminGallery() {
   const videos = items.filter((i) => i.type === 'video')
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full min-w-0">
+    <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
           Gallery
         </h1>
         <p className="text-[#5a6478] text-sm mt-1">
@@ -190,7 +191,7 @@ export default function AdminGallery() {
       ) : items.length === 0 ? (
         <div className="bg-white border p-10 text-center text-sm text-[#5a6478]">No gallery items yet.</div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {items.map((item) => (
             <div key={item.id} className="group relative bg-[#f5f7fc] overflow-hidden aspect-square">
               {item.type === 'video' && item.youtubeId ? (
@@ -208,8 +209,9 @@ export default function AdminGallery() {
                 <button
                   type="button"
                   onClick={() => del(item.id)}
-                  className="bg-red-500 text-white text-xs font-bold px-4 py-1.5"
+                  className="flex items-center gap-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-4 py-1.5 transition-colors"
                 >
+                  <Trash2 size={12} />
                   Delete
                 </button>
               </div>

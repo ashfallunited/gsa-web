@@ -49,7 +49,7 @@ export function normalizePageTitle(raw: string): string {
   return (
     raw
       .replace(/\s*\|\s*Ashfall United\s*$/i, '')
-      .replace(/\s*\|\s*Asfall United\s*$/i, '')
+      .replace(/\s*\|\s*Ashfall United\s*$/i, '')
       .trim() || raw
   )
 }
@@ -147,7 +147,7 @@ export function buildBlogIndexJsonLd(): Record<string, unknown> {
     '@context': 'https://schema.org',
     '@type': 'Blog',
     name: `${ORG_NAME} News`,
-    description: 'Stories and updates from Asfall United programmes in Liberia.',
+    description: 'Stories and updates from Ashfall United programmes in Liberia.',
     url: absoluteUrl('/blog'),
     publisher: {
       '@type': 'SportsTeam',
@@ -159,7 +159,7 @@ export function buildBlogIndexJsonLd(): Record<string, unknown> {
 
 export function buildBlogPostingJsonLd(post: BlogPost): Record<string, unknown> {
   const published = post.publishedAt?.seconds ?? post.createdAt?.seconds
-  const modified = post.createdAt?.seconds ?? published
+  const modified = post.updatedAt?.seconds ?? post.publishedAt?.seconds ?? post.createdAt?.seconds
 
   const data: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -189,15 +189,15 @@ export function buildBlogPostingJsonLd(post: BlogPost): Record<string, unknown> 
 
 export const SEO_KEYWORDS = {
   core: [
-    'Asfall United',
+    'Ashfall United',
     'football club Liberia',
     'youth football Monrovia',
     'sport for development Liberia',
   ],
   donate: ['donate football Liberia', 'support youth Monrovia', 'charity football Liberia'],
-  blog: ['Asfall United news', 'Liberia football news', 'youth development stories'],
-  shop: ['Asfall United kit', 'Liberia football jersey', 'club shop Monrovia'],
-  team: ['Asfall United squad', 'Liberia first team football'],
-  gallery: ['Asfall United photos', 'Monrovia football gallery'],
+  blog: ['Ashfall United news', 'Liberia football news', 'youth development stories'],
+  shop: ['Ashfall United kit', 'Liberia football jersey', 'club shop Monrovia'],
+  team: ['Ashfall United squad', 'Liberia first team football'],
+  gallery: ['Ashfall United photos', 'Monrovia football gallery'],
   involved: ['volunteer football Liberia', 'partner youth development Monrovia'],
 } as const

@@ -1,4 +1,4 @@
-export const ORG_NAME = 'Asfall United'
+export const ORG_NAME = 'Ashfall United'
 
 /** Homepage `<title>` and default Google / social preview headline. */
 export const SITE_HOME_TITLE = 'Ashfall United | Sports for social Impact'
@@ -23,7 +23,7 @@ export const ORG_INSTAGRAM_HANDLE =
   process.env.NEXT_PUBLIC_ORG_INSTAGRAM_HANDLE ?? '@asfallunited'
 
 export const ORG_DESCRIPTION =
-  'Asfall United — football and youth development through sport, education, and community programmes.'
+  'Ashfall United — football and youth development through sport, education, and community programmes.'
 
 /** Default social preview image (1200×630+). Used site-wide and on /donate. */
 export const SITE_OG_IMAGE =

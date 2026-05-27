@@ -1,7 +1,9 @@
-import PlayerGrid, { type Player } from '@/components/PlayerGrid'
+import PlayerGrid from '@/components/PlayerGrid'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { getPlayersByTeam } from '@/lib/data/team'
+import { mergePlayerStats } from '@/lib/data/team-stats-page'
+import { getCachedPlayerSeasonStatsMap } from '@/lib/data/games'
 import { loadPublicData } from '@/lib/public-data'
 
 import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
@@ -15,11 +17,14 @@ export const metadata = buildPageMetadata({
 })
 
 export default async function FirstTeamPage() {
-  const players = (await loadPublicData(
-    'first-team-players',
-    () => getPlayersByTeam('first-team'),
-    []
-  )) as Player[]
+  const team = 'first-team'
+
+  const [players, statsMap] = await Promise.all([
+    loadPublicData('first-team-players', () => getPlayersByTeam(team), []),
+    loadPublicData('first-team-stats-map', () => getCachedPlayerSeasonStatsMap(team), new Map()),
+  ])
+
+  const playersWithStats = mergePlayerStats(players, statsMap)
 
   return (
     <>
@@ -42,7 +47,7 @@ export default async function FirstTeamPage() {
 
         <div className="bg-[#f5f7fc] py-14 sm:py-20">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
-            <PlayerGrid players={players} />
+            <PlayerGrid players={playersWithStats} />
           </div>
         </div>
       </main>

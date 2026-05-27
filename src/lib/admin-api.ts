@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server'
 import type { Firestore } from 'firebase-admin/firestore'
-import { requireAdmin } from '@/lib/admin-auth'
+import { requireAdmin, requireAnalyticsRead, requireAnalyticsWrite } from '@/lib/admin-auth'
+import type { SessionPayload } from '@/lib/session'
 import { getAdminDb } from '@/lib/firebase-admin'
 
 function toAdminApiErrorResponse(error: unknown): Response {
@@ -39,4 +40,36 @@ export async function runAdminApiWithDb(
   handler: (db: Firestore) => Promise<Response>
 ): Promise<Response> {
   return runAdminApi(req, async () => handler(getAdminDb()))
+}
+
+/** Analytics read — super_admin and data_analyst. */
+export async function runAnalyticsReadApi(
+  req: NextRequest,
+  handler: (ctx: { session: SessionPayload; db: Firestore }) => Promise<Response>
+): Promise<Response> {
+  const auth = await requireAnalyticsRead(req)
+  if ('denied' in auth) return auth.denied
+
+  try {
+    return await handler({ session: auth.session, db: getAdminDb() })
+  } catch (error) {
+    console.error('Analytics read API error:', error)
+    return toAdminApiErrorResponse(error)
+  }
+}
+
+/** Analytics write — super_admin and data_analyst. */
+export async function runAnalyticsWriteApi(
+  req: NextRequest,
+  handler: (ctx: { session: SessionPayload; db: Firestore }) => Promise<Response>
+): Promise<Response> {
+  const auth = await requireAnalyticsWrite(req)
+  if ('denied' in auth) return auth.denied
+
+  try {
+    return await handler({ session: auth.session, db: getAdminDb() })
+  } catch (error) {
+    console.error('Analytics write API error:', error)
+    return toAdminApiErrorResponse(error)
+  }
 }

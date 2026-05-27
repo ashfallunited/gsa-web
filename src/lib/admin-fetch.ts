@@ -9,7 +9,10 @@ export class AdminFetchError extends Error {
 }
 
 export async function fetchAdminJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(url, init)
+  const res = await fetch(url, {
+    cache: 'no-store',
+    ...init,
+  })
   const text = await res.text()
 
   let data: unknown = null

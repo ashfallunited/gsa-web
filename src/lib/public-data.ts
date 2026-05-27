@@ -10,9 +10,7 @@ export async function loadPublicData<T>(
   try {
     return await loader()
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error(`[${label}] failed to load public data:`, error)
-    }
+    console.error(`[${label}] failed to load public data:`, error)
     return fallback
   }
 }

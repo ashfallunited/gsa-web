@@ -42,7 +42,7 @@ function NewsCard({
       className={`group relative block w-full overflow-hidden rounded-lg bg-[#01255f] ${
         featured
           ? 'aspect-[16/10] sm:aspect-[16/9]'
-          : 'aspect-[4/3] sm:aspect-[5/4]'
+          : 'aspect-[16/9] sm:aspect-[5/4]'
       } ${className}`}
     >
       <Image

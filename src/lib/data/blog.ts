@@ -17,6 +17,7 @@ export type BlogPost = {
   createdAt?: { seconds: number } | null
   seoTitle?: string
   seoDescription?: string
+  updatedAt?: { seconds: number } | null
 }
 
 function postSortKey(post: BlogPost): number {

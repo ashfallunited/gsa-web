@@ -30,3 +30,7 @@ export function revalidateNewsletter() {
 export function revalidateInquiries() {
   revalidateTag(CACHE_TAGS.inquiries, PROFILE)
 }
+
+export function revalidateGames() {
+  revalidateTag(CACHE_TAGS.games, PROFILE)
+}

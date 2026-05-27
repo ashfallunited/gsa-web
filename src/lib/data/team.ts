@@ -14,6 +14,8 @@ export type Player = {
   image?: string
   team?: string
   order?: number
+  showOnSite?: boolean
+  source?: string
 }
 
 export type StaffMember = {
@@ -36,6 +38,8 @@ async function fetchPlayers(team: string): Promise<Player[]> {
       } as Record<string, unknown>) as Player
     })
     .filter((p) => playerMatchesTeamFilter(p.team, team))
+    .filter((p) => p.showOnSite !== false)
+    .filter((p) => p.source !== 'trial' && p.source !== 'analytics')
 
   return sortPlayersByPosition(players)
 }
@@ -49,11 +53,12 @@ async function fetchStaff(): Promise<StaffMember[]> {
   return sortByOrder(staff)
 }
 
-export const getPlayersByTeam = (team: string) =>
-  unstable_cache(() => fetchPlayers(team), [`players-${team}-v2`], {
-    tags: [CACHE_TAGS.team],
-    revalidate: 600,
-  })()
+const _cachedFetchPlayers = unstable_cache(
+  (team: string) => fetchPlayers(team),
+  ['players-v2'],
+  { tags: [CACHE_TAGS.team], revalidate: 600 }
+)
+export const getPlayersByTeam = (team: string) => _cachedFetchPlayers(team)
 
 export const getManagementStaff = unstable_cache(fetchStaff, ['management-staff-v2'], {
   tags: [CACHE_TAGS.team],

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { Pencil, Trash2, Plus } from 'lucide-react'
 import ImageUpload from '@/components/ImageUpload'
 
 type Partner = {
@@ -82,10 +83,10 @@ export default function AdminPartners() {
   const cancel = () => { setForm(emptyForm); setEditingId(null); setShowForm(false); setError('') }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
+    <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
             Partners
           </h1>
           <p className="text-[#5a6478] text-sm mt-1">{partners.length} partners</p>
@@ -93,9 +94,10 @@ export default function AdminPartners() {
         {!showForm && (
           <button
             onClick={() => setShowForm(true)}
-            className="bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
+            className="inline-flex items-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
           >
-            + Add Partner
+            <Plus size={16} />
+            Add Partner
           </button>
         )}
       </div>
@@ -165,24 +167,36 @@ export default function AdminPartners() {
           <button onClick={() => setShowForm(true)} className="text-[#01255f] underline">Add the first one.</button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
           {partners.map((p) => (
-            <div key={p.id} className="bg-white border border-gray-100 p-4 flex flex-col gap-3 hover:border-[#01255f]/20 transition-colors">
-              <div className="h-16 flex items-center justify-center bg-gray-50 px-4">
-                <img src={p.logo} alt={p.name} className="max-h-12 max-w-full w-auto object-contain" />
+            <div key={p.id} className="group bg-white border border-gray-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+              <div className="h-28 flex items-center justify-center bg-gray-50 px-6 py-4">
+                <img src={p.logo} alt={p.name} className="max-h-16 max-w-full w-auto object-contain" />
               </div>
-              <div>
+              <div className="p-3 flex-1">
                 <p className="font-bold text-[#01255f] text-sm truncate">{p.name}</p>
                 {p.url && (
-                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="text-[10px] text-[#5a6478] hover:underline truncate block">
+                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="text-[10px] text-[#5a6478] hover:underline truncate block mt-0.5">
                     {p.url}
                   </a>
                 )}
-                <p className="text-[10px] text-gray-400">Order: {p.order}</p>
               </div>
-              <div className="flex gap-3 mt-auto">
-                <button onClick={() => startEdit(p)} className="text-xs font-bold text-[#01255f] hover:underline">Edit</button>
-                <button onClick={() => del(p.id)} className="text-xs font-bold text-red-400 hover:text-red-600">Remove</button>
+              <div className="flex border-t border-gray-100">
+                <button
+                  onClick={() => startEdit(p)}
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#01255f] hover:bg-[#01255f] hover:text-white transition-colors"
+                >
+                  <Pencil size={12} />
+                  Edit
+                </button>
+                <div className="w-px bg-gray-100" />
+                <button
+                  onClick={() => del(p.id)}
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-red-400 hover:bg-red-50 transition-colors"
+                >
+                  <Trash2 size={12} />
+                  Remove
+                </button>
               </div>
             </div>
           ))}

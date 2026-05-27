@@ -1,4 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose'
+import type { AdminRole } from '@/lib/analytics/types'
 
 function getSecret(): Uint8Array {
   const raw = process.env.ADMIN_SESSION_SECRET
@@ -15,21 +16,40 @@ const ALG = 'HS256'
 export const COOKIE = 'asfall_admin_session'
 const EXPIRES_IN = '8h'
 
-export async function signSession(): Promise<string> {
-  return new SignJWT({ admin: true })
+export interface SessionPayload {
+  admin: true
+  role: AdminRole
+  sub: string
+}
+
+export async function signSession(payload: { role: AdminRole; sub: string }): Promise<string> {
+  return new SignJWT({ admin: true, role: payload.role, sub: payload.sub })
     .setProtectedHeader({ alg: ALG })
     .setIssuedAt()
     .setExpirationTime(EXPIRES_IN)
     .sign(getSecret())
 }
 
-export async function verifySession(token: string): Promise<boolean> {
+function normalizePayload(raw: Record<string, unknown>): SessionPayload | null {
+  if (raw.admin !== true) return null
+  if (raw.role !== 'super_admin' && raw.role !== 'data_analyst') return null
+  const role = raw.role as AdminRole
+  const sub = typeof raw.sub === 'string' && raw.sub ? raw.sub : 'admin'
+  return { admin: true, role, sub }
+}
+
+export async function verifySession(token: string): Promise<SessionPayload | null> {
   try {
-    await jwtVerify(token, getSecret())
-    return true
+    const { payload } = await jwtVerify(token, getSecret())
+    return normalizePayload(payload as Record<string, unknown>)
   } catch {
-    return false
+    return null
   }
+}
+
+/** Backward-compatible boolean check for middleware and legacy callers. */
+export async function isValidSessionToken(token: string): Promise<boolean> {
+  return (await verifySession(token)) !== null
 }
 
 export function sessionCookieHeader(token: string): string {

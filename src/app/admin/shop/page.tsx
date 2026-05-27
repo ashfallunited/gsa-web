@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { Pencil, Trash2, Plus } from 'lucide-react'
 import ImageUpload from '@/components/ImageUpload'
 
 import { IMAGE_PLACEHOLDER } from '@/lib/constants'
@@ -179,15 +180,16 @@ export default function AdminShop() {
   const onSaved = () => { setAdding(false); setEditing(null); setLoadingProducts(true); loadProducts() }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
+    <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Shop</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Shop</h1>
           <p className="text-[#5a6478] text-sm mt-1">Manage products and orders</p>
         </div>
         {tab === 'products' && !adding && !editing && (
-          <button onClick={() => setAdding(true)} className="bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors">
-            + Add Product
+          <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold transition-colors">
+            <Plus size={16} />
+            Add Product
           </button>
         )}
       </div>
@@ -216,28 +218,59 @@ export default function AdminShop() {
           )}
 
           {loadingProducts ? (
-            <div className="bg-white border border-gray-100 p-10 text-center text-sm text-[#5a6478]">Loading…</div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="bg-white border border-gray-200 overflow-hidden animate-pulse">
+                  <div className="aspect-square bg-gray-200" />
+                  <div className="p-3 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-3/4" />
+                    <div className="h-3 bg-gray-200 rounded w-1/2" />
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : products.length === 0 && !adding ? (
-            <div className="bg-white border border-gray-100 p-10 text-center text-sm text-[#5a6478]">
-              No products yet.{' '}<button onClick={() => setAdding(true)} className="text-[#01255f] underline">Add the first one.</button>
+            <div className="bg-white border border-dashed border-gray-300 p-12 text-center">
+              <p className="text-[#01255f] font-bold mb-2">No products yet</p>
+              <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-[#fee11b] text-[#01255f] px-5 py-2 text-sm font-bold">
+                <Plus size={14} />Add the first one
+              </button>
             </div>
           ) : (
-            <div className="bg-white border border-gray-100 overflow-hidden">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
               {products.map((p) => (
-                <div key={p.id} className="flex items-center gap-4 px-6 py-4 border-b border-gray-50 last:border-0 hover:bg-[#f5f7fc] transition-colors">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gray-100 overflow-hidden">
-                    <Image src={p.image || PLACEHOLDER} alt={p.name} width={48} height={48} className="w-full h-full object-cover" />
+                <div key={p.id} className="group bg-white border border-gray-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+                  <div className="relative aspect-square bg-gray-100 overflow-hidden shrink-0">
+                    <Image
+                      src={p.image || PLACEHOLDER}
+                      alt={p.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                    />
+                    <span className={`absolute top-2 left-2 text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 ${p.available ? 'bg-emerald-500 text-white' : 'bg-gray-400 text-white'}`}>
+                      {p.available ? 'Available' : 'Sold Out'}
+                    </span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-[#01255f] text-sm">{p.name}</p>
-                    <p className="text-[#5a6478] text-xs">{p.category} · ${p.price.toFixed(2)}</p>
+                  <div className="p-3 flex-1">
+                    <p className="font-black text-[#01255f] text-sm leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>{p.name}</p>
+                    <p className="text-[#5a6478] text-xs mt-0.5">{p.category}</p>
+                    <p className="text-[#01255f] font-bold text-sm mt-1">${p.price.toFixed(2)}</p>
                   </div>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 ${p.available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
-                    {p.available ? 'Available' : 'Sold Out'}
-                  </span>
-                  <div className="flex gap-3 flex-shrink-0">
-                    <button onClick={() => { setEditing(p); setAdding(false) }} className="text-xs font-bold text-[#01255f] hover:underline">Edit</button>
-                    <button onClick={() => delProduct(p.id)} className="text-xs font-bold text-red-400 hover:text-red-600">Remove</button>
+                  <div className="flex border-t border-gray-100">
+                    <button
+                      onClick={() => { setEditing(p); setAdding(false) }}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#01255f] hover:bg-[#01255f] hover:text-white transition-colors"
+                    >
+                      <Pencil size={12} />Edit
+                    </button>
+                    <div className="w-px bg-gray-100" />
+                    <button
+                      onClick={() => delProduct(p.id)}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-red-400 hover:bg-red-50 transition-colors"
+                    >
+                      <Trash2 size={12} />Remove
+                    </button>
                   </div>
                 </div>
               ))}

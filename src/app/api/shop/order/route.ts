@@ -28,6 +28,8 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  const total = data.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+
   const ref = await getAdminDb().collection('orders').add({
     customerName: data.customerName,
     email: data.email,
@@ -37,7 +39,7 @@ export async function POST(req: NextRequest) {
     notes: data.notes ?? '',
     contactMethods: data.contactMethods ?? [],
     items: data.items,
-    total: data.total ?? 0,
+    total,
     status: 'pending',
     createdAt: FieldValue.serverTimestamp(),
   })

@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
+import { Pencil, Trash2 } from 'lucide-react'
 import ImageUpload from '@/components/ImageUpload'
+import { SkeletonPlayerCard } from '@/components/admin/skeleton'
 
 import { IMAGE_PLACEHOLDER } from '@/lib/constants'
 import AdminLoadError from '@/components/AdminLoadError'
@@ -25,6 +26,11 @@ type Player = {
   team: string
   image: string
   order: number
+  source?: string
+  showOnSite?: boolean
+  height?: number
+  weight?: number
+  preferredFoot?: 'left' | 'right' | 'both'
 }
 
 const empty: Omit<Player, 'id'> = {
@@ -34,11 +40,17 @@ const empty: Omit<Player, 'id'> = {
   team: TEAM_SLUG.firstTeam,
   image: '',
   order: 99,
+  source: 'official',
+  showOnSite: true,
+  height: undefined,
+  weight: undefined,
+  preferredFoot: undefined,
 }
 const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f] transition-colors'
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
 const POS_LABELS: Record<string, string> = { goalkeeper: 'Goalkeeper', defender: 'Defender', midfielder: 'Midfielder', forward: 'Forward' }
+const POS_SHORT: Record<string, string> = { goalkeeper: 'GK', defender: 'DEF', midfielder: 'MID', forward: 'FWD' }
 
 function PlayerForm({ initial, playerId, onSaved, onCancel }: {
   initial?: Partial<Omit<Player, 'id'>>
@@ -62,9 +74,15 @@ function PlayerForm({ initial, playerId, onSaved, onCancel }: {
     if (!data.name.trim()) { setError('Name is required.'); return }
     setSaving(true); setError('')
     try {
+      const payload = {
+        ...data,
+        number: Number(data.number),
+        order: Number(data.order),
+        showOnSite: data.source === 'trial' ? false : data.showOnSite ?? true,
+      }
       const res = playerId
-        ? await fetch(`/api/admin/players/${playerId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-        : await fetch('/api/admin/players', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, number: Number(data.number), order: Number(data.order) }) })
+        ? await fetch(`/api/admin/players/${playerId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        : await fetch('/api/admin/players', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
       if (res.ok) { onSaved() } else { setError('Failed to save.') }
     } catch { setError('Network error.') } finally { setSaving(false) }
   }
@@ -102,7 +120,70 @@ function PlayerForm({ initial, playerId, onSaved, onCancel }: {
         <div>
           <label className={labelClass}>Team</label>
           <select value={data.team} onChange={set('team')} className={inputClass}>
-            {Object.entries(TEAM_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+            <option value={TEAM_SLUG.firstTeam}>{TEAM_LABELS[TEAM_SLUG.firstTeam]}</option>
+            <option value={TEAM_SLUG.academy}>{TEAM_LABELS[TEAM_SLUG.academy]}</option>
+            <option value={TEAM_SLUG.both}>{TEAM_LABELS[TEAM_SLUG.both]}</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className={labelClass}>Player Type</label>
+          <select value={data.source ?? 'official'} onChange={set('source')} className={inputClass}>
+            <option value="official">Official</option>
+            <option value="trial">Trial</option>
+          </select>
+        </div>
+        <div>
+          <label className={labelClass}>Visibility</label>
+          <select
+            value={String(data.showOnSite ?? true)}
+            onChange={(e) => setData((d) => ({ ...d, showOnSite: e.target.value === 'true' }))}
+            className={inputClass}
+          >
+            <option value="true">Visible on public site</option>
+            <option value="false">Hidden from public site</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label className={labelClass}>Height (cm)</label>
+          <input
+            type="number"
+            value={data.height ?? ''}
+            min={100}
+            max={250}
+            onChange={(e) => setData((d) => ({ ...d, height: e.target.value ? Number(e.target.value) : undefined }))}
+            className={inputClass}
+            placeholder="e.g. 180"
+          />
+        </div>
+        <div>
+          <label className={labelClass}>Weight (kg)</label>
+          <input
+            type="number"
+            value={data.weight ?? ''}
+            min={30}
+            max={150}
+            onChange={(e) => setData((d) => ({ ...d, weight: e.target.value ? Number(e.target.value) : undefined }))}
+            className={inputClass}
+            placeholder="e.g. 75"
+          />
+        </div>
+        <div>
+          <label className={labelClass}>Preferred Foot</label>
+          <select
+            value={data.preferredFoot ?? ''}
+            onChange={(e) => setData((d) => ({ ...d, preferredFoot: (e.target.value || undefined) as Player['preferredFoot'] }))}
+            className={inputClass}
+          >
+            <option value="">Not set</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+            <option value="both">Both</option>
           </select>
         </div>
       </div>
@@ -156,8 +237,19 @@ export default function AdminPlayers() {
 
   const del = async (id: string) => {
     if (!confirm('Remove this player?')) return
-    await fetch(`/api/admin/players/${id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/admin/players/${id}`, { method: 'DELETE' })
+    if (!res.ok) { setLoadError('Failed to remove player. Please try again.'); return }
     setPlayers((prev) => prev.filter((p) => p.id !== id))
+  }
+
+  const promote = async (id: string) => {
+    const res = await fetch(`/api/admin/players/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: 'official', showOnSite: true }),
+    })
+    if (!res.ok) { setLoadError('Failed to promote player.'); return }
+    setPlayers((prev) => prev.map((p) => p.id === id ? { ...p, source: 'official', showOnSite: true } : p))
   }
 
   const onSaved = () => { setAdding(false); setEditing(null); setLoading(true); load() }
@@ -165,14 +257,17 @@ export default function AdminPlayers() {
   const filtered = players.filter((p) => playerMatchesTeamFilter(p.team, teamFilter))
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
+    <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Players</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Players</h1>
           <p className="text-[#5a6478] text-sm mt-1">{players.length} total players</p>
         </div>
         {!adding && !editing && (
-          <button onClick={() => setAdding(true)} className="bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors">
+          <button
+            onClick={() => setAdding(true)}
+            className="bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
+          >
             + Add Player
           </button>
         )}
@@ -181,7 +276,7 @@ export default function AdminPlayers() {
       {loadError && <AdminLoadError title="Could not load players" message={loadError} />}
 
       {(adding || editing) && (
-        <div className="mb-8">
+        <div className="mb-8 max-w-2xl">
           <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest mb-4">
             {editing ? 'Edit Player' : 'New Player'}
           </h2>
@@ -194,14 +289,14 @@ export default function AdminPlayers() {
         </div>
       )}
 
-      {/* Team filter */}
       {!adding && !editing && (
-        <div className="flex gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-6">
           {(
             [
               ['all', 'All'],
               [TEAM_SLUG.firstTeam, TEAM_LABELS[TEAM_SLUG.firstTeam]],
               [TEAM_SLUG.academy, TEAM_LABELS[TEAM_SLUG.academy]],
+              [TEAM_SLUG.both, TEAM_LABELS[TEAM_SLUG.both]],
             ] as const
           ).map(([v, l]) => (
             <button
@@ -215,30 +310,117 @@ export default function AdminPlayers() {
         </div>
       )}
 
-      {loading ? (
-        <div className="bg-white border border-gray-100 p-10 text-center text-sm text-[#5a6478]">Loading…</div>
-      ) : loadError ? null : filtered.length === 0 && !adding ? (
-        <div className="bg-white border border-gray-100 p-10 text-center text-sm text-[#5a6478]">
-          No players yet.{' '}<button onClick={() => setAdding(true)} className="text-[#01255f] underline">Add the first one.</button>
+      {loading && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
+          {Array.from({ length: 10 }).map((_, i) => <SkeletonPlayerCard key={i} />)}
         </div>
-      ) : (
-        <div className="bg-white border border-gray-100 overflow-hidden">
+      )}
+
+      {!loading && !loadError && filtered.length === 0 && !adding && (
+        <div className="bg-white border border-dashed border-gray-300 p-10 text-center">
+          <p className="text-[#01255f] font-bold mb-2">No players yet</p>
+          <button onClick={() => setAdding(true)} className="bg-[#fee11b] text-[#01255f] px-5 py-2 text-sm font-bold">
+            Add the first player
+          </button>
+        </div>
+      )}
+
+      {!loading && filtered.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
           {filtered.map((p) => (
-            <div key={p.id} className="flex items-center gap-4 px-6 py-4 border-b border-gray-50 last:border-0 hover:bg-[#f5f7fc] transition-colors">
-              <div className="flex-shrink-0 w-12 h-12 bg-[#01255f]/10 overflow-hidden">
-                <Image src={p.image || PLACEHOLDER} alt={p.name} width={48} height={48} className="w-full h-full object-cover object-top" />
+            <div key={p.id} className="group relative bg-[#01255f] overflow-hidden">
+              {/* Jersey number watermark */}
+              <div
+                className="absolute top-2 right-2 text-[5rem] font-black text-white/10 leading-none select-none pointer-events-none z-10"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                {p.number}
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-bold text-[#01255f] text-sm">
-                  <span className="text-[#fee11b] mr-1">#{p.number}</span> {p.name}
-                </p>
-                <p className="text-[#5a6478] text-xs capitalize">
-                  {p.position} · {displayTeamLabel(p.team)}
-                </p>
+
+              {/* Photo */}
+              <div className="relative h-44 sm:h-52 overflow-hidden">
+                {p.image ? (
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => { e.currentTarget.src = PLACEHOLDER }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <span
+                      className="text-7xl font-black text-white/10 leading-none"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      {p.number || '—'}
+                    </span>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#01255f] via-[#01255f]/20 to-transparent" />
               </div>
-              <div className="flex gap-3 flex-shrink-0">
-                <button onClick={() => { setEditing(p); setAdding(false) }} className="text-xs font-bold text-[#01255f] hover:underline">Edit</button>
-                <button onClick={() => del(p.id)} className="text-xs font-bold text-red-400 hover:text-red-600">Remove</button>
+
+              {/* Info */}
+              <div className="relative z-10 p-3 sm:p-4 -mt-8 sm:-mt-10">
+                <div className="flex items-end justify-between mb-1.5">
+                  <span
+                    className="text-[#fee11b] font-black text-xl sm:text-2xl leading-none"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    {p.number}
+                  </span>
+                  <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-[#fee11b] text-[#01255f]">
+                    {POS_SHORT[p.position] ?? p.position}
+                  </span>
+                </div>
+                <h3
+                  className="text-white font-bold text-xs sm:text-sm leading-tight line-clamp-2"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {p.name}
+                </h3>
+                <p className="text-white/40 text-[10px] mt-0.5">{displayTeamLabel(p.team)}</p>
+                <div className="flex flex-wrap gap-1 mt-1.5">
+                  <span
+                    className={`text-[9px] uppercase font-bold px-1.5 py-0.5 ${
+                      p.source === 'trial' ? 'bg-amber-400 text-amber-900' : 'bg-emerald-500 text-white'
+                    }`}
+                  >
+                    {p.source === 'trial' ? 'Trial' : 'Official'}
+                  </span>
+                  <span
+                    className={`text-[9px] uppercase font-bold px-1.5 py-0.5 ${
+                      p.showOnSite === false ? 'bg-white/10 text-white/40' : 'bg-[#fee11b]/20 text-[#fee11b]'
+                    }`}
+                  >
+                    {p.showOnSite === false ? 'Hidden' : 'Visible'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Hover action overlay */}
+              <div className="absolute inset-0 bg-[#01255f]/95 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-2 z-20 p-4">
+                <button
+                  onClick={() => { setEditing(p); setAdding(false) }}
+                  className="w-full flex items-center justify-center gap-2 bg-[#fee11b] text-[#01255f] py-2 text-xs font-black uppercase tracking-widest hover:bg-white transition-colors"
+                >
+                  <Pencil size={13} />
+                  Edit
+                </button>
+                {p.source === 'trial' && (
+                  <button
+                    onClick={() => promote(p.id)}
+                    className="w-full bg-emerald-500 text-white py-2 text-xs font-black uppercase tracking-widest hover:bg-emerald-400 transition-colors"
+                  >
+                    Promote
+                  </button>
+                )}
+                <button
+                  onClick={() => del(p.id)}
+                  className="w-full flex items-center justify-center gap-2 border border-red-400 text-red-400 py-2 text-xs font-black uppercase tracking-widest hover:bg-red-400 hover:text-white transition-colors"
+                >
+                  <Trash2 size={13} />
+                  Remove
+                </button>
               </div>
             </div>
           ))}

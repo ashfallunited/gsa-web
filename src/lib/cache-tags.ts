@@ -6,4 +6,5 @@ export const CACHE_TAGS = {
   shop: 'shop',
   newsletter: 'newsletter',
   inquiries: 'inquiries',
+  games: 'games',
 } as const
