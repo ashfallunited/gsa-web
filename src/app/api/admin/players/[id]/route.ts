@@ -28,12 +28,18 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     const { team, source, showOnSite, injury, ...rest } = parsed.data
-    const nextSource = source === 'trial' ? 'trial' : source ?? 'official'
     const updates: Record<string, unknown> = {
       ...rest,
-      source: nextSource,
-      showOnSite: nextSource === 'trial' ? false : (showOnSite ?? true),
       updatedAt: FieldValue.serverTimestamp(),
+    }
+    // Only touch source/showOnSite when explicitly sent — avoids accidentally
+    // promoting trial players when the caller only meant to update injury/other fields.
+    if (source !== undefined) {
+      const nextSource = source === 'trial' ? 'trial' : 'official'
+      updates.source = nextSource
+      updates.showOnSite = nextSource === 'trial' ? false : (showOnSite ?? true)
+    } else if (showOnSite !== undefined) {
+      updates.showOnSite = showOnSite
     }
     if (injury === null) {
       updates.injury = FieldValue.delete()

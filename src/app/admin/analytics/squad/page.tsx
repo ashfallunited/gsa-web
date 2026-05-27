@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { Plus, AlertTriangle, X } from 'lucide-react'
 import AdminLoadError from '@/components/AdminLoadError'
 import { inputClass, labelClass } from '@/components/admin/analytics-filters'
@@ -40,6 +40,8 @@ export default function AnalyticsSquadPage() {
   const [statusFilter, setStatusFilter] = useState<'all' | 'official' | 'trial'>('all')
   const [injuryPlayerId, setInjuryPlayerId] = useState<string | null>(null)
   const [injuryForm, setInjuryForm] = useState({ description: '', injuredDate: new Date().toISOString().slice(0, 10), expectedReturn: '' })
+  const [injuryError, setInjuryError] = useState('')
+  const injuryFormRef = useRef<HTMLDivElement>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -59,6 +61,13 @@ export default function AnalyticsSquadPage() {
   useEffect(() => {
     load()
   }, [load])
+
+  useEffect(() => {
+    if (injuryPlayerId) {
+      setInjuryError('')
+      setTimeout(() => injuryFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
+    }
+  }, [injuryPlayerId])
 
   const addPlayer = async () => {
     if (!form.name.trim()) return
@@ -87,14 +96,27 @@ export default function AnalyticsSquadPage() {
   const saveInjury = async (playerId: string) => {
     if (!injuryForm.injuredDate) return
     setSaving(true)
+    setInjuryError('')
     try {
-      await fetch(`/api/admin/players/${playerId}`, {
+      const res = await fetch(`/api/admin/players/${playerId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ injury: { ...injuryForm, description: injuryForm.description || undefined, expectedReturn: injuryForm.expectedReturn || undefined } }),
+        body: JSON.stringify({
+          injury: {
+            injuredDate: injuryForm.injuredDate,
+            expectedReturn: injuryForm.expectedReturn || undefined,
+            description: injuryForm.description || undefined,
+          },
+        }),
       })
+      if (!res.ok) {
+        setInjuryError('Failed to save injury. Please try again.')
+        return
+      }
       setInjuryPlayerId(null)
       await load()
+    } catch {
+      setInjuryError('Network error. Please try again.')
     } finally {
       setSaving(false)
     }
@@ -103,12 +125,12 @@ export default function AnalyticsSquadPage() {
   const clearInjury = async (playerId: string) => {
     setSaving(true)
     try {
-      await fetch(`/api/admin/players/${playerId}`, {
+      const res = await fetch(`/api/admin/players/${playerId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ injury: null }),
       })
-      await load()
+      if (res.ok) await load()
     } finally {
       setSaving(false)
     }
@@ -339,7 +361,7 @@ export default function AnalyticsSquadPage() {
         const p = players.find((pl) => pl.id === injuryPlayerId)
         if (!p) return null
         return (
-          <div className="mt-4 bg-white border border-red-200 p-4 sm:p-5 space-y-4">
+          <div ref={injuryFormRef} className="mt-4 bg-white border border-red-200 p-4 sm:p-5 space-y-4">
             <div className="flex items-center justify-between">
               <p className="font-bold text-[#01255f] text-sm">
                 Mark Injured — <span className="text-red-600">{p.name}</span>
@@ -378,6 +400,9 @@ export default function AnalyticsSquadPage() {
                 />
               </div>
             </div>
+            {injuryError && (
+              <p className="text-xs text-red-600 font-medium">{injuryError}</p>
+            )}
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => saveInjury(injuryPlayerId)}

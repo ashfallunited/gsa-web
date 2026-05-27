@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Pencil, Trash2 } from 'lucide-react'
+import { Pencil, Trash2, AlertTriangle } from 'lucide-react'
 import ImageUpload from '@/components/ImageUpload'
 import { SkeletonPlayerCard } from '@/components/admin/skeleton'
 
@@ -18,6 +18,8 @@ import {
 
 const PLACEHOLDER = IMAGE_PLACEHOLDER
 
+type Injury = { description?: string; injuredDate: string; expectedReturn?: string }
+
 type Player = {
   id: string
   name: string
@@ -31,6 +33,7 @@ type Player = {
   height?: number
   weight?: number
   preferredFoot?: 'left' | 'right' | 'both'
+  injury?: Injury | null
 }
 
 const empty: Omit<Player, 'id'> = {
@@ -398,6 +401,11 @@ export default function AdminPlayers() {
                   >
                     {p.showOnSite === false ? 'Hidden' : 'Visible'}
                   </span>
+                  {p.injury && (
+                    <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 bg-red-500 text-white flex items-center gap-0.5">
+                      <AlertTriangle size={9} /> Injured
+                    </span>
+                  )}
                 </div>
               </div>
 
