@@ -8,7 +8,22 @@ import { inputClass, labelClass } from '@/components/admin/analytics-filters'
 import { TEAM_LABELS, TEAM_SLUG } from '@/lib/teams'
 import type { PlayerSeasonTotals } from '@/lib/analytics/types'
 
-type PlayerLookup = { id: string; image?: string }
+type PlayerLookup = { id: string; name?: string; number?: number; position?: string; team?: string; image?: string }
+
+function makeZeroTotals(p: PlayerLookup): PlayerSeasonTotals {
+  return {
+    playerId: p.id,
+    playerName: p.name ?? 'Unknown',
+    playerNumber: p.number ?? 0,
+    playerPosition: p.position ?? '',
+    playerImage: p.image,
+    team: p.team ?? '',
+    appearances: 0, starts: 0, minutes: 0, goals: 0, assists: 0,
+    yellowCards: 0, redCards: 0,
+    headerGoals: 0, leftFootGoals: 0, rightFootGoals: 0, outsideBoxGoals: 0,
+    penaltiesTaken: 0, penaltiesScored: 0, penaltiesSaved: 0, penaltiesFaced: 0,
+  }
+}
 
 function per90(value: number, minutes: number) {
   if (minutes < 1) return 0
@@ -38,12 +53,12 @@ function StatRow({
     <div className={`grid grid-cols-[1fr_auto_1fr] items-center gap-3 py-3 border-b border-gray-100 last:border-0 ${accent ? 'bg-[#fee11b]/5 -mx-4 px-4 sm:-mx-6 sm:px-6' : ''}`}>
       {/* Player A side */}
       <div className="flex flex-col items-end gap-1">
-        <span className={`text-sm font-black ${aWins ? 'text-[#01255f]' : 'text-gray-400'}`}>
+        <span className="text-sm font-black text-[#01255f]">
           {format(a)}
         </span>
         <div className="w-full flex justify-end h-2">
           <div
-            className={`h-2 rounded-sm transition-all duration-500 ${aWins ? 'bg-[#01255f]' : bWins ? 'bg-gray-200' : 'bg-gray-300'}`}
+            className="h-2 rounded-sm transition-all duration-500 bg-[#01255f]"
             style={{ width: `${pctA}%` }}
           />
         </div>
@@ -56,12 +71,12 @@ function StatRow({
 
       {/* Player B side */}
       <div className="flex flex-col gap-1">
-        <span className={`text-sm font-black ${bWins ? 'text-[#01255f]' : 'text-gray-400'}`}>
+        <span className="text-sm font-black text-[#01255f]">
           {format(b)}
         </span>
         <div className="w-full h-2">
           <div
-            className={`h-2 rounded-sm transition-all duration-500 ${bWins ? 'bg-[#fee11b]' : aWins ? 'bg-gray-200' : 'bg-gray-300'}`}
+            className="h-2 rounded-sm transition-all duration-500 bg-[#fee11b]"
             style={{ width: `${pctB}%` }}
           />
         </div>
@@ -120,6 +135,7 @@ export default function ComparisonPage() {
   const [team, setTeam] = useState<string>(TEAM_SLUG.firstTeam)
   const [season, setSeason] = useState('')
   const [allTotals, setAllTotals] = useState<PlayerSeasonTotals[]>([])
+  const [allPlayers, setAllPlayers] = useState<PlayerLookup[]>([])
   const [playerLookup, setPlayerLookup] = useState<Record<string, PlayerLookup>>({})
   const [seasons, setSeasons] = useState<string[]>([])
   const [playerA, setPlayerA] = useState('')
@@ -139,8 +155,9 @@ export default function ComparisonPage() {
       ])
       setAllTotals(totalsRes.totals)
       setSeasons(totalsRes.seasons)
+      setAllPlayers(listRes.players as PlayerLookup[])
       const map: Record<string, PlayerLookup> = {}
-      for (const p of listRes.players) map[p.id] = p
+      for (const p of listRes.players) map[p.id] = p as PlayerLookup
       setPlayerLookup(map)
     } catch {
       setError('Failed to load player data.')
@@ -155,8 +172,8 @@ export default function ComparisonPage() {
     setPlayerB('')
   }, [load])
 
-  const totalA = allTotals.find((t) => t.playerId === playerA) ?? null
-  const totalB = allTotals.find((t) => t.playerId === playerB) ?? null
+  const totalA = allTotals.find((t) => t.playerId === playerA) ?? (playerLookup[playerA] ? makeZeroTotals(playerLookup[playerA]) : null)
+  const totalB = allTotals.find((t) => t.playerId === playerB) ?? (playerLookup[playerB] ? makeZeroTotals(playerLookup[playerB]) : null)
 
   const stats = totalA && totalB
     ? [
@@ -184,11 +201,9 @@ export default function ComparisonPage() {
       ]
     : []
 
-  const playerOptions = allTotals.map((t) => ({
-    id: t.playerId,
-    name: t.playerName,
-    number: t.playerNumber,
-  }))
+  const playerOptions = allPlayers.length > 0
+    ? allPlayers.map((p) => ({ id: p.id, name: p.name ?? 'Unknown', number: p.number ?? 0 }))
+    : allTotals.map((t) => ({ id: t.playerId, name: t.playerName, number: t.playerNumber }))
 
   return (
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">

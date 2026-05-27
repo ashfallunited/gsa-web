@@ -278,7 +278,7 @@ function GradesheetDocument({
 
         {/* Footer */}
         <View style={styles.footer} fixed>
-          <Text style={styles.footerText}>Ashfall United — Player Gradesheet</Text>
+          <Text style={styles.footerText}>Ashfall United — Player Report</Text>
           <Text style={styles.footerText}>{new Date().toLocaleDateString('en-GB')}</Text>
         </View>
       </Page>

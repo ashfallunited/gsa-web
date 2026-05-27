@@ -79,6 +79,16 @@ export async function GET(req: NextRequest) {
     const topAssist = topAssists[0] ?? null
     const topGk = gkCleanSheets[0] ?? null
 
+    const disciplineList = disciplineLeaders(totals, 8)
+    const penaltyTotals = {
+      taken: totals.reduce((sum, t) => sum + t.penaltiesTaken, 0),
+      scored: totals.reduce((sum, t) => sum + t.penaltiesScored, 0),
+    }
+    const totalCards = {
+      yellow: totals.reduce((sum, t) => sum + t.yellowCards, 0),
+      red: totals.reduce((sum, t) => sum + t.redCards, 0),
+    }
+
     return Response.json({
       kpis,
       topScorer,
@@ -88,8 +98,10 @@ export async function GET(req: NextRequest) {
       topScorers,
       topAssists,
       gkCleanSheets,
-      discipline: disciplineLeaders(totals, 8),
+      discipline: disciplineList,
       minutesLeaders: minutesLeaders(totals, 8),
+      penaltyTotals,
+      totalCards,
       goalsChart: goalsByMonth(finalMatches),
       seasons,
       competitions,

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 export default function PlayerAvatar({
   image,
@@ -31,9 +32,11 @@ export default function PlayerAvatar({
   }
 
   return (
-    <img
+    <Image
       src={image}
       alt={name}
+      width={size}
+      height={size}
       onError={() => setErr(true)}
       className="shrink-0 rounded-full object-cover object-top"
       style={{ width: size, height: size }}

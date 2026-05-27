@@ -84,7 +84,7 @@ export default function PlayerGrid({ players }: { players: Player[] }) {
             >
               {/* Jersey number watermark */}
               <div
-                className="absolute top-2 right-2 text-[5rem] font-black text-white/10 leading-none select-none pointer-events-none z-10"
+                className="absolute bottom-0 right-1 text-[5rem] font-black text-white/10 leading-none select-none pointer-events-none z-0"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 {player.number}
