@@ -23,7 +23,7 @@ export type StatRow = {
 
 type NumField = keyof Omit<StatRow, 'playerId' | 'started'>
 
-const inputCls = 'w-full border border-gray-200 bg-white px-1.5 py-1.5 text-xs focus:outline-none focus:border-[#01255f]'
+const inputCls = 'w-full border border-gray-200 bg-white px-2 py-2.5 text-sm focus:outline-none focus:border-[#01255f]'
 const tableInputCls = 'border border-gray-200 px-1 py-1 text-xs focus:outline-none focus:border-[#01255f]'
 
 const GOAL_DETAIL: { label: string; field: NumField; max: number }[] = [
@@ -62,24 +62,25 @@ export function MatchStatMobileCard({
   ]
 
   return (
-    <div className="border border-gray-200 p-3 space-y-3 bg-gray-50/50">
+    <div className="border border-gray-200 p-3 sm:p-4 space-y-3 bg-gray-50/50">
       <div className="flex items-center justify-between gap-2">
         <p className="font-bold text-[#01255f] text-sm truncate">{name}</p>
-        <label className="flex items-center gap-1.5 text-xs text-[#5a6478] shrink-0">
+        <label className="flex items-center gap-2 text-xs font-semibold text-[#5a6478] shrink-0 cursor-pointer py-1">
           <input
             type="checkbox"
             checked={row.started}
             disabled={isLocked}
             onChange={(e) => onChange('started', e.target.checked)}
+            className="w-4 h-4 cursor-pointer"
           />
           Started
         </label>
       </div>
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-5 gap-2">
         {basicFields.map(({ label, field, max }) => (
           <div key={field}>
-            <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-0.5">{label}</label>
+            <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-1 text-center">{label}</label>
             <input
               type="number"
               min={0}
@@ -87,7 +88,7 @@ export function MatchStatMobileCard({
               value={(row[field] as number | undefined) ?? 0}
               disabled={isLocked}
               onChange={(e) => onChange(field, Number(e.target.value))}
-              className={inputCls}
+              className={inputCls + ' text-center'}
             />
           </div>
         ))}
@@ -96,9 +97,9 @@ export function MatchStatMobileCard({
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
-        className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-[#5a6478] hover:text-[#01255f] transition-colors"
+        className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#5a6478] hover:text-[#01255f] transition-colors py-1 w-full"
       >
-        {expanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+        {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
         Goal &amp; Penalty Detail
       </button>
 

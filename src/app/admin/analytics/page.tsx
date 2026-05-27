@@ -8,6 +8,7 @@ import AnalyticsFilters, { type AnalyticsFiltersState } from '@/components/admin
 import SimpleBarChart from '@/components/admin/simple-bar-chart'
 import StatCard from '@/components/admin/stat-card'
 import PlayerAvatar from '@/components/admin/player-avatar'
+import FormStrip from '@/components/admin/form-strip'
 import { SkeletonDashboard } from '@/components/admin/skeleton'
 import { fetchAdminJson } from '@/lib/admin-fetch'
 import type { DashboardKpis, Match, PlayerSeasonTotals, GoalkeeperCleanSheetLeader } from '@/lib/analytics/types'
@@ -134,6 +135,20 @@ function DashboardBody({ data }: { data: DashboardData }) {
             : 'No cards yet'}
         />
       </div>
+
+      {/* — Team Form — */}
+      {data.recentMatches.filter((m) => m.status === 'final').length > 0 && (
+        <div className="bg-white border border-gray-200 p-4 sm:p-5 mb-4 flex flex-col sm:flex-row sm:items-center gap-3">
+          <p className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478] shrink-0">Team Form</p>
+          <FormStrip
+            results={data.recentMatches
+              .filter((m) => m.status === 'final')
+              .slice(0, 5)
+              .map((m) => m.result)}
+          />
+          <p className="text-xs text-[#5a6478]">Last {Math.min(5, data.recentMatches.filter((m) => m.status === 'final').length)} matches</p>
+        </div>
+      )}
 
       {/* — Player Leaders — */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">

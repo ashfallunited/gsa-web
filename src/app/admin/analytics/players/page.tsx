@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
-import { Download } from 'lucide-react'
+import { useEffect, useState, useCallback, useRef } from 'react'
+import { Download, AlertTriangle, X } from 'lucide-react'
 import AnalyticsFilters, { type AnalyticsFiltersState } from '@/components/admin/analytics-filters'
 import AdminLoadError from '@/components/AdminLoadError'
 import PlayerAvatar from '@/components/admin/player-avatar'
+import FormStrip from '@/components/admin/form-strip'
 import { SkeletonTableRow } from '@/components/admin/skeleton'
 import { fetchAdminJson } from '@/lib/admin-fetch'
 import type { PlayerSeasonTotals } from '@/lib/analytics/types'
@@ -32,6 +33,8 @@ type PlayerLogEntry = {
   penaltiesFaced?: number
 }
 
+type Injury = { description?: string; injuredDate: string; expectedReturn?: string }
+
 type PlayerMeta = {
   name: string
   number: number
@@ -43,6 +46,7 @@ type PlayerMeta = {
   height?: number
   weight?: number
   preferredFoot?: string
+  injury?: Injury | null
 } | null
 
 type PlayerLookup = {
@@ -66,6 +70,11 @@ export default function PlayerStatsPage() {
   const [loading, setLoading] = useState(true)
   const [loadingLog, setLoadingLog] = useState(false)
   const [error, setError] = useState('')
+  const [showInjuryForm, setShowInjuryForm] = useState(false)
+  const [injuryForm, setInjuryForm] = useState({ description: '', injuredDate: new Date().toISOString().slice(0, 10), expectedReturn: '' })
+  const [savingInjury, setSavingInjury] = useState(false)
+
+  const profileRef = useRef<HTMLDivElement>(null)
 
   const loadTotals = useCallback(async () => {
     setLoading(true)
@@ -109,12 +118,55 @@ export default function PlayerStatsPage() {
     }
   }, [filters])
 
+  const saveInjury = async () => {
+    if (!selectedId || !injuryForm.injuredDate) return
+    setSavingInjury(true)
+    try {
+      await fetch(`/api/admin/players/${selectedId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          injury: {
+            injuredDate: injuryForm.injuredDate,
+            expectedReturn: injuryForm.expectedReturn || undefined,
+            description: injuryForm.description || undefined,
+          },
+        }),
+      })
+      setShowInjuryForm(false)
+      await loadPlayerLog(selectedId)
+    } finally {
+      setSavingInjury(false)
+    }
+  }
+
+  const clearInjury = async () => {
+    if (!selectedId) return
+    setSavingInjury(true)
+    try {
+      await fetch(`/api/admin/players/${selectedId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ injury: null }),
+      })
+      await loadPlayerLog(selectedId)
+    } finally {
+      setSavingInjury(false)
+    }
+  }
+
   useEffect(() => {
     loadTotals()
   }, [loadTotals])
 
   useEffect(() => {
-    if (selectedId) loadPlayerLog(selectedId)
+    if (selectedId) {
+      setShowInjuryForm(false)
+      loadPlayerLog(selectedId)
+      if (window.innerWidth < 1024) {
+        setTimeout(() => profileRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+      }
+    }
   }, [selectedId, loadPlayerLog])
 
   const filteredTotals = totals.filter((player) => {
@@ -202,7 +254,7 @@ export default function PlayerStatsPage() {
           </table>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4" ref={profileRef}>
           <div className="bg-white border border-gray-200 p-4 sm:p-5">
             <h2 className="font-bold text-[#01255f] mb-4">Player Profile</h2>
             {!selectedId && <p className="text-sm text-[#5a6478]">Select a player to view individual analytics.</p>}
@@ -210,13 +262,22 @@ export default function PlayerStatsPage() {
               <div className="space-y-3">
                 <div className="flex items-center gap-4">
                   <PlayerAvatar image={selectedMeta.image} name={selectedMeta.name} size={64} />
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
                       {selectedMeta.name}
                     </p>
                     <p className="text-xs text-[#5a6478]">
                       #{selectedMeta.number} · {selectedMeta.position} · {selectedMeta.team}
                     </p>
+                    {log.length > 0 && (
+                      <div className="flex items-center gap-2 mt-1.5">
+                        <span className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold shrink-0">Form</span>
+                        <FormStrip
+                          results={[...log].slice(0, 5).map((e) => e.result)}
+                          size="sm"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -242,6 +303,86 @@ export default function PlayerStatsPage() {
                     )}
                   </div>
                 )}
+
+                {/* Injury status */}
+                <div className="border-t border-gray-100 pt-3">
+                  {selectedMeta.injury ? (
+                    <div className="bg-red-50 border border-red-200 p-3 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-bold text-red-700 flex items-center gap-1.5">
+                          <AlertTriangle size={12} /> Injured
+                        </p>
+                        <button
+                          onClick={clearInjury}
+                          disabled={savingInjury}
+                          className="flex items-center gap-1 text-[10px] font-bold text-red-500 hover:text-red-700 disabled:opacity-50"
+                        >
+                          <X size={11} /> Clear
+                        </button>
+                      </div>
+                      <p className="text-xs text-red-600">Since {selectedMeta.injury.injuredDate}</p>
+                      {selectedMeta.injury.expectedReturn && (
+                        <p className="text-xs text-red-600">Returns {selectedMeta.injury.expectedReturn}</p>
+                      )}
+                      {selectedMeta.injury.description && (
+                        <p className="text-xs text-[#5a6478] italic">{selectedMeta.injury.description}</p>
+                      )}
+                    </div>
+                  ) : (
+                    <div>
+                      {!showInjuryForm ? (
+                        <button
+                          onClick={() => {
+                            setInjuryForm({ description: '', injuredDate: new Date().toISOString().slice(0, 10), expectedReturn: '' })
+                            setShowInjuryForm(true)
+                          }}
+                          className="flex items-center gap-1.5 text-xs font-bold text-[#5a6478] hover:text-red-600 transition-colors"
+                        >
+                          <AlertTriangle size={12} /> Mark as Injured
+                        </button>
+                      ) : (
+                        <div className="space-y-2">
+                          <p className="text-[10px] uppercase tracking-widest text-[#5a6478] font-bold">Log Injury</p>
+                          <input
+                            type="date"
+                            value={injuryForm.injuredDate}
+                            onChange={(e) => setInjuryForm((f) => ({ ...f, injuredDate: e.target.value }))}
+                            className="w-full border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-red-400"
+                          />
+                          <input
+                            type="date"
+                            placeholder="Expected return"
+                            value={injuryForm.expectedReturn}
+                            onChange={(e) => setInjuryForm((f) => ({ ...f, expectedReturn: e.target.value }))}
+                            className="w-full border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-red-400"
+                          />
+                          <input
+                            type="text"
+                            placeholder="Description (optional)"
+                            value={injuryForm.description}
+                            onChange={(e) => setInjuryForm((f) => ({ ...f, description: e.target.value }))}
+                            className="w-full border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-red-400"
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={saveInjury}
+                              disabled={savingInjury || !injuryForm.injuredDate}
+                              className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 text-xs font-bold disabled:opacity-50"
+                            >
+                              {savingInjury ? 'Saving…' : 'Confirm'}
+                            </button>
+                            <button
+                              onClick={() => setShowInjuryForm(false)}
+                              className="border border-gray-200 px-4 py-2 text-xs font-bold text-[#5a6478]"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
 
                 <div className="grid grid-cols-2 gap-2">
                   {([
@@ -308,6 +449,50 @@ export default function PlayerStatsPage() {
                     </div>
                   </div>
                 )}
+
+                {/* Season comparison */}
+                {log.length > 0 && (() => {
+                  const bySeason: Record<string, { apps: number; goals: number; assists: number; minutes: number }> = {}
+                  for (const entry of log) {
+                    const s = entry.season || '—'
+                    if (!bySeason[s]) bySeason[s] = { apps: 0, goals: 0, assists: 0, minutes: 0 }
+                    bySeason[s].apps++
+                    bySeason[s].goals += entry.goals
+                    bySeason[s].assists += entry.assists
+                    bySeason[s].minutes += entry.minutes
+                  }
+                  const rows = Object.entries(bySeason).sort(([a], [b]) => b.localeCompare(a))
+                  if (rows.length < 2) return null
+                  return (
+                    <div className="border-t border-gray-100 pt-3">
+                      <p className="text-[10px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Season Comparison</p>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-xs">
+                          <thead>
+                            <tr className="text-left text-[9px] uppercase tracking-widest text-[#5a6478] border-b border-gray-100">
+                              <th className="pb-1.5 pr-3">Season</th>
+                              <th className="pb-1.5 pr-2 text-center">Apps</th>
+                              <th className="pb-1.5 pr-2 text-center">G</th>
+                              <th className="pb-1.5 pr-2 text-center">A</th>
+                              <th className="pb-1.5 text-center">Min</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {rows.map(([season, s]) => (
+                              <tr key={season} className="border-b border-gray-50 last:border-0">
+                                <td className="py-1.5 pr-3 font-medium text-[#01255f]">{season}</td>
+                                <td className="py-1.5 pr-2 text-center text-[#5a6478]">{s.apps}</td>
+                                <td className="py-1.5 pr-2 text-center font-bold text-[#01255f]">{s.goals}</td>
+                                <td className="py-1.5 pr-2 text-center text-[#5a6478]">{s.assists}</td>
+                                <td className="py-1.5 text-center text-[#5a6478]">{s.minutes}&apos;</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )
+                })()}
 
                 {/* Gradesheet download */}
                 <div className="border-t border-gray-100 pt-3 space-y-2">

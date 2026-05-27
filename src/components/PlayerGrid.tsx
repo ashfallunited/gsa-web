@@ -84,7 +84,7 @@ export default function PlayerGrid({ players }: { players: Player[] }) {
             >
               {/* Jersey number watermark */}
               <div
-                className="absolute bottom-0 right-1 text-[5rem] font-black text-white/10 leading-none select-none pointer-events-none z-0"
+                className="absolute bottom-2 right-2 text-[5rem] font-black text-white/10 leading-none select-none pointer-events-none z-0"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 {player.number}
@@ -98,6 +98,7 @@ export default function PlayerGrid({ players }: { players: Player[] }) {
                   fill
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                  onError={(e) => { e.currentTarget.src = PLACEHOLDER }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#01255f] via-[#01255f]/20 to-transparent" />
               </div>

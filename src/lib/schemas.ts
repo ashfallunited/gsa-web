@@ -1,6 +1,12 @@
 import { z } from 'zod'
 import { VOLUNTEER_AVAILABILITY_OPTIONS } from './inquiry-options'
 
+export const injurySchema = z.object({
+  description: z.string().max(200).optional(),
+  injuredDate: z.string(),
+  expectedReturn: z.string().optional(),
+})
+
 export const playerSchema = z.object({
   name: z.string().min(1, 'Name is required').max(120),
   number: z.number().int().min(0).max(99).default(0),
@@ -13,6 +19,7 @@ export const playerSchema = z.object({
   height: z.number().int().min(100).max(250).optional(),
   weight: z.number().int().min(30).max(150).optional(),
   preferredFoot: z.enum(['left', 'right', 'both']).optional(),
+  injury: injurySchema.nullable().optional(),
 })
 
 export const playerUpdateSchema = playerSchema.partial()

@@ -91,7 +91,7 @@ export default function AdminBoard() {
   const onSaved = () => { setAdding(false); setEditing(null); setLoading(true); load() }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full min-w-0">
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Board of Directors</h1>

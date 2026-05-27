@@ -362,7 +362,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
         {players.length > 0 && (
           <>
             <MatchStatDesktopTable rows={statRows} playerName={playerName} isLocked={isLocked} onChange={updateStat} />
-            <div className="md:hidden space-y-3 mt-4">
+            <div className="md:hidden space-y-3 mt-4 pb-20">
               {statRows.map((row) => (
                 <MatchStatMobileCard
                   key={row.playerId}
@@ -376,6 +376,28 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
           </>
         )}
       </div>
+
+      {/* Sticky save bar — mobile only */}
+      {!isLocked && players.length > 0 && (
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 px-4 py-3 flex gap-3">
+          <button
+            type="button"
+            onClick={saveStats}
+            disabled={saving}
+            className="flex-1 flex items-center justify-center gap-2 bg-[#fee11b] text-[#01255f] py-3 text-sm font-black disabled:opacity-50"
+          >
+            <Save size={15} /> {saving ? 'Saving…' : 'Save Stats'}
+          </button>
+          <button
+            type="button"
+            onClick={saveMatch}
+            disabled={saving}
+            className="flex items-center justify-center gap-2 bg-[#01255f] text-white px-4 py-3 text-sm font-bold disabled:opacity-50"
+          >
+            <Save size={15} />
+          </button>
+        </div>
+      )}
     </div>
   )
 }

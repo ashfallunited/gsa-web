@@ -294,19 +294,19 @@ export default function ComparisonPage() {
       {totalA && totalB && (
         <div className="bg-white border border-gray-200 overflow-hidden">
           {/* Player header panels */}
-          <div className="flex">
+          <div className="flex flex-col xs:flex-row sm:flex-row">
             <PlayerPanel total={totalA} lookup={playerLookup[playerA]} side="A" />
 
             {/* VS divider */}
-            <div className="flex flex-col items-center justify-center bg-white px-3 sm:px-5 z-10 shrink-0">
-              <div className="w-px flex-1 bg-gray-200" />
+            <div className="flex flex-row sm:flex-col items-center justify-center bg-white px-3 sm:px-5 z-10 shrink-0 py-2 sm:py-0">
+              <div className="h-px w-full sm:w-px sm:h-auto sm:flex-1 bg-gray-200" />
               <span
-                className="text-xs sm:text-sm font-black text-[#5a6478] py-3"
+                className="text-xs sm:text-sm font-black text-[#5a6478] py-2 sm:py-3 px-3 sm:px-0"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 VS
               </span>
-              <div className="w-px flex-1 bg-gray-200" />
+              <div className="h-px w-full sm:w-px sm:h-auto sm:flex-1 bg-gray-200" />
             </div>
 
             <PlayerPanel total={totalB} lookup={playerLookup[playerB]} side="B" />

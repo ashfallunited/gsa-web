@@ -27,13 +27,18 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       return Response.json({ error: 'Validation failed', details: parsed.error.flatten() }, { status: 400 })
     }
 
-    const { team, source, showOnSite, ...rest } = parsed.data
+    const { team, source, showOnSite, injury, ...rest } = parsed.data
     const nextSource = source === 'trial' ? 'trial' : source ?? 'official'
     const updates: Record<string, unknown> = {
       ...rest,
       source: nextSource,
       showOnSite: nextSource === 'trial' ? false : (showOnSite ?? true),
       updatedAt: FieldValue.serverTimestamp(),
+    }
+    if (injury === null) {
+      updates.injury = FieldValue.delete()
+    } else if (injury !== undefined) {
+      updates.injury = injury
     }
     if (typeof team === 'string') {
       updates.team = normalizeTeamSlug(team)

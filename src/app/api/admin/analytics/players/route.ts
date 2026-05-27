@@ -32,7 +32,8 @@ export async function GET(req: NextRequest) {
     const finalIds = new Set(matches.filter((m) => m.status === 'final').map((m) => m.id))
     const allStats = statsSnap.docs.map((d) => parseStat(d.id, d.data() as Record<string, unknown>))
 
-    const playerMeta = new Map<string, { name: string; number: number; position: string; team: string; image?: string; height?: number; weight?: number; preferredFoot?: string }>()
+    type InjuryData = { description?: string; injuredDate: string; expectedReturn?: string }
+    const playerMeta = new Map<string, { name: string; number: number; position: string; team: string; image?: string; height?: number; weight?: number; preferredFoot?: string; injury?: InjuryData | null }>()
     for (const doc of playersSnap.docs) {
       const data = serializeFirestoreData(doc.data() as Record<string, unknown>)
       const playerTeam = normalizeTeamSlug(String(data.team ?? ''))
@@ -46,10 +47,30 @@ export async function GET(req: NextRequest) {
         height: data.height ? Number(data.height) : undefined,
         weight: data.weight ? Number(data.weight) : undefined,
         preferredFoot: data.preferredFoot ? String(data.preferredFoot) : undefined,
+        injury: (data.injury as InjuryData | null | undefined) ?? null,
       })
     }
 
-    const totals = aggregatePlayerSeasonTotals(allStats, playerMeta, finalIds)
+    const statsTotals = aggregatePlayerSeasonTotals(allStats, playerMeta, finalIds)
+
+    // Include every registered player, even those with no match data yet
+    const inTotals = new Set(statsTotals.map((t) => t.playerId))
+    const zeroes = [...playerMeta.entries()]
+      .filter(([id]) => !inTotals.has(id))
+      .map(([id, meta]) => ({
+        playerId: id,
+        playerName: meta.name,
+        playerNumber: meta.number,
+        playerPosition: meta.position,
+        playerImage: meta.image ?? '',
+        team: meta.team,
+        appearances: 0, starts: 0, minutes: 0,
+        goals: 0, assists: 0,
+        yellowCards: 0, redCards: 0,
+        headerGoals: 0, leftFootGoals: 0, rightFootGoals: 0, outsideBoxGoals: 0,
+        penaltiesTaken: 0, penaltiesScored: 0, penaltiesSaved: 0, penaltiesFaced: 0,
+      }))
+    const totals = [...statsTotals, ...zeroes]
 
     if (playerId) {
       const playerStats = allStats.filter((s) => s.playerId === playerId)

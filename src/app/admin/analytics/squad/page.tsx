@@ -1,12 +1,14 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, AlertTriangle, X } from 'lucide-react'
 import AdminLoadError from '@/components/AdminLoadError'
 import { inputClass, labelClass } from '@/components/admin/analytics-filters'
 import { fetchAdminJson } from '@/lib/admin-fetch'
 import { TEAM_LABELS, TEAM_SLUG } from '@/lib/teams'
 import { SkeletonPlayerCard } from '@/components/admin/skeleton'
+
+type Injury = { description?: string; injuredDate: string; expectedReturn?: string }
 
 type SquadPlayer = {
   id: string
@@ -17,6 +19,7 @@ type SquadPlayer = {
   image?: string
   source?: string
   showOnSite?: boolean
+  injury?: Injury | null
 }
 
 const POS_LABELS: Record<string, string> = {
@@ -35,6 +38,8 @@ export default function AnalyticsSquadPage() {
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({ name: '', number: 0, position: 'midfielder' })
   const [statusFilter, setStatusFilter] = useState<'all' | 'official' | 'trial'>('all')
+  const [injuryPlayerId, setInjuryPlayerId] = useState<string | null>(null)
+  const [injuryForm, setInjuryForm] = useState({ description: '', injuredDate: new Date().toISOString().slice(0, 10), expectedReturn: '' })
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -74,6 +79,36 @@ export default function AnalyticsSquadPage() {
       await load()
     } catch {
       setError('Network error.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const saveInjury = async (playerId: string) => {
+    if (!injuryForm.injuredDate) return
+    setSaving(true)
+    try {
+      await fetch(`/api/admin/players/${playerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ injury: { ...injuryForm, description: injuryForm.description || undefined, expectedReturn: injuryForm.expectedReturn || undefined } }),
+      })
+      setInjuryPlayerId(null)
+      await load()
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const clearInjury = async (playerId: string) => {
+    setSaving(true)
+    try {
+      await fetch(`/api/admin/players/${playerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ injury: null }),
+      })
+      await load()
     } finally {
       setSaving(false)
     }
@@ -204,7 +239,7 @@ export default function AnalyticsSquadPage() {
           <div key={p.id} className="group relative bg-[#01255f] overflow-hidden">
             {/* Jersey number watermark */}
             <div
-              className="absolute top-2 right-2 text-[5rem] font-black text-white/10 leading-none select-none pointer-events-none z-10"
+              className="absolute bottom-2 right-2 text-[5rem] font-black text-white/10 leading-none select-none pointer-events-none z-0"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               {p.number}
@@ -212,23 +247,23 @@ export default function AnalyticsSquadPage() {
 
             {/* Photo */}
             <div className="relative h-44 sm:h-52 overflow-hidden">
-              {p.image ? (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span
+                  className="text-7xl font-black text-white/10 leading-none"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {p.number || '—'}
+                </span>
+              </div>
+              {p.image && (
                 <img
                   src={p.image}
                   alt={p.name}
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => { e.currentTarget.style.display = 'none' }}
                 />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <span
-                    className="text-7xl font-black text-white/10 leading-none"
-                    style={{ fontFamily: 'var(--font-heading)' }}
-                  >
-                    {p.number || '—'}
-                  </span>
-                </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#01255f] via-[#01255f]/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#01255f] via-[#01255f]/20 to-transparent z-10" />
             </div>
 
             {/* Info */}
@@ -250,19 +285,114 @@ export default function AnalyticsSquadPage() {
               >
                 {p.name}
               </h3>
-              <span
-                className={`text-[9px] uppercase font-bold px-1.5 py-0.5 mt-1.5 inline-block ${
-                  p.source === 'trial' || p.showOnSite === false
-                    ? 'bg-amber-400 text-amber-900'
-                    : 'bg-emerald-500 text-white'
-                }`}
-              >
-                {p.source === 'trial' || p.showOnSite === false ? 'Trial' : 'Official'}
-              </span>
+              <div className="flex flex-wrap gap-1 mt-1.5">
+                <span
+                  className={`text-[9px] uppercase font-bold px-1.5 py-0.5 ${
+                    p.source === 'trial' || p.showOnSite === false
+                      ? 'bg-amber-400 text-amber-900'
+                      : 'bg-emerald-500 text-white'
+                  }`}
+                >
+                  {p.source === 'trial' || p.showOnSite === false ? 'Trial' : 'Official'}
+                </span>
+                {p.injury && (
+                  <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 bg-red-500 text-white flex items-center gap-0.5">
+                    <AlertTriangle size={9} /> Injured
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Injury action bar */}
+            <div className="flex items-center gap-1 px-3 py-2 border-t border-white/10 relative z-10">
+              {p.injury ? (
+                <>
+                  <span className="text-[10px] text-white/50 flex-1 truncate">
+                    {p.injury.expectedReturn ? `Returns ${p.injury.expectedReturn}` : 'No return date'}
+                  </span>
+                  <button
+                    onClick={() => clearInjury(p.id)}
+                    disabled={saving}
+                    className="flex items-center gap-1 text-xs font-bold text-red-400 hover:bg-red-400/10 px-2 py-1.5 transition-colors ml-auto disabled:opacity-50"
+                  >
+                    <X size={11} /> Clear
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    setInjuryForm({ description: '', injuredDate: new Date().toISOString().slice(0, 10), expectedReturn: '' })
+                    setInjuryPlayerId(p.id)
+                  }}
+                  className="flex items-center gap-1.5 text-xs font-bold text-white/50 hover:text-white hover:bg-white/10 px-2.5 py-1.5 transition-colors"
+                >
+                  <AlertTriangle size={11} /> Mark Injured
+                </button>
+              )}
             </div>
           </div>
         ))}
       </div>
+
+      {/* Injury form panel */}
+      {injuryPlayerId && (() => {
+        const p = players.find((pl) => pl.id === injuryPlayerId)
+        if (!p) return null
+        return (
+          <div className="mt-4 bg-white border border-red-200 p-4 sm:p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <p className="font-bold text-[#01255f] text-sm">
+                Mark Injured — <span className="text-red-600">{p.name}</span>
+              </p>
+              <button onClick={() => setInjuryPlayerId(null)} className="text-[#5a6478] hover:text-[#01255f] p-1">
+                <X size={16} />
+              </button>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className={labelClass}>Date of Injury</label>
+                <input
+                  type="date"
+                  value={injuryForm.injuredDate}
+                  onChange={(e) => setInjuryForm((f) => ({ ...f, injuredDate: e.target.value }))}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Expected Return</label>
+                <input
+                  type="date"
+                  value={injuryForm.expectedReturn}
+                  onChange={(e) => setInjuryForm((f) => ({ ...f, expectedReturn: e.target.value }))}
+                  className={inputClass}
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className={labelClass}>Description (optional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Hamstring strain"
+                  value={injuryForm.description}
+                  onChange={(e) => setInjuryForm((f) => ({ ...f, description: e.target.value }))}
+                  className={inputClass}
+                />
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => saveInjury(injuryPlayerId)}
+                disabled={saving || !injuryForm.injuredDate}
+                className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 text-sm font-bold disabled:opacity-50"
+              >
+                {saving ? 'Saving…' : 'Confirm Injury'}
+              </button>
+              <button onClick={() => setInjuryPlayerId(null)} className="border border-gray-200 px-5 py-2 text-sm font-bold text-[#5a6478]">
+                Cancel
+              </button>
+            </div>
+          </div>
+        )
+      })()}
     </div>
   )
 }
