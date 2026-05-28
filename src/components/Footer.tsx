@@ -137,7 +137,15 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
         <p className="text-white/30 text-[11px] sm:text-xs text-center sm:text-left">
-          &copy; {year} {ORG_NAME}. All rights reserved.
+          &copy; {year} {ORG_NAME}. All rights reserved.{' '}
+          <a
+            href="https://server393.web-hosting.com:2096/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-3 font-bold text-[#fee11b] hover:text-white transition-colors"
+          >
+            Webmail
+          </a>
         </p>
         <div className="flex gap-4 sm:gap-6 flex-wrap justify-center">
           <Link href="/privacy" className="text-white/30 hover:text-white/60 text-[11px] sm:text-xs transition-colors">

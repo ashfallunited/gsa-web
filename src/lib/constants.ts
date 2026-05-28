@@ -11,7 +11,7 @@ export const SITE_URL = 'https://www.ashfallunited.com'
 /** Google Analytics stream */
 export const GA_MEASUREMENT_ID = 'G-QZ6073NJ1K'
 
-export const ORG_EMAIL = 'info@gayduosa.org'
+export const ORG_EMAIL = 'ashfall@gayduosa.org'
 
 export const ORG_INSTAGRAM =
   process.env.NEXT_PUBLIC_ORG_INSTAGRAM ?? 'https://www.instagram.com/ashfallunited'
