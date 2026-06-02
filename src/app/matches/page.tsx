@@ -163,9 +163,11 @@ function ResultRow({ match }: { match: PublicMatch }) {
           </div>
         </div>
 
-        {/* Opponent: shield then name */}
+        {/* Opponent: shield (hidden on mobile) then name */}
         <div className="flex items-center gap-2 min-w-0 flex-1">
-          <ShieldPlaceholder size={30} />
+          <div className="hidden sm:block shrink-0">
+            <ShieldPlaceholder size={30} />
+          </div>
           <div className="min-w-0">
             <p className="text-xs sm:text-sm font-bold text-[#01255f] truncate leading-tight">
               {match.opponent}
@@ -255,9 +257,11 @@ function FixtureRow({ match }: { match: Match }) {
           </div>
         </div>
 
-        {/* Opponent: shield then name */}
+        {/* Opponent: shield (hidden on mobile) then name */}
         <div className="flex items-center gap-2 min-w-0 flex-1">
-          <ShieldPlaceholder size={30} />
+          <div className="hidden sm:block shrink-0">
+            <ShieldPlaceholder size={30} />
+          </div>
           <div className="min-w-0">
             <p className="text-xs sm:text-sm font-bold text-[#01255f] truncate leading-tight">
               {match.opponent}
@@ -412,39 +416,39 @@ export default async function MatchesPage({
                 <div className="grid grid-cols-6 gap-px bg-gray-200 mb-4">
                   <div className="bg-white py-2.5 sm:py-3 text-center">
                     <p className="text-[8px] sm:text-[9px] uppercase tracking-widest text-[#5a6478] font-bold">P</p>
-                    <p className="text-base sm:text-lg font-black text-[#01255f] tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <p className="text-sm sm:text-lg font-black text-[#01255f] tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
                       {filteredResults.length}
                     </p>
                   </div>
                   <div className="bg-white py-2.5 sm:py-3 text-center">
                     <p className="text-[8px] sm:text-[9px] uppercase tracking-widest text-[#5a6478] font-bold">W</p>
-                    <p className="text-base sm:text-lg font-black text-green-600 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <p className="text-sm sm:text-lg font-black text-green-600 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
                       {w}
                     </p>
                   </div>
                   <div className="bg-white py-2.5 sm:py-3 text-center">
                     <p className="text-[8px] sm:text-[9px] uppercase tracking-widest text-[#5a6478] font-bold">D</p>
-                    <p className="text-base sm:text-lg font-black text-gray-500 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <p className="text-sm sm:text-lg font-black text-gray-500 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
                       {d}
                     </p>
                   </div>
                   <div className="bg-white py-2.5 sm:py-3 text-center">
                     <p className="text-[8px] sm:text-[9px] uppercase tracking-widest text-[#5a6478] font-bold">L</p>
-                    <p className="text-base sm:text-lg font-black text-red-500 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <p className="text-sm sm:text-lg font-black text-red-500 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
                       {l}
                     </p>
                   </div>
                   {/* GF — goals scored, green */}
                   <div className="bg-white py-2.5 sm:py-3 text-center border-l-2 border-green-100">
                     <p className="text-[8px] sm:text-[9px] uppercase tracking-widest text-green-600 font-bold">GF</p>
-                    <p className="text-base sm:text-lg font-black text-green-600 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <p className="text-sm sm:text-lg font-black text-green-600 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
                       {gf}
                     </p>
                   </div>
                   {/* GA — goals conceded, red */}
                   <div className="bg-white py-2.5 sm:py-3 text-center border-l-2 border-red-100">
                     <p className="text-[8px] sm:text-[9px] uppercase tracking-widest text-red-500 font-bold">GA</p>
-                    <p className="text-base sm:text-lg font-black text-red-500 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <p className="text-sm sm:text-lg font-black text-red-500 tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
                       {ga}
                     </p>
                   </div>

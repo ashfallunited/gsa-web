@@ -168,7 +168,7 @@ export default async function MatchReviewPage({ params }: Props) {
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6">
               {/* Us */}
               <div className="flex-1 flex flex-col sm:flex-row items-center gap-3 sm:justify-end text-center sm:text-right">
-                <div>
+                <div className="hidden sm:block">
                   <p className="text-white font-bold text-base sm:text-lg">{ORG_NAME}</p>
                   <p className="text-white/50 text-xs">{match.homeAway === 'home' ? 'Home' : match.homeAway === 'away' ? 'Away' : 'Neutral'}</p>
                 </div>
@@ -197,23 +197,26 @@ export default async function MatchReviewPage({ params }: Props) {
                   <path d="M20 2L4 8V22C4 33 20 46 20 46C20 46 36 33 36 22V8L20 2Z" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
                   <text x="20" y="30" textAnchor="middle" fontSize="11" fontWeight="700" fill="rgba(255,255,255,0.4)">FC</text>
                 </svg>
-                <div>
+                <div className="hidden sm:block">
                   <p className="text-white font-bold text-base sm:text-lg">{match.opponent}</p>
                   <p className="text-white/50 text-xs">{match.homeAway === 'home' ? 'Away' : match.homeAway === 'away' ? 'Home' : 'Neutral'}</p>
                 </div>
               </div>
             </div>
 
+            {/* Opponent name on mobile only — visible below the score strip */}
+            <p className="sm:hidden text-center text-white font-bold text-base mb-3">{match.opponent}</p>
+
             {/* Match metadata */}
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-white/50 text-xs">
+            <div className="flex flex-wrap justify-center gap-2 text-white/50 text-xs text-center">
               <span>{formatDate(match.date)}</span>
-              <span>·</span>
+              <span aria-hidden>·</span>
               <span>{match.competition}</span>
-              <span>·</span>
+              <span aria-hidden>·</span>
               <span>{match.season}</span>
               {match.team !== 'first-team' && (
                 <>
-                  <span>·</span>
+                  <span aria-hidden>·</span>
                   <span className="text-[#fee11b] font-bold">{displayTeamLabel(match.team)}</span>
                 </>
               )}
