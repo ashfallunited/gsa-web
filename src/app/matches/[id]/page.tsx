@@ -249,7 +249,10 @@ export default async function MatchReviewPage({ params }: Props) {
               <section>
                 <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#01255f] mb-4">Match Report</h2>
                 <div className="bg-white border border-gray-100 p-6 sm:p-8">
-                  <p className="text-sm text-[#0d0d0d] leading-relaxed whitespace-pre-wrap">{match.report}</p>
+                  <div
+                    className="blog-content text-sm sm:text-base max-w-none"
+                    dangerouslySetInnerHTML={{ __html: match.report }}
+                  />
                 </div>
               </section>
             )}

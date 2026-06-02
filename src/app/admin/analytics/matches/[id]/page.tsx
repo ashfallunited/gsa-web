@@ -1,7 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { useEffect, useState, useCallback, use } from 'react'
+
+const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), { ssr: false })
 import { Copy, Save, Trash2, Download, Plus, UserPlus } from 'lucide-react'
 import AdminLoadError from '@/components/AdminLoadError'
 import ComboInput from '@/components/admin/combo-input'
@@ -337,13 +340,11 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
           />
         </div>
         <div>
-          <label className={labelClass}>Match Report <span className="font-normal normal-case text-gray-400">(public writeup)</span></label>
-          <textarea
+          <label className={labelClass}>Match Report <span className="font-normal normal-case text-gray-400">(public writeup — supports images, formatting, and commentary)</span></label>
+          <RichTextEditor
             value={match.report ?? ''}
-            onChange={(e) => setMatch({ ...match, report: e.target.value || undefined })}
-            rows={5}
-            className={inputClass}
-            placeholder="Write a match report — key moments, standout performances, tactical notes…"
+            onChange={(html) => setMatch({ ...match, report: html || undefined })}
+            placeholder="Write a match report — key moments, standout performances, tactical notes, images…"
           />
         </div>
         <button type="button" onClick={saveMatch} disabled={saving} className="inline-flex items-center gap-2 bg-[#01255f] text-white px-5 py-2 text-sm font-bold disabled:opacity-50">
