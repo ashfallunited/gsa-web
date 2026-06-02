@@ -72,7 +72,7 @@ export default function AdminContacts() {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-4">
-          <div className="bg-white border border-gray-100 overflow-hidden">
+          <div className={`bg-white border border-gray-100 overflow-hidden ${selected ? 'hidden lg:block' : ''}`}>
             {contacts.map((c) => (
               <button
                 key={c.id}
@@ -104,6 +104,13 @@ export default function AdminContacts() {
             <div className="bg-white border border-gray-100 p-6">
               <div className="flex items-start justify-between mb-5">
                 <div>
+                  <button
+                    type="button"
+                    onClick={() => setSelected(null)}
+                    className="lg:hidden flex items-center gap-1 text-xs font-bold text-[#5a6478] hover:text-[#01255f] mb-3 transition-colors"
+                  >
+                    ← Back to all enquiries
+                  </button>
                   <h2 className="font-bold text-[#01255f] text-base">{selected.firstName} {selected.lastName}</h2>
                   <a href={`mailto:${selected.email}`} className="text-[#fee11b] text-sm hover:underline">{selected.email}</a>
                   {selected.phone && <p className="text-[#5a6478] text-xs mt-0.5">{selected.phone}</p>}

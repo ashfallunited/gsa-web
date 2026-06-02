@@ -60,8 +60,8 @@ export default function AdminNewsletterPage() {
           No subscribers yet.
         </div>
       ) : !error ? (
-        <div className="bg-white border border-gray-100 overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="bg-white border border-gray-100 overflow-x-auto">
+          <table className="w-full text-sm min-w-[480px]">
             <thead>
               <tr className="border-b border-gray-100 text-left">
                 <th className="px-5 py-3 text-[10px] uppercase tracking-widest font-bold text-[#5a6478]">Email</th>

@@ -98,7 +98,7 @@ export default function MemberEditor(props: Props) {
         folder={isTeam ? 'team' : 'ambassadors'}
       />
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Name</label>
           <input type="text" value={(data as MemberData).name} onChange={set('name')} className={inputClass} placeholder="Full name" />
@@ -135,7 +135,7 @@ export default function MemberEditor(props: Props) {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Title / Position</label>
               <input type="text" value={(data as AmbassadorData).title} onChange={set('title')} className={inputClass} placeholder="e.g. Professional Footballer" />

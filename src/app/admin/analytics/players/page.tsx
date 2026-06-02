@@ -208,8 +208,8 @@ export default function PlayerStatsPage() {
       {error && <AdminLoadError message={error} />}
 
       <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
-        <div className="bg-white border border-gray-200 overflow-x-auto">
-          <table className="w-full text-sm">
+        <div className={`bg-white border border-gray-200 overflow-x-auto ${selectedId ? 'hidden lg:block' : ''}`}>
+          <table className="w-full text-sm min-w-[420px]">
             <thead>
               <tr className="text-left text-[10px] uppercase tracking-widest text-[#5a6478] border-b bg-gray-50">
                 <th className="p-3">Player</th>
@@ -255,6 +255,15 @@ export default function PlayerStatsPage() {
         </div>
 
         <div className="space-y-4" ref={profileRef}>
+          {selectedId && (
+            <button
+              type="button"
+              onClick={() => setSelectedId(null)}
+              className="lg:hidden flex items-center gap-1 text-xs font-bold text-[#5a6478] hover:text-[#01255f] transition-colors"
+            >
+              ← Back to all players
+            </button>
+          )}
           <div className="bg-white border border-gray-200 p-4 sm:p-5">
             <h2 className="font-bold text-[#01255f] mb-4">Player Profile</h2>
             {!selectedId && <p className="text-sm text-[#5a6478]">Select a player to view individual analytics.</p>}
@@ -403,7 +412,7 @@ export default function PlayerStatsPage() {
                 {selectedTotal && (
                   <div className="border-t border-gray-100 pt-3">
                     <p className="text-[10px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Goal Breakdown</p>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {([
                         { label: 'Header', value: selectedTotal.headerGoals },
                         { label: 'Left Foot', value: selectedTotal.leftFootGoals },

@@ -65,7 +65,7 @@ function StatRow({
       </div>
 
       {/* Label */}
-      <div className="text-center w-28 sm:w-36 shrink-0">
+      <div className="text-center w-16 sm:w-28 lg:w-36 shrink-0">
         <span className="text-[10px] uppercase tracking-widest text-[#5a6478] font-bold">{label}</span>
       </div>
 
@@ -240,7 +240,7 @@ export default function ComparisonPage() {
 
       {/* Player selectors */}
       <div className="bg-white border border-gray-200 mb-6">
-        <div className="grid grid-cols-2 divide-x divide-gray-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 sm:divide-x divide-y sm:divide-y-0 divide-gray-100">
           <div className="p-4">
             <label className={labelClass}>Player A</label>
             <select
