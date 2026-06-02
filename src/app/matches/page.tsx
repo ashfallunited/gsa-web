@@ -102,7 +102,7 @@ function ResultRow({ match }: { match: PublicMatch }) {
 
   return (
     <Link
-      href={`/matches/${match.id}`}
+      href={`/matches/${match.slug ?? match.id}`}
       className="group flex items-center gap-3 sm:gap-5 bg-white border border-gray-100 px-3 sm:px-5 lg:px-6 py-3 sm:py-4 hover:border-[#01255f]/25 hover:shadow-sm transition-all"
     >
       {/* Left: competition badge + date */}
@@ -296,7 +296,7 @@ function buildSportsEventJsonLd(results: PublicMatch[], fixtures: Match[]) {
         { '@type': 'SportsTeam', name: m.opponent },
       ],
       organizer: { '@type': 'Organization', name: ORG_NAME, url: SITE_URL },
-      url: `${SITE_URL}/matches/${m.id}`,
+      url: `${SITE_URL}/matches/${m.slug ?? m.id}`,
     })),
     ...fixtures.map((m) => ({
       '@type': 'SportsEvent',

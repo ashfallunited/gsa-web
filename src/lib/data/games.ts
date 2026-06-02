@@ -30,6 +30,7 @@ function parseMatch(id: string, data: Record<string, unknown>): Match {
     notes: String(serialized.notes ?? ''),
     highlightUrl: serialized.highlightUrl ? String(serialized.highlightUrl) : undefined,
     report: serialized.report ? String(serialized.report) : undefined,
+    slug: serialized.slug ? String(serialized.slug) : undefined,
     createdBy: String(serialized.createdBy ?? ''),
     updatedAt: serialized.updatedAt as Match['updatedAt'],
     createdAt: serialized.createdAt as Match['createdAt'],
@@ -264,15 +265,31 @@ async function fetchPublicMatches(): Promise<{ results: PublicMatch[]; fixtures:
   return { results, fixtures, seasons }
 }
 
-async function fetchMatchReview(matchId: string): Promise<MatchReview | null> {
+async function fetchMatchReview(slugOrId: string): Promise<MatchReview | null> {
   const db = getAdminDb()
-  const matchDoc = await db.collection('matches').doc(matchId).get()
-  if (!matchDoc.exists) return null
-  const match = parseMatch(matchDoc.id, matchDoc.data() as Record<string, unknown>)
+
+  type DocRef = { id: string; data: () => Record<string, unknown> }
+
+  // Try slug lookup first (new matches), fall back to direct ID (legacy URLs)
+  let resolved: DocRef | null = await db
+    .collection('matches')
+    .where('slug', '==', slugOrId)
+    .limit(1)
+    .get()
+    .then((snap) => (snap.empty ? null : { id: snap.docs[0].id, data: () => snap.docs[0].data() as Record<string, unknown> }))
+    .catch(() => null)
+
+  if (!resolved) {
+    const byId = await db.collection('matches').doc(slugOrId).get().catch(() => null)
+    if (byId?.exists) resolved = { id: byId.id, data: () => byId.data() as Record<string, unknown> }
+  }
+
+  if (!resolved) return null
+  const match = parseMatch(resolved.id, resolved.data())
   if (match.status !== 'final') return null
 
   const [statsSnap, playersSnap] = await Promise.all([
-    db.collection('match_player_stats').where('matchId', '==', matchId).get(),
+    db.collection('match_player_stats').where('matchId', '==', resolved.id).get(),
     db.collection('players').get(),
   ])
 
@@ -318,14 +335,14 @@ async function fetchMatchReview(matchId: string): Promise<MatchReview | null> {
   return { match: { ...match, result: computeMatchResult(match) }, stats }
 }
 
-const _cachedMatchReview = (matchId: string) =>
+const _cachedMatchReview = (slugOrId: string) =>
   unstable_cache(
-    () => fetchMatchReview(matchId),
-    [`match-review-${matchId}`],
+    () => fetchMatchReview(slugOrId),
+    [`match-review-${slugOrId}`],
     { tags: [CACHE_TAGS.games], revalidate: 300 }
   )()
 
-export const getMatchReview = (matchId: string) => _cachedMatchReview(matchId)
+export const getMatchReview = (slugOrId: string) => _cachedMatchReview(slugOrId)
 
 const _cachedPublicMatches = unstable_cache(fetchPublicMatches, ['public-matches-v1'], {
   tags: [CACHE_TAGS.games],

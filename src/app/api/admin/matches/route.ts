@@ -41,6 +41,16 @@ export async function GET(req: NextRequest) {
   })
 }
 
+function generateMatchSlug(opponent: string, date: string, shortId: string): string {
+  const opponentSlug = opponent
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+  return `vs-${opponentSlug}-${date}-${shortId}`
+}
+
 export async function POST(req: NextRequest) {
   return runAnalyticsWriteApi(req, async ({ session, db }) => {
     const body = await req.json().catch(() => null)
@@ -50,10 +60,15 @@ export async function POST(req: NextRequest) {
     }
 
     const data = parsed.data
-    const ref = await db.collection('matches').add({
+    // Get a ref with the ID before writing so we can embed it in the slug
+    const ref = db.collection('matches').doc()
+    const slug = generateMatchSlug(data.opponent, data.date, ref.id.slice(0, 6).toLowerCase())
+
+    await ref.set({
       ...data,
       team: normalizeTeamSlug(data.team),
       notes: data.notes ?? '',
+      slug,
       createdBy: session.sub,
       createdAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),

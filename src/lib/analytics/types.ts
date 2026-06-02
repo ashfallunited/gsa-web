@@ -23,6 +23,7 @@ export interface Match {
   notes: string
   highlightUrl?: string
   report?: string
+  slug?: string
   createdBy: string
   updatedAt?: FirestoreTimestamp
   createdAt?: FirestoreTimestamp
