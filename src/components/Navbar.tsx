@@ -150,6 +150,7 @@ export default function Navbar() {
               )}
             </div>
 
+            <Link href="/matches" className={linkClass}>Matches</Link>
             <Link href="/gallery" className={linkClass}>Gallery</Link>
             <Link href="/shop" className={linkClass}>Shop</Link>
             <Link href="/blog" className={linkClass}>Blog</Link>
@@ -236,6 +237,7 @@ export default function Navbar() {
               )}
             </div>
 
+            <Link href="/matches" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>Matches</Link>
             <Link href="/gallery" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>Gallery</Link>
             <Link href="/shop" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>Shop</Link>
             <Link href="/blog" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>Blog</Link>

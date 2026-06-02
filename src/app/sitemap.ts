@@ -4,6 +4,7 @@ import { getPublishedBlogPosts } from '@/lib/data/blog'
 
 const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: SITE_URL, changeFrequency: 'weekly', priority: 1 },
+  { url: `${SITE_URL}/matches`, changeFrequency: 'weekly', priority: 0.9 },
   { url: `${SITE_URL}/blog`, changeFrequency: 'daily', priority: 0.9 },
   { url: `${SITE_URL}/gallery`, changeFrequency: 'weekly', priority: 0.8 },
   { url: `${SITE_URL}/shop`, changeFrequency: 'weekly', priority: 0.7 },

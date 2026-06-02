@@ -204,4 +204,33 @@ const _cachedGetPlayerSeasonStatsMap = unstable_cache(
 export const getCachedPlayerSeasonStatsMap = (team: string, season?: string) =>
   _cachedGetPlayerSeasonStatsMap(team, season)
 
+export type PublicMatch = Match & { result: 'W' | 'D' | 'L' | null }
+
+async function fetchPublicMatches(): Promise<{ results: PublicMatch[]; fixtures: Match[]; seasons: string[] }> {
+  const db = getAdminDb()
+  const snap = await db.collection('matches').get()
+  const all = snap.docs.map((d) => parseMatch(d.id, d.data() as Record<string, unknown>))
+
+  const today = new Date().toISOString().slice(0, 10)
+
+  const results: PublicMatch[] = all
+    .filter((m) => m.status === 'final')
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .map((m) => ({ ...m, result: computeMatchResult(m) }))
+
+  const fixtures: Match[] = all
+    .filter((m) => m.status === 'draft' && m.date >= today)
+    .sort((a, b) => a.date.localeCompare(b.date))
+
+  const seasons = [...new Set(results.map((m) => m.season))].sort().reverse()
+
+  return { results, fixtures, seasons }
+}
+
+const _cachedPublicMatches = unstable_cache(fetchPublicMatches, ['public-matches-v1'], {
+  tags: [CACHE_TAGS.games],
+  revalidate: 300,
+})
+export const getPublicMatches = () => _cachedPublicMatches()
+
 export { docWithId, parseMatch, parseStat, fetchFinalMatches, fetchAllStatsForMatches, fetchPlayerMeta, aggregatePlayerSeasonTotals, computeDashboardKpis, goalsByMonth, topScorersFromTotals, disciplineLeaders, minutesLeaders }
