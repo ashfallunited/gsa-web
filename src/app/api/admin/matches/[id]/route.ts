@@ -69,6 +69,8 @@ export async function PUT(req: NextRequest, context: RouteContext) {
     if (updates.goalsAgainst !== undefined) payload.goalsAgainst = updates.goalsAgainst
     if (updates.status !== undefined) payload.status = updates.status
     if (updates.notes !== undefined) payload.notes = updates.notes
+    if (updates.highlightUrl !== undefined) payload.highlightUrl = updates.highlightUrl ?? ''
+    if (updates.report !== undefined) payload.report = updates.report ?? ''
 
     await docRef.update(payload)
 

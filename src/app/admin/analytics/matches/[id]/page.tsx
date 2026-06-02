@@ -31,6 +31,8 @@ type StatRow = {
   penaltiesScored: number
   penaltiesSaved: number
   penaltiesFaced: number
+  goalMinutes: number[]
+  assistMinutes: number[]
 }
 
 function emptyStat(playerId: string): StatRow {
@@ -38,6 +40,7 @@ function emptyStat(playerId: string): StatRow {
     playerId, started: false, minutes: 0, goals: 0, assists: 0, yellowCards: 0, redCards: 0, notes: '',
     headerGoals: 0, leftFootGoals: 0, rightFootGoals: 0, outsideBoxGoals: 0,
     penaltiesTaken: 0, penaltiesScored: 0, penaltiesSaved: 0, penaltiesFaced: 0,
+    goalMinutes: [], assistMinutes: [],
   }
 }
 
@@ -63,6 +66,8 @@ function buildStatRows(teamPlayers: PlayerOption[], existingStats: MatchPlayerSt
       penaltiesScored: existing.penaltiesScored ?? 0,
       penaltiesSaved: existing.penaltiesSaved ?? 0,
       penaltiesFaced: existing.penaltiesFaced ?? 0,
+      goalMinutes: existing.goalMinutes ?? [],
+      assistMinutes: existing.assistMinutes ?? [],
     }
   })
 }
@@ -118,6 +123,22 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
 
   const updateStat = (playerId: string, field: keyof StatRow, value: boolean | number | string) => {
     setStatRows((rows) => rows.map((r) => (r.playerId === playerId ? { ...r, [field]: value } : r)))
+  }
+
+  const updateStatMinute = (
+    playerId: string,
+    field: 'goalMinutes' | 'assistMinutes',
+    index: number,
+    value: number
+  ) => {
+    setStatRows((rows) =>
+      rows.map((r) => {
+        if (r.playerId !== playerId) return r
+        const arr = [...(r[field] ?? [])]
+        arr[index] = value
+        return { ...r, [field]: arr }
+      })
+    )
   }
 
   const saveMatch = async () => {
@@ -305,6 +326,26 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
           <label className={labelClass}>Notes</label>
           <textarea value={match.notes} onChange={(e) => updateMatchField('notes', e.target.value)} rows={2} className={inputClass} />
         </div>
+        <div>
+          <label className={labelClass}>Highlight Video URL <span className="font-normal normal-case text-gray-400">(YouTube link)</span></label>
+          <input
+            type="url"
+            value={match.highlightUrl ?? ''}
+            onChange={(e) => setMatch({ ...match, highlightUrl: e.target.value || undefined })}
+            className={inputClass}
+            placeholder="https://youtube.com/watch?v=..."
+          />
+        </div>
+        <div>
+          <label className={labelClass}>Match Report <span className="font-normal normal-case text-gray-400">(public writeup)</span></label>
+          <textarea
+            value={match.report ?? ''}
+            onChange={(e) => setMatch({ ...match, report: e.target.value || undefined })}
+            rows={5}
+            className={inputClass}
+            placeholder="Write a match report — key moments, standout performances, tactical notes…"
+          />
+        </div>
         <button type="button" onClick={saveMatch} disabled={saving} className="inline-flex items-center gap-2 bg-[#01255f] text-white px-5 py-2 text-sm font-bold disabled:opacity-50">
           <Save size={14} /> Save Match
         </button>
@@ -361,7 +402,13 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
 
         {players.length > 0 && (
           <>
-            <MatchStatDesktopTable rows={statRows} playerName={playerName} isLocked={isLocked} onChange={updateStat} />
+            <MatchStatDesktopTable
+              rows={statRows}
+              playerName={playerName}
+              isLocked={isLocked}
+              onChange={updateStat}
+              onMinuteChange={(playerId, field, index, value) => updateStatMinute(playerId, field, index, value)}
+            />
             <div className="md:hidden space-y-3 mt-4 pb-20">
               {statRows.map((row) => (
                 <MatchStatMobileCard
@@ -370,6 +417,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
                   row={row}
                   isLocked={isLocked}
                   onChange={(field, value) => updateStat(row.playerId, field, value)}
+                  onMinuteChange={(field, index, value) => updateStatMinute(row.playerId, field, index, value)}
                 />
               ))}
             </div>

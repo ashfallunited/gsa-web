@@ -28,6 +28,8 @@ function parseMatch(id: string, data: Record<string, unknown>): Match {
     goalsAgainst: Number(serialized.goalsAgainst ?? 0),
     status: (serialized.status as Match['status']) ?? 'draft',
     notes: String(serialized.notes ?? ''),
+    highlightUrl: serialized.highlightUrl ? String(serialized.highlightUrl) : undefined,
+    report: serialized.report ? String(serialized.report) : undefined,
     createdBy: String(serialized.createdBy ?? ''),
     updatedAt: serialized.updatedAt as Match['updatedAt'],
     createdAt: serialized.createdAt as Match['createdAt'],
@@ -57,6 +59,12 @@ function parseStat(id: string, data: Record<string, unknown>): MatchPlayerStat {
     penaltiesScored: serialized.penaltiesScored != null ? Number(serialized.penaltiesScored) : undefined,
     penaltiesSaved: serialized.penaltiesSaved != null ? Number(serialized.penaltiesSaved) : undefined,
     penaltiesFaced: serialized.penaltiesFaced != null ? Number(serialized.penaltiesFaced) : undefined,
+    goalMinutes: Array.isArray(serialized.goalMinutes)
+      ? (serialized.goalMinutes as unknown[]).map(Number)
+      : undefined,
+    assistMinutes: Array.isArray(serialized.assistMinutes)
+      ? (serialized.assistMinutes as unknown[]).map(Number)
+      : undefined,
   }
 }
 
@@ -206,6 +214,35 @@ export const getCachedPlayerSeasonStatsMap = (team: string, season?: string) =>
 
 export type PublicMatch = Match & { result: 'W' | 'D' | 'L' | null }
 
+export type MatchReviewPlayer = {
+  id: string
+  name: string
+  number: number
+  position: string
+  image?: string
+}
+
+export type MatchReviewStat = {
+  playerId: string
+  playerName: string
+  playerNumber: number
+  playerPosition: string
+  playerImage?: string
+  started: boolean
+  minutes: number
+  goals: number
+  assists: number
+  yellowCards: number
+  redCards: number
+  goalMinutes: number[]
+  assistMinutes: number[]
+}
+
+export type MatchReview = {
+  match: Match & { result: 'W' | 'D' | 'L' }
+  stats: MatchReviewStat[]
+}
+
 async function fetchPublicMatches(): Promise<{ results: PublicMatch[]; fixtures: Match[]; seasons: string[] }> {
   const db = getAdminDb()
   const snap = await db.collection('matches').get()
@@ -226,6 +263,69 @@ async function fetchPublicMatches(): Promise<{ results: PublicMatch[]; fixtures:
 
   return { results, fixtures, seasons }
 }
+
+async function fetchMatchReview(matchId: string): Promise<MatchReview | null> {
+  const db = getAdminDb()
+  const matchDoc = await db.collection('matches').doc(matchId).get()
+  if (!matchDoc.exists) return null
+  const match = parseMatch(matchDoc.id, matchDoc.data() as Record<string, unknown>)
+  if (match.status !== 'final') return null
+
+  const [statsSnap, playersSnap] = await Promise.all([
+    db.collection('match_player_stats').where('matchId', '==', matchId).get(),
+    db.collection('players').get(),
+  ])
+
+  const playerMap = new Map<string, { name: string; number: number; position: string; team: string; image?: string }>()
+  for (const doc of playersSnap.docs) {
+    const d = doc.data()
+    playerMap.set(doc.id, {
+      name: String(d.name ?? ''),
+      number: Number(d.number ?? 0),
+      position: String(d.position ?? ''),
+      team: String(d.team ?? ''),
+      image: d.image ? String(d.image) : undefined,
+    })
+  }
+
+  const stats: MatchReviewStat[] = statsSnap.docs
+    .map((doc) => {
+      const s = parseStat(doc.id, doc.data() as Record<string, unknown>)
+      const p = playerMap.get(s.playerId)
+      return {
+        playerId: s.playerId,
+        playerName: p?.name ?? 'Unknown',
+        playerNumber: p?.number ?? 0,
+        playerPosition: p?.position ?? '',
+        playerImage: p?.image,
+        started: s.started,
+        minutes: s.minutes,
+        goals: s.goals,
+        assists: s.assists,
+        yellowCards: s.yellowCards,
+        redCards: s.redCards,
+        goalMinutes: s.goalMinutes ?? [],
+        assistMinutes: s.assistMinutes ?? [],
+      }
+    })
+    .filter((s) => s.minutes > 0 || s.started || s.goals > 0)
+    .sort((a, b) => {
+      if (a.started && !b.started) return -1
+      if (!a.started && b.started) return 1
+      return a.playerNumber - b.playerNumber
+    })
+
+  return { match: { ...match, result: computeMatchResult(match) }, stats }
+}
+
+const _cachedMatchReview = (matchId: string) =>
+  unstable_cache(
+    () => fetchMatchReview(matchId),
+    [`match-review-${matchId}`],
+    { tags: [CACHE_TAGS.games], revalidate: 300 }
+  )()
+
+export const getMatchReview = (matchId: string) => _cachedMatchReview(matchId)
 
 const _cachedPublicMatches = unstable_cache(fetchPublicMatches, ['public-matches-v1'], {
   tags: [CACHE_TAGS.games],

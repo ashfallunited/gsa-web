@@ -21,6 +21,8 @@ export interface Match {
   goalsAgainst: number
   status: MatchStatus
   notes: string
+  highlightUrl?: string
+  report?: string
   createdBy: string
   updatedAt?: FirestoreTimestamp
   createdAt?: FirestoreTimestamp
@@ -47,6 +49,8 @@ export interface MatchPlayerStat {
   penaltiesScored?: number
   penaltiesSaved?: number
   penaltiesFaced?: number
+  goalMinutes?: number[]
+  assistMinutes?: number[]
 }
 
 export interface PlayerSeasonTotals {

@@ -70,6 +70,8 @@ export async function PUT(req: NextRequest, context: RouteContext) {
         penaltiesScored: stat.penaltiesScored ?? 0,
         penaltiesSaved: stat.penaltiesSaved ?? 0,
         penaltiesFaced: stat.penaltiesFaced ?? 0,
+        goalMinutes: stat.goalMinutes ?? [],
+        assistMinutes: stat.assistMinutes ?? [],
         enteredBy: session.sub,
         updatedAt: FieldValue.serverTimestamp(),
       }

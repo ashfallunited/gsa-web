@@ -15,6 +15,8 @@ export const matchInputSchema = z.object({
   goalsAgainst: z.number().int().min(0).max(99),
   status: matchStatusSchema,
   notes: z.string().max(2000).optional().default(''),
+  highlightUrl: z.string().url().max(500).optional().or(z.literal('')),
+  report: z.string().max(10000).optional().default(''),
 })
 
 export const matchUpdateSchema = matchInputSchema.partial()
@@ -37,6 +39,8 @@ export const matchPlayerStatInputSchema = z
     penaltiesScored: z.number().int().min(0).max(20).optional(),
     penaltiesSaved: z.number().int().min(0).max(20).optional(),
     penaltiesFaced: z.number().int().min(0).max(20).optional(),
+    goalMinutes: z.array(z.number().int().min(0).max(120)).optional(),
+    assistMinutes: z.array(z.number().int().min(0).max(120)).optional(),
   })
   .superRefine((data, ctx) => {
     if (data.yellowCards === 2 && data.redCards === 0) {

@@ -19,9 +19,11 @@ export type StatRow = {
   penaltiesScored?: number
   penaltiesSaved?: number
   penaltiesFaced?: number
+  goalMinutes?: number[]
+  assistMinutes?: number[]
 }
 
-type NumField = keyof Omit<StatRow, 'playerId' | 'started'>
+type NumField = keyof Omit<StatRow, 'playerId' | 'started' | 'goalMinutes' | 'assistMinutes'>
 
 const inputCls = 'w-full border border-gray-200 bg-white px-2 py-2.5 text-sm focus:outline-none focus:border-[#01255f]'
 const tableInputCls = 'border border-gray-200 px-1 py-1 text-xs focus:outline-none focus:border-[#01255f]'
@@ -45,11 +47,13 @@ export function MatchStatMobileCard({
   row,
   isLocked,
   onChange,
+  onMinuteChange,
 }: {
   name: string
   row: StatRow
   isLocked: boolean
   onChange: (field: keyof StatRow, value: boolean | number) => void
+  onMinuteChange?: (field: 'goalMinutes' | 'assistMinutes', index: number, value: number) => void
 }) {
   const [expanded, setExpanded] = useState((row.goals ?? 0) > 0)
 
@@ -93,6 +97,52 @@ export function MatchStatMobileCard({
           </div>
         ))}
       </div>
+
+      {/* Goal / assist minute timestamps */}
+      {row.goals > 0 && (
+        <div>
+          <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-1.5">Goal Minutes</p>
+          <div className="flex flex-wrap gap-2">
+            {Array.from({ length: row.goals }).map((_, i) => (
+              <div key={i} className="flex flex-col items-center gap-0.5">
+                <label className="text-[8px] text-[#5a6478]">G{i + 1}</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={120}
+                  placeholder="—"
+                  value={(row.goalMinutes ?? [])[i] ?? ''}
+                  disabled={isLocked}
+                  onChange={(e) => onMinuteChange?.('goalMinutes', i, Number(e.target.value))}
+                  className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {row.assists > 0 && (
+        <div>
+          <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-1.5">Assist Minutes</p>
+          <div className="flex flex-wrap gap-2">
+            {Array.from({ length: row.assists }).map((_, i) => (
+              <div key={i} className="flex flex-col items-center gap-0.5">
+                <label className="text-[8px] text-[#5a6478]">A{i + 1}</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={120}
+                  placeholder="—"
+                  value={(row.assistMinutes ?? [])[i] ?? ''}
+                  disabled={isLocked}
+                  onChange={(e) => onMinuteChange?.('assistMinutes', i, Number(e.target.value))}
+                  className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <button
         type="button"
@@ -155,11 +205,13 @@ export function MatchStatDesktopTable({
   playerName,
   isLocked,
   onChange,
+  onMinuteChange,
 }: {
   rows: StatRow[]
   playerName: (id: string) => string
   isLocked: boolean
   onChange: (playerId: string, field: keyof StatRow, value: boolean | number) => void
+  onMinuteChange?: (playerId: string, field: 'goalMinutes' | 'assistMinutes', index: number, value: number) => void
 }) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
 
@@ -233,27 +285,78 @@ export function MatchStatDesktopTable({
                 {isExpanded && (
                   <tr className="bg-[#f5f7fc] border-b border-gray-100">
                     <td colSpan={8} className="px-3 py-3">
-                      <div className="grid grid-cols-2 gap-6">
-                        <div>
-                          <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Goal Breakdown</p>
-                          <div className="grid grid-cols-4 gap-2">
-                            {GOAL_DETAIL.map(({ label, field, max }) => (
-                              <div key={field}>
-                                <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-1">{label}</label>
-                                {numInput(row.playerId, field, (row[field] as number | undefined) ?? 0, max)}
+                      <div className="space-y-4">
+                        {/* Goal / assist minute timestamps */}
+                        {(row.goals > 0 || row.assists > 0) && (
+                          <div className="flex flex-wrap gap-6">
+                            {row.goals > 0 && (
+                              <div>
+                                <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Goal Minutes</p>
+                                <div className="flex gap-2">
+                                  {Array.from({ length: row.goals }).map((_, i) => (
+                                    <div key={i} className="flex flex-col items-center gap-0.5">
+                                      <label className="text-[8px] text-[#5a6478]">G{i + 1}</label>
+                                      <input
+                                        type="number"
+                                        min={0}
+                                        max={120}
+                                        placeholder="—"
+                                        value={(row.goalMinutes ?? [])[i] ?? ''}
+                                        disabled={isLocked}
+                                        onChange={(e) => onMinuteChange?.(row.playerId, 'goalMinutes', i, Number(e.target.value))}
+                                        className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
-                            ))}
+                            )}
+                            {row.assists > 0 && (
+                              <div>
+                                <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Assist Minutes</p>
+                                <div className="flex gap-2">
+                                  {Array.from({ length: row.assists }).map((_, i) => (
+                                    <div key={i} className="flex flex-col items-center gap-0.5">
+                                      <label className="text-[8px] text-[#5a6478]">A{i + 1}</label>
+                                      <input
+                                        type="number"
+                                        min={0}
+                                        max={120}
+                                        placeholder="—"
+                                        value={(row.assistMinutes ?? [])[i] ?? ''}
+                                        disabled={isLocked}
+                                        onChange={(e) => onMinuteChange?.(row.playerId, 'assistMinutes', i, Number(e.target.value))}
+                                        className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        </div>
-                        <div>
-                          <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Penalty Stats</p>
-                          <div className="grid grid-cols-4 gap-2">
-                            {PEN_DETAIL.map(({ label, field, max }) => (
-                              <div key={field}>
-                                <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-1">{label}</label>
-                                {numInput(row.playerId, field, (row[field] as number | undefined) ?? 0, max)}
-                              </div>
-                            ))}
+                        )}
+                        <div className="grid grid-cols-2 gap-6">
+                          <div>
+                            <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Goal Breakdown</p>
+                            <div className="grid grid-cols-4 gap-2">
+                              {GOAL_DETAIL.map(({ label, field, max }) => (
+                                <div key={field}>
+                                  <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-1">{label}</label>
+                                  {numInput(row.playerId, field, (row[field] as number | undefined) ?? 0, max)}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Penalty Stats</p>
+                            <div className="grid grid-cols-4 gap-2">
+                              {PEN_DETAIL.map(({ label, field, max }) => (
+                                <div key={field}>
+                                  <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-1">{label}</label>
+                                  {numInput(row.playerId, field, (row[field] as number | undefined) ?? 0, max)}
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>
