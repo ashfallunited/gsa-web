@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { getMatchReview, type MatchReviewStat } from '@/lib/data/games'
-import { ORG_NAME, SITE_URL } from '@/lib/constants'
+import { ORG_NAME, SITE_OG_IMAGE, SITE_PAGE_TITLE_SUFFIX, SITE_URL } from '@/lib/constants'
 import { displayTeamLabel } from '@/lib/teams'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -14,15 +14,44 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const review = await getMatchReview(slug)
   if (!review) return { title: 'Match Not Found' }
+
   const { match } = review
-  const title = `vs ${match.opponent} — ${match.date}`
+  const result = match.result === 'W' ? 'WIN' : match.result === 'D' ? 'DRAW' : 'LOSS'
+  const score = `${match.goalsFor}–${match.goalsAgainst}`
+  const ogTitle = `${ORG_NAME} ${score} ${match.opponent} (${result})`
+  const description = `${result}: ${ORG_NAME} ${score} vs ${match.opponent}. ${match.competition}, ${match.season}. Read the match report, see the starting XI, goalscorers and highlights.`
+  const canonical = `${SITE_URL}/matches/${slug}`
+
   return {
-    title,
-    description: `Match review: ${ORG_NAME} ${match.goalsFor}–${match.goalsAgainst} ${match.opponent}. ${match.competition}, ${match.season}.`,
+    title: `vs ${match.opponent} ${score} | ${match.competition}`,
+    description,
+    alternates: { canonical },
     openGraph: {
-      title: `${ORG_NAME} ${match.goalsFor}–${match.goalsAgainst} ${match.opponent}`,
-      description: `${match.competition} · ${match.season} · ${match.homeAway}`,
-      url: `${SITE_URL}/matches/${slug}`,
+      type: 'article',
+      url: canonical,
+      siteName: ORG_NAME,
+      locale: 'en_GB',
+      title: ogTitle,
+      description,
+      images: [
+        {
+          url: SITE_OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: `${ORG_NAME} ${score} ${match.opponent} — Match Review`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: ogTitle,
+      description,
+      images: [SITE_OG_IMAGE],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
     },
   }
 }
