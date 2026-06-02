@@ -121,17 +121,37 @@ export function buildWebSiteJsonLd(): Record<string, unknown> {
 export function buildOrganizationJsonLd(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
-    '@type': 'SportsTeam',
+    '@type': ['SportsTeam', 'SportsOrganization', 'LocalBusiness'],
     name: ORG_NAME,
+    alternateName: 'Ashfall United FC',
     sport: 'Soccer',
     url: SITE_URL,
-    logo: absoluteUrl('/Logo.png'),
+    logo: {
+      '@type': 'ImageObject',
+      url: absoluteUrl('/Logo.png'),
+      width: 400,
+      height: 120,
+    },
+    image: absoluteUrl('/Logo.png'),
     description: ORG_DESCRIPTION,
+    foundingDate: '2019',
     address: {
       '@type': 'PostalAddress',
+      streetAddress: 'Monrovia',
       addressLocality: 'Monrovia',
+      addressRegion: 'Montserrado County',
       addressCountry: 'LR',
     },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 6.3005,
+      longitude: -10.7969,
+    },
+    areaServed: {
+      '@type': 'City',
+      name: 'Monrovia',
+    },
+    email: ORG_EMAIL,
     contactPoint: {
       '@type': 'ContactPoint',
       email: ORG_EMAIL,
@@ -139,6 +159,7 @@ export function buildOrganizationJsonLd(): Record<string, unknown> {
       availableLanguage: ['English'],
     },
     sameAs: [ORG_INSTAGRAM, ORG_FACEBOOK],
+    keywords: 'football club Liberia, youth football Monrovia, sport for development Liberia, Ashfall United',
   }
 }
 
