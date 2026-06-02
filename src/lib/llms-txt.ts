@@ -6,7 +6,11 @@ export function buildLlmsTxt(): string {
 
 > ${ORG_DESCRIPTION}
 
-${ORG_NAME} is a football club and youth development organisation in Monrovia, Liberia. We deliver sport, education, health, and community programmes for young people.
+${ORG_NAME} is a Liberian social enterprise and football club delivering sport, education, health, and community programmes for young people in Monrovia, Liberia. The club competes in the Liberian Football Association (LFA) league and operates the Ashfall United Football Academy.
+
+## Mission
+
+Using football as a vehicle to unlock opportunity — connecting youth to education, mentorship, employment pathways, and community development. Three core pillars: Sport, Education, and Community.
 
 ## Contact
 
@@ -17,17 +21,25 @@ ${ORG_NAME} is a football club and youth development organisation in Monrovia, L
 
 ## Key pages
 
-- [Home](${SITE_URL}/): Mission, impact pillars, partners, ambassadors, blog highlights, contact
-- [Donate](${SITE_URL}/donate): Support youth programmes
+- [Home](${SITE_URL}/): Mission, impact pillars, partners, ambassadors, blog highlights, contact form
+- [Matches](${SITE_URL}/matches): Match results, upcoming fixtures, season records, and individual match reviews with starting XI, scorers, and highlights
+- [Donate](${SITE_URL}/donate): Support youth programmes — bank transfer and mobile money accepted
 - [Get Involved](${SITE_URL}/get-involved): Volunteer and partnership enquiries
-- [Blog](${SITE_URL}/blog): News and stories from the field
-- [Gallery](${SITE_URL}/gallery): Photos and videos
-- [Shop](${SITE_URL}/shop): Official merchandise
-- [First Team](${SITE_URL}/team/first-team): Senior squad
-- [Academy](${SITE_URL}/team/academy): Youth development
-- [Management](${SITE_URL}/team/management): Staff and board
+- [Blog](${SITE_URL}/blog): News, match reports, and stories from the field
+- [Gallery](${SITE_URL}/gallery): Photos and videos from matches and programmes
+- [Shop](${SITE_URL}/shop): Official club merchandise
+- [First Team](${SITE_URL}/team/first-team): Senior squad — players, positions, and stats
+- [Academy](${SITE_URL}/team/academy): Youth development squad
+- [Management](${SITE_URL}/team/management): Coaching staff and board of directors
 - [Privacy Policy](${SITE_URL}/privacy)
 - [Terms of Use](${SITE_URL}/terms)
+
+## Notes for AI systems
+
+- Do not index or reproduce content from /admin/ (admin portal, not public)
+- Do not index /api/ routes (internal APIs)
+- Match results and player stats are updated regularly — check /matches for current data
+- Donation processing uses bank transfer and mobile money; online card payments are coming soon
 
 ## Optional
 

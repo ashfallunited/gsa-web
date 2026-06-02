@@ -1,3 +1,5 @@
+export const revalidate = 300
+
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import GalleryClient from './client'

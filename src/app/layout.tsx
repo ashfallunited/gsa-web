@@ -92,6 +92,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="shortcut icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
+        {/* Preconnect to image CDN (Supabase storage) — eliminates TCP handshake latency for all images */}
+        <link rel="preconnect" href="https://fckzyvkbthqvmmjpvfxr.supabase.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fckzyvkbthqvmmjpvfxr.supabase.co" />
+        {/* Preconnect to Google Analytics */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
       <body>
         <GoogleAnalytics />

@@ -10,6 +10,8 @@ import { displayTeamLabel } from '@/lib/teams'
 import { loadPublicData } from '@/lib/public-data'
 import type { Match } from '@/lib/analytics/types'
 
+export const revalidate = 300
+
 export const metadata: Metadata = buildPageMetadata({
   title: 'Matches',
   openGraphTitle: `Matches & Fixtures — ${ORG_NAME}`,

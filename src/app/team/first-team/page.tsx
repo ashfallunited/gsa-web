@@ -1,3 +1,5 @@
+export const revalidate = 600
+
 import PlayerGrid from '@/components/PlayerGrid'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'

@@ -1,3 +1,5 @@
+export const revalidate = 300
+
 import Navbar from '@/components/Navbar'
 import HomeHashScroll from '@/components/HomeHashScroll'
 import Hero from '@/components/Hero'
