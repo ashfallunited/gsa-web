@@ -2,14 +2,14 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Heart, ChevronLeft, Check, Building2, Smartphone, CreditCard } from 'lucide-react'
+import { Heart, ChevronLeft, Check, Smartphone, CreditCard } from 'lucide-react'
 import DonateShareCard from '@/components/DonateShareCard'
 import { ORG_EMAIL, ORG_NAME } from '@/lib/constants'
 import { COUNTRIES } from '@/lib/country-data'
 
 type Step = 'amount' | 'details' | 'payment' | 'review' | 'success'
 type Frequency = 'once' | 'monthly'
-type PaymentMethod = 'card' | 'bank' | 'mobile'
+type PaymentMethod = 'card' | 'mobile'
 
 type FormState = {
   frequency: Frequency
@@ -426,11 +426,10 @@ export default function DonateForm() {
                 <p className="text-sm text-[#5a6478]">Select a method to see next steps.</p>
               </div>
 
-              <div className="grid grid-cols-1 min-[480px]:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3">
                 {(
                   [
                     { id: 'card' as const, label: 'Card', Icon: CreditCard },
-                    { id: 'bank' as const, label: 'Bank transfer', Icon: Building2 },
                     { id: 'mobile' as const, label: 'Mobile money', Icon: Smartphone },
                   ] as const
                 ).map(({ id, label, Icon }) => (
@@ -480,34 +479,6 @@ export default function DonateForm() {
                       <input disabled placeholder="123" className={`${inputClass} opacity-60 cursor-not-allowed`} />
                     </div>
                   </div>
-                </div>
-              )}
-
-              {form.paymentMethod === 'bank' && (
-                <div className="border-l-4 border-[#fee11b] bg-[#f5f7fc] p-5 space-y-3">
-                  <p className="text-sm font-bold text-[#01255f]">Bank transfer instructions</p>
-                  <dl className="space-y-2 text-sm">
-                    <div>
-                      <dt className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478]">Account name</dt>
-                      <dd className="text-[#01255f] font-medium">{ORG_NAME}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478]">Reference</dt>
-                      <dd className="text-[#01255f] font-medium">
-                        {form.firstName} {form.lastName} — Donation
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478]">Details</dt>
-                      <dd className="text-[#5a6478]">
-                        Email{' '}
-                        <a href={`mailto:${ORG_EMAIL}`} className="text-[#01255f] font-bold hover:underline">
-                          {ORG_EMAIL}
-                        </a>{' '}
-                        for account numbers.
-                      </dd>
-                    </div>
-                  </dl>
                 </div>
               )}
 
@@ -581,7 +552,7 @@ export default function DonateForm() {
                 <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                   <span className="text-[#5a6478]">Payment</span>
                   <span className="text-[#01255f] capitalize">
-                    {form.paymentMethod === 'card' ? 'Card' : form.paymentMethod === 'bank' ? 'Bank transfer' : 'Mobile money'}
+                    {form.paymentMethod === 'card' ? 'Card' : 'Mobile money'}
                   </span>
                 </div>
                 <div className="px-4 sm:px-5 py-4 text-sm">
