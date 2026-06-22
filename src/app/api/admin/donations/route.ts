@@ -82,7 +82,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
 
     const db = getAdminDb()
-    let query = db.collection(DONATIONS_COLLECTION)
+    let query: any = db.collection(DONATIONS_COLLECTION)
 
     // Apply filters
     if (params.status) {
@@ -115,7 +115,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const snapshot = await query.orderBy('createdAt', 'desc').offset(params.offset).limit(params.limit).get()
 
     const donations: unknown[] = []
-    snapshot.forEach((doc) => {
+    snapshot.forEach((doc: any) => {
       const data = doc.data()
       donations.push({
         id: doc.id,

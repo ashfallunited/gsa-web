@@ -38,7 +38,9 @@ export class HeyDollrClient {
   constructor() {
     this.clientId = process.env.HEYDOLLR_CLIENT_ID || ''
     this.clientSecret = process.env.HEYDOLLR_CLIENT_SECRET || ''
+  }
 
+  private validateCredentials(): void {
     if (!this.clientId || !this.clientSecret) {
       throw new Error(
         'Hey Dollr credentials are missing. Please set HEYDOLLR_CLIENT_ID and HEYDOLLR_CLIENT_SECRET environment variables.'
@@ -51,6 +53,7 @@ export class HeyDollrClient {
    * Caches token until 1 minute before expiry
    */
   private async getAccessToken(): Promise<string> {
+    this.validateCredentials()
     const now = Date.now()
 
     // Return cached token if still valid (with 1 minute buffer)
@@ -65,7 +68,6 @@ export class HeyDollrClient {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-API-Key': this.apiKey,
           },
           body: JSON.stringify({
             client_id: this.clientId,
@@ -112,7 +114,6 @@ export class HeyDollrClient {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
-          'X-API-Key': this.apiKey,
         },
         body: JSON.stringify({
           items: [
@@ -141,7 +142,6 @@ export class HeyDollrClient {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
-            'X-API-Key': this.apiKey,
           },
           body: JSON.stringify({
             checkout_id: checkoutData.checkout_id,
@@ -178,7 +178,6 @@ export class HeyDollrClient {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
-            'X-API-Key': this.apiKey,
           },
         }
       )
@@ -197,5 +196,6 @@ export class HeyDollrClient {
   }
 }
 
+let _heyDollrInstance: HeyDollrClient | null = null
+
 export const heyDollr = new HeyDollrClient()
-export { HeyDollrClient }

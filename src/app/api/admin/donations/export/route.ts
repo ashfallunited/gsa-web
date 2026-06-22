@@ -86,7 +86,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
 
     const db = getAdminDb()
-    let query = db.collection(DONATIONS_COLLECTION)
+    let query: any = db.collection(DONATIONS_COLLECTION)
 
     // Apply filters
     if (params.status) {
@@ -118,7 +118,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const csvHeader =
       'id,first_name,last_name,email,country,amount_usd,payment_method,status,created_at,completed_at\n'
 
-    const csvRows = snapshot.docs.map((doc) => {
+    const csvRows = snapshot.docs.map((doc: any) => {
       const data = doc.data()
       const createdAt = data.createdAt ? (data.createdAt as Timestamp).toDate().toISOString() : ''
       const completedAt = data.completedAt ? (data.completedAt as Timestamp).toDate().toISOString() : ''
