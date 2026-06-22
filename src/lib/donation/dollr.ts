@@ -8,12 +8,24 @@ interface TokenResponse {
   expires_in: number
 }
 
-interface CheckoutCreateResponse {
-  checkout_id: string
+interface CheckoutSourceResponse {
+  id: string
+  type: string
 }
 
 interface SessionCheckoutResponse {
+  id: string
   reference_id: string
+  status: string
+  expires_at: string
+}
+
+interface ExecutionResponse {
+  reference_id: string
+  status: string
+  payer_amount: number
+  payee_amount: number
+  operation_type: string
 }
 
 export interface StatusResponse {
@@ -97,7 +109,8 @@ export class DollrClient {
   }
 
   /**
-   * Create a checkout and session for payment
+   * Create a donation invoice and return reference ID for payment tracking
+   * Implements Dollr's 3-step payment flow: source → session → execution
    */
   async createCheckout(
     amountUsd: number,
@@ -108,14 +121,20 @@ export class DollrClient {
     const amountCents = Math.round(amountUsd * 100)
 
     try {
-      // Step 1: Create checkout
-      const checkoutResponse = await fetch(`${this.baseUrl}/checkouts/create`, {
+      // Step 1: Create invoice source
+      const sourceResponse = await fetch(`${this.baseUrl}/checkouts/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          mode: 'online',
+          source_kind: 'invoice',
+          party_phone: 'unknown', // Required by API
+          party_email: email,
+          party_name: name,
+          currency: 'USD',
           items: [
             {
               name: 'Donation',
@@ -123,40 +142,35 @@ export class DollrClient {
               quantity: 1,
             },
           ],
-          currency: 'USD',
         }),
       })
 
-      if (!checkoutResponse.ok) {
-        throw new Error(`HTTP ${checkoutResponse.status}`)
+      if (!sourceResponse.ok) {
+        throw new Error(`Create source failed: HTTP ${sourceResponse.status}`)
       }
 
-      const checkoutData =
-        (await checkoutResponse.json()) as CheckoutCreateResponse
+      const sourceData = (await sourceResponse.json()) as CheckoutSourceResponse
 
-      // Step 2: Create session
-      const sessionResponse = await fetch(
-        `${this.baseUrl}/sessions/checkout`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            checkout_id: checkoutData.checkout_id,
-            payer_email: email,
-            payer_name: name,
-          }),
-        }
-      )
+      // Step 2: Create checkout session linked to source
+      const sessionResponse = await fetch(`${this.baseUrl}/sessions/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          source_id: sourceData.id,
+          source_type: 'invoice',
+        }),
+      })
 
       if (!sessionResponse.ok) {
-        throw new Error(`HTTP ${sessionResponse.status}`)
+        throw new Error(`Create session failed: HTTP ${sessionResponse.status}`)
       }
 
       const sessionData =
         (await sessionResponse.json()) as SessionCheckoutResponse
+
       return sessionData.reference_id
     } catch (error) {
       throw new Error(
@@ -195,7 +209,5 @@ export class DollrClient {
     }
   }
 }
-
-let _heyDollrInstance: HeyDollrClient | null = null
 
 export const dollr = new DollrClient()
