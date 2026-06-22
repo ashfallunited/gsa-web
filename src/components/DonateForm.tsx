@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Heart, ChevronLeft, Check, Building2, Smartphone, CreditCard } from 'lucide-react'
 import DonateShareCard from '@/components/DonateShareCard'
 import { ORG_EMAIL, ORG_NAME } from '@/lib/constants'
+import { COUNTRIES } from '@/lib/country-data'
 
 type Step = 'amount' | 'details' | 'payment' | 'review' | 'success'
 type Frequency = 'once' | 'monthly'
@@ -18,6 +19,7 @@ type FormState = {
   lastName: string
   email: string
   phone: string
+  country: string
   message: string
   paymentMethod: PaymentMethod
   coverFees: boolean
@@ -63,6 +65,7 @@ export default function DonateForm() {
     lastName: '',
     email: '',
     phone: '',
+    country: 'US',
     message: '',
     paymentMethod: 'card',
     coverFees: false,
@@ -87,7 +90,10 @@ export default function DonateForm() {
 
   const canContinueAmount = amountUsd >= 1
   const canContinueDetails =
-    form.firstName.trim() && form.lastName.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
+    form.firstName.trim() &&
+    form.lastName.trim() &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) &&
+    form.country.length === 2
 
   const goNext = () => {
     if (step === 'amount' && canContinueAmount) setStep('details')
@@ -146,6 +152,7 @@ export default function DonateForm() {
                   lastName: '',
                   email: '',
                   phone: '',
+                  country: 'US',
                   message: '',
                   paymentMethod: 'card',
                   coverFees: false,
@@ -360,6 +367,22 @@ export default function DonateForm() {
               </div>
 
               <div>
+                <label className={labelClass}>Country *</label>
+                <select
+                  required
+                  value={form.country}
+                  onChange={(e) => set('country', e.target.value)}
+                  className={inputClass}
+                >
+                  {COUNTRIES.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.flag} {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
                 <label className={labelClass}>Dedication or message (optional)</label>
                 <textarea
                   rows={3}
@@ -568,6 +591,13 @@ export default function DonateForm() {
                   </span>
                   <br />
                   <span className="text-[#5a6478]">{form.email}</span>
+                </div>
+                <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
+                  <span className="text-[#5a6478]">Country</span>
+                  <span className="text-[#01255f] font-medium">
+                    {COUNTRIES.find((c) => c.code === form.country)?.flag}{' '}
+                    {COUNTRIES.find((c) => c.code === form.country)?.name || form.country}
+                  </span>
                 </div>
                 {form.message && (
                   <div className="px-4 sm:px-5 py-4 text-sm">
