@@ -8,7 +8,6 @@ import { IMAGE_PLACEHOLDER } from '@/lib/constants'
 const PLACEHOLDER = IMAGE_PLACEHOLDER
 
 const CLOTHING_CATEGORIES = ['Jersey', 'Training Kit', 'Footwear']
-const CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
 export type Product = {
   id: string

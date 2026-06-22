@@ -205,10 +205,10 @@ function ResultRow({ match }: { match: PublicMatch }) {
 }
 
 /* ─── Fixture row ────────────────────────────────────────────────────────── */
-function FixtureRow({ match }: { match: Match }) {
+function FixtureRow({ match, now }: { match: Match; now: number }) {
   const { day, date } = formatDate(match.date)
   const daysUntil = Math.ceil(
-    (new Date(`${match.date}T12:00:00Z`).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+    (new Date(`${match.date}T12:00:00Z`).getTime() - now) / (1000 * 60 * 60 * 24)
   )
   const isImminent = daysUntil >= 0 && daysUntil <= 7
 
@@ -334,6 +334,7 @@ export default async function MatchesPage({
   const activeSeason = seasonParam && seasons.includes(seasonParam) ? seasonParam : ''
   const filteredResults = activeSeason ? results.filter((m) => m.season === activeSeason) : results
   const jsonLd = buildSportsEventJsonLd(results, fixtures)
+  const now = Date.now()
 
   const w = filteredResults.filter((m) => m.result === 'W').length
   const d = filteredResults.filter((m) => m.result === 'D').length
@@ -372,7 +373,7 @@ export default async function MatchesPage({
                 </h2>
                 <div className="space-y-2">
                   {fixtures.map((m) => (
-                    <FixtureRow key={m.id} match={m} />
+                    <FixtureRow key={m.id} match={m} now={now} />
                   ))}
                 </div>
               </section>

@@ -46,9 +46,6 @@ function StatRow({
   const max = Math.max(a, b, 0.01)
   const pctA = (a / max) * 100
   const pctB = (b / max) * 100
-  const aWins = a > b
-  const bWins = b > a
-
   return (
     <div className={`grid grid-cols-[1fr_auto_1fr] items-center gap-3 py-3 border-b border-gray-100 last:border-0 ${accent ? 'bg-[#fee11b]/5 -mx-4 px-4 sm:-mx-6 sm:px-6' : ''}`}>
       {/* Player A side */}

@@ -131,12 +131,15 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
     // Get IP address
     const ipAddress = getClientIpAddress(req)
 
+    // Calculate fees
+    const feeUsd = input.coverFees ? Math.round(input.amountUsd * 0.029 * 100) / 100 : 0
+    const totalUsd = input.amountUsd + feeUsd
+
     // Call Hey Dollr API to create checkout
     let referenceId: string
     try {
       const fullName = `${input.firstName} ${input.lastName}`
-      const amountToCharge = input.totalUsd || input.amountUsd
-      referenceId = await heyDollr.createCheckout(amountToCharge, input.email, fullName)
+      referenceId = await heyDollr.createCheckout(totalUsd, input.email, fullName)
     } catch (error) {
       console.error('Hey Dollr API error:', error)
       return NextResponse.json(

@@ -175,9 +175,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [menuOpen, setMenuOpen] = useState(false)
   const [role, setRole] = useState<AdminRole | null>(null)
 
-  useEffect(() => {
-    setMenuOpen(false)
-  }, [pathname])
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { setMenuOpen(false) }, [pathname])
 
   useEffect(() => {
     if (isLogin) return

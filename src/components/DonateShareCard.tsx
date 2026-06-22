@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Check, Copy, Link2, Share2 } from 'lucide-react'
 import {
   buildDonationShareMessage,
@@ -40,13 +40,12 @@ function XIcon({ className }: { className?: string }) {
 
 export default function DonateShareCard({ variant, options, className = '' }: Props) {
   const [copied, setCopied] = useState(false)
-  const [donateUrl, setDonateUrl] = useState('/donate')
-  const [canNativeShare, setCanNativeShare] = useState(false)
-
-  useEffect(() => {
-    setDonateUrl(getDonatePageUrl())
-    setCanNativeShare(typeof navigator.share === 'function')
-  }, [])
+  const [donateUrl] = useState(() =>
+    typeof window !== 'undefined' ? getDonatePageUrl() : '/donate'
+  )
+  const [canNativeShare] = useState(() =>
+    typeof window !== 'undefined' && typeof navigator.share === 'function'
+  )
 
   const message = useMemo(
     () => buildDonationShareMessage(variant, donateUrl, options),

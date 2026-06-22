@@ -32,18 +32,16 @@ interface CachedToken {
 export class HeyDollrClient {
   private clientId: string
   private clientSecret: string
-  private apiKey: string
   private baseUrl = 'https://dollr-open-api-35531319888.us-central1.run.app/v1'
   private cachedToken: CachedToken | null = null
 
   constructor() {
     this.clientId = process.env.HEYDOLLR_CLIENT_ID || ''
     this.clientSecret = process.env.HEYDOLLR_CLIENT_SECRET || ''
-    this.apiKey = process.env.HEYDOLLR_API_KEY || ''
 
-    if (!this.clientId || !this.clientSecret || !this.apiKey) {
+    if (!this.clientId || !this.clientSecret) {
       throw new Error(
-        'Hey Dollr credentials are missing. Please set HEYDOLLR_CLIENT_ID, HEYDOLLR_CLIENT_SECRET, and HEYDOLLR_API_KEY environment variables.'
+        'Hey Dollr credentials are missing. Please set HEYDOLLR_CLIENT_ID and HEYDOLLR_CLIENT_SECRET environment variables.'
       )
     }
   }

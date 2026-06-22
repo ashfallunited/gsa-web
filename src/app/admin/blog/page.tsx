@@ -133,7 +133,8 @@ export default function AdminBlog() {
       .finally(() => setLoading(false))
   }
 
-  useEffect(() => { load() }, [])
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { void load() }, [])
 
   const deletePost = async (id: string) => {
     if (!confirm('Delete this post? This cannot be undone.')) return
