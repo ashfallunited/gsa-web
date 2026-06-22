@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "tsx",
+    "test:donation": "tsx src/__tests__/donation/integration.test.ts",
     "seed:blog": "node scripts/seed-blog-posts.mjs"
   },
   "dependencies": {
