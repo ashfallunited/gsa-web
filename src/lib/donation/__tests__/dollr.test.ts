@@ -1,11 +1,11 @@
 import assert from 'assert'
 
 /**
- * Hey Dollr API Client Tests
+ * Dollr API Client Tests
  * Tests for token caching, checkout creation, status retrieval, and error handling
  */
 
-// Simple test for the HeyDollrClient structure and type definitions
+// Simple test for the DollrClient structure and type definitions
 interface TokenResponse {
   access_token: string
   expires_in: number
@@ -32,7 +32,7 @@ interface CachedToken {
   expiresAt: number
 }
 
-class MockHeyDollrClient {
+class MockDollrClient {
   private clientId: string
   private clientSecret: string
   private apiKey: string
@@ -40,13 +40,13 @@ class MockHeyDollrClient {
   private cachedToken: CachedToken | null = null
 
   constructor() {
-    this.clientId = process.env.HEYDOLLR_CLIENT_ID || ''
-    this.clientSecret = process.env.HEYDOLLR_CLIENT_SECRET || ''
-    this.apiKey = process.env.HEYDOLLR_API_KEY || ''
+    this.clientId = process.env.DOLLR_CLIENT_ID || ''
+    this.clientSecret = process.env.DOLLR_CLIENT_SECRET || ''
+    this.apiKey = process.env.DOLLR_API_KEY || ''
 
     if (!this.clientId || !this.clientSecret || !this.apiKey) {
       throw new Error(
-        'Hey Dollr credentials are missing. Please set HEYDOLLR_CLIENT_ID, HEYDOLLR_CLIENT_SECRET, and HEYDOLLR_API_KEY environment variables.'
+        'Dollr credentials are missing. Please set DOLLR_CLIENT_ID, DOLLR_CLIENT_SECRET, and DOLLR_API_KEY environment variables.'
       )
     }
   }
@@ -193,28 +193,28 @@ class MockHeyDollrClient {
 }
 
 function testConstructorWithValidCredentials(): void {
-  process.env.HEYDOLLR_CLIENT_ID = 'test-client-id'
-  process.env.HEYDOLLR_CLIENT_SECRET = 'test-client-secret'
-  process.env.HEYDOLLR_API_KEY = 'test-api-key'
+  process.env.DOLLR_CLIENT_ID = 'test-client-id'
+  process.env.DOLLR_CLIENT_SECRET = 'test-client-secret'
+  process.env.DOLLR_API_KEY = 'test-api-key'
 
   try {
-    const client = new MockHeyDollrClient()
+    const client = new MockDollrClient()
     assert(client, 'Client should be instantiated')
     console.log('✓ Constructor initializes with valid credentials')
   } finally {
-    delete process.env.HEYDOLLR_CLIENT_ID
-    delete process.env.HEYDOLLR_CLIENT_SECRET
-    delete process.env.HEYDOLLR_API_KEY
+    delete process.env.DOLLR_CLIENT_ID
+    delete process.env.DOLLR_CLIENT_SECRET
+    delete process.env.DOLLR_API_KEY
   }
 }
 
 function testConstructorThrowsWithMissingCredentials(): void {
-  delete process.env.HEYDOLLR_CLIENT_ID
-  delete process.env.HEYDOLLR_CLIENT_SECRET
-  delete process.env.HEYDOLLR_API_KEY
+  delete process.env.DOLLR_CLIENT_ID
+  delete process.env.DOLLR_CLIENT_SECRET
+  delete process.env.DOLLR_API_KEY
 
   try {
-    const client = new MockHeyDollrClient()
+    const client = new MockDollrClient()
     assert.fail('Should have thrown an error')
   } catch (error) {
     assert(
@@ -437,13 +437,13 @@ function testBaseUrlConfiguration(): void {
 }
 
 function testMultipleInstanceCreation(): void {
-  process.env.HEYDOLLR_CLIENT_ID = 'test-client-id'
-  process.env.HEYDOLLR_CLIENT_SECRET = 'test-client-secret'
-  process.env.HEYDOLLR_API_KEY = 'test-api-key'
+  process.env.DOLLR_CLIENT_ID = 'test-client-id'
+  process.env.DOLLR_CLIENT_SECRET = 'test-client-secret'
+  process.env.DOLLR_API_KEY = 'test-api-key'
 
   try {
-    const client1 = new MockHeyDollrClient()
-    const client2 = new MockHeyDollrClient()
+    const client1 = new MockDollrClient()
+    const client2 = new MockDollrClient()
 
     assert(client1, 'First client instance should exist')
     assert(client2, 'Second client instance should exist')
@@ -454,9 +454,9 @@ function testMultipleInstanceCreation(): void {
 
     console.log('✓ Multiple client instances can be created independently')
   } finally {
-    delete process.env.HEYDOLLR_CLIENT_ID
-    delete process.env.HEYDOLLR_CLIENT_SECRET
-    delete process.env.HEYDOLLR_API_KEY
+    delete process.env.DOLLR_CLIENT_ID
+    delete process.env.DOLLR_CLIENT_SECRET
+    delete process.env.DOLLR_API_KEY
   }
 }
 
@@ -477,7 +477,7 @@ function testMinimumDonationAmount(): void {
 }
 
 // Run all tests
-console.log('\n=== Running Hey Dollr API Client Tests ===\n')
+console.log('\n=== Running Dollr API Client Tests ===\n')
 
 try {
   testConstructorWithValidCredentials()
@@ -493,7 +493,7 @@ try {
   testMultipleInstanceCreation()
   testMinimumDonationAmount()
 
-  console.log('\n✓ All Hey Dollr API client tests passed!\n')
+  console.log('\n✓ All Dollr API client tests passed!\n')
 } catch (error) {
   console.error('\n✗ Test failed:', error)
   process.exit(1)

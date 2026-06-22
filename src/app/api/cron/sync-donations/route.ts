@@ -10,7 +10,7 @@ import {
   markEmailSentSupabase,
   logEmail,
 } from '@/lib/donation/supabase'
-import { heyDollr } from '@/lib/donation/heydollr'
+import { dollr } from '@/lib/donation/dollr'
 import { sendThankYouEmail } from '@/lib/donation/email'
 import { RETRY_SCHEDULE_MINUTES, RETRY_EXPIRY_HOURS, DONATION_STATUS } from '@/lib/donation/constants'
 import type { Donation } from '@/types/donation'
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // 4a: Get payment status from Hey Dollr
         let paymentStatus: string
         try {
-          const statusResponse = await heyDollr.getPaymentStatus(donation.referenceId)
+          const statusResponse = await dollr.getPaymentStatus(donation.referenceId)
           paymentStatus = statusResponse.status
         } catch (error) {
           // 4d: On error, check retry logic

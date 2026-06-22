@@ -1,6 +1,6 @@
 /**
- * Hey Dollr API Client
- * Handles payment processing for donations via Hey Dollr
+ * Dollr API Client
+ * Handles payment processing for donations via Dollr
  */
 
 interface TokenResponse {
@@ -29,21 +29,21 @@ interface CachedToken {
   expiresAt: number
 }
 
-export class HeyDollrClient {
+export class DollrClient {
   private clientId: string
   private clientSecret: string
   private baseUrl = 'https://dollr-open-api-35531319888.us-central1.run.app/v1'
   private cachedToken: CachedToken | null = null
 
   constructor() {
-    this.clientId = process.env.HEYDOLLR_CLIENT_ID || ''
-    this.clientSecret = process.env.HEYDOLLR_CLIENT_SECRET || ''
+    this.clientId = process.env.DOLLR_CLIENT_ID || ''
+    this.clientSecret = process.env.DOLLR_CLIENT_SECRET || ''
   }
 
   private validateCredentials(): void {
     if (!this.clientId || !this.clientSecret) {
       throw new Error(
-        'Hey Dollr credentials are missing. Please set HEYDOLLR_CLIENT_ID and HEYDOLLR_CLIENT_SECRET environment variables.'
+        'Hey Dollr credentials are missing. Please set DOLLR_CLIENT_ID and DOLLR_CLIENT_SECRET environment variables.'
       )
     }
   }
@@ -198,4 +198,4 @@ export class HeyDollrClient {
 
 let _heyDollrInstance: HeyDollrClient | null = null
 
-export const heyDollr = new HeyDollrClient()
+export const dollr = new DollrClient()

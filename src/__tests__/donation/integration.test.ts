@@ -125,7 +125,7 @@ interface MockPaymentState {
   attemptCount: number
 }
 
-class MockHeyDollr {
+class MockDollr {
   private payments: Map<string, MockPaymentState> = new Map()
   private checkoutFailures = 0
   private callLog: string[] = []
@@ -291,14 +291,14 @@ function calculateExpectedFee(amount: number): number {
 // Test 1: Full donation flow - create, verify, complete
 async function testFullDonationFlow(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
   const supabase = new MockSupabase()
   const email = new MockEmail()
 
   const input = createValidInput()
 
   // Step 1: Create donation
-  const referenceId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+  const referenceId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
   assert(referenceId, 'Should create checkout')
 
   const donationId = await firestore.saveDonation(input, '192.168.1.1', referenceId)
@@ -312,8 +312,8 @@ async function testFullDonationFlow(): Promise<void> {
   assert.strictEqual(donation.totalUsd, 50)
 
   // Step 3: Mark payment as completed
-  heydollr.setPaymentStatus(referenceId, 'paid')
-  const status = await heydollr.getPaymentStatus(referenceId)
+  dollr.setPaymentStatus(referenceId, 'paid')
+  const status = await dollr.getPaymentStatus(referenceId)
   assert.strictEqual(status.status, 'paid')
 
   // Step 4: Update donation to completed
@@ -336,7 +336,7 @@ async function testFullDonationFlow(): Promise<void> {
 // Test 2: Donation with fee coverage
 async function testDonationWithFeeCoverage(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   const input: DonationInput = {
     ...createValidInput(),
@@ -344,7 +344,7 @@ async function testDonationWithFeeCoverage(): Promise<void> {
     coverFees: true,
   }
 
-  const referenceId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+  const referenceId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
   const donationId = await firestore.saveDonation(input, '192.168.1.1', referenceId)
 
   const donation = await firestore.getDonation(donationId)
@@ -357,16 +357,16 @@ async function testDonationWithFeeCoverage(): Promise<void> {
 // Test 3: Retry logic - payment fails, then retries
 async function testPaymentRetryLogic(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
   const email = new MockEmail()
 
   const input = createValidInput()
-  const referenceId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+  const referenceId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
   const donationId = await firestore.saveDonation(input, '192.168.1.1', referenceId)
 
   // First status check - still pending
-  heydollr.setPaymentStatus(referenceId, 'pending')
-  let status = await heydollr.getPaymentStatus(referenceId)
+  dollr.setPaymentStatus(referenceId, 'pending')
+  let status = await dollr.getPaymentStatus(referenceId)
   assert.strictEqual(status.status, 'pending')
 
   // Schedule retry
@@ -377,8 +377,8 @@ async function testPaymentRetryLogic(): Promise<void> {
   assert.strictEqual(donation.retryAttempts, 1)
 
   // Second attempt - payment succeeds
-  heydollr.setPaymentStatus(referenceId, 'paid')
-  status = await heydollr.getPaymentStatus(referenceId)
+  dollr.setPaymentStatus(referenceId, 'paid')
+  status = await dollr.getPaymentStatus(referenceId)
   assert.strictEqual(status.status, 'paid')
 
   // Complete donation
@@ -394,15 +394,15 @@ async function testPaymentRetryLogic(): Promise<void> {
 // Test 4: Multiple retry attempts before success
 async function testMultipleRetryAttempts(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   const input = createValidInput()
-  const referenceId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+  const referenceId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
   const donationId = await firestore.saveDonation(input, '192.168.1.1', referenceId)
 
   // Simulate multiple failed retries
   for (let i = 0; i < 3; i++) {
-    heydollr.setPaymentStatus(referenceId, 'pending')
+    dollr.setPaymentStatus(referenceId, 'pending')
     const nextRetry = new Date(Date.now() + RETRY_SCHEDULE_MINUTES[i] * 60000)
     await firestore.incrementRetryAttempts(donationId, nextRetry)
   }
@@ -411,7 +411,7 @@ async function testMultipleRetryAttempts(): Promise<void> {
   assert.strictEqual(donation.retryAttempts, 3)
 
   // Finally succeeds
-  heydollr.setPaymentStatus(referenceId, 'paid')
+  dollr.setPaymentStatus(referenceId, 'paid')
   await firestore.updateDonationStatus(donationId, DONATION_STATUS.COMPLETED, 'paid')
 
   donation = await firestore.getDonation(donationId)
@@ -422,13 +422,13 @@ async function testMultipleRetryAttempts(): Promise<void> {
 // Test 5: Cron job polls pending donations
 async function testCronJobPolling(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   // Create multiple donations
   const donations: string[] = []
   for (let i = 0; i < 3; i++) {
     const input = { ...createValidInput(), amountUsd: 25 + i * 10 }
-    const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+    const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
     const docId = await firestore.saveDonation(input, '192.168.1.1', refId)
     donations.push(docId)
   }
@@ -439,7 +439,7 @@ async function testCronJobPolling(): Promise<void> {
 
   // Mark first one as completed
   const firstDonation = await firestore.getDonation(donations[0])
-  heydollr.setPaymentStatus(firstDonation.referenceId as string, 'paid')
+  dollr.setPaymentStatus(firstDonation.referenceId as string, 'paid')
   await firestore.updateDonationStatus(donations[0], DONATION_STATUS.COMPLETED, 'paid')
 
   // Query again
@@ -450,15 +450,15 @@ async function testCronJobPolling(): Promise<void> {
 // Test 6: Admin list donations with filters
 async function testAdminListDonationsWithFilters(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   // Create donations with different statuses
   const input1 = createValidInput()
-  const ref1 = await heydollr.createCheckout(input1.amountUsd, input1.email, input1.firstName)
+  const ref1 = await dollr.createCheckout(input1.amountUsd, input1.email, input1.firstName)
   const id1 = await firestore.saveDonation(input1, '192.168.1.1', ref1)
 
   const input2 = { ...createValidInput(), amountUsd: 100 }
-  const ref2 = await heydollr.createCheckout(input2.amountUsd, input2.email, input2.firstName)
+  const ref2 = await dollr.createCheckout(input2.amountUsd, input2.email, input2.firstName)
   const id2 = await firestore.saveDonation(input2, '192.168.1.1', ref2)
 
   // Mark second as completed
@@ -478,11 +478,11 @@ async function testAdminListDonationsWithFilters(): Promise<void> {
 // Test 7: Admin complete donation endpoint
 async function testAdminCompleteDonation(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
   const email = new MockEmail()
 
   const input = createValidInput()
-  const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+  const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
   const donationId = await firestore.saveDonation(input, '192.168.1.1', refId)
 
   // Admin manually marks as complete with note
@@ -502,11 +502,11 @@ async function testAdminCompleteDonation(): Promise<void> {
 // Test 8: Admin send custom email
 async function testAdminSendCustomEmail(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
   const email = new MockEmail()
 
   const input = createValidInput()
-  const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+  const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
   const donationId = await firestore.saveDonation(input, '192.168.1.1', refId)
 
   // Send custom email
@@ -539,13 +539,13 @@ async function testValidationErrorLowAmount(): Promise<void> {
 
 // Test 11: Payment gateway error handling
 async function testPaymentGatewayError(): Promise<void> {
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   // Simulate payment gateway failure
-  heydollr.makeCheckoutFail(1)
+  dollr.makeCheckoutFail(1)
 
   try {
-    await heydollr.createCheckout(50, 'test@example.com', 'Test User')
+    await dollr.createCheckout(50, 'test@example.com', 'Test User')
     assert.fail('Should throw error')
   } catch (error) {
     assert((error as Error).message.includes('temporarily unavailable'))
@@ -563,14 +563,14 @@ async function testDonationNotFound(): Promise<void> {
 // Test 13: Concurrent donation requests
 async function testConcurrentDonations(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   // Create 5 donations concurrently
   const donations: Promise<string>[] = []
   for (let i = 0; i < 5; i++) {
     const input = { ...createValidInput(), amountUsd: 25 + i * 10 }
     const promise = (async () => {
-      const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+      const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
       return await firestore.saveDonation(input, '192.168.1.1', refId)
     })()
     donations.push(promise)
@@ -589,13 +589,13 @@ async function testConcurrentDonations(): Promise<void> {
 // Test 14: Fee calculation for various amounts
 async function testFeeCalculationVariousAmounts(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   const amounts = [10, 25, 50, 100, 250, 500]
 
   for (const amount of amounts) {
     const input = { ...createValidInput(), amountUsd: amount, coverFees: true }
-    const refId = await heydollr.createCheckout(amount, input.email, input.firstName)
+    const refId = await dollr.createCheckout(amount, input.email, input.firstName)
     const docId = await firestore.saveDonation(input, '192.168.1.1', refId)
 
     const donation = await firestore.getDonation(docId)
@@ -608,11 +608,11 @@ async function testFeeCalculationVariousAmounts(): Promise<void> {
 // Test 15: Email tracking and audit
 async function testEmailTrackingAudit(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
   const email = new MockEmail()
 
   const input = createValidInput()
-  const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+  const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
   const donationId = await firestore.saveDonation(input, '192.168.1.1', refId)
 
   // Complete donation
@@ -632,13 +632,13 @@ async function testEmailTrackingAudit(): Promise<void> {
 // Test 16: Export donations (admin)
 async function testExportDonations(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   // Create multiple donations
   const donations: string[] = []
   for (let i = 0; i < 3; i++) {
     const input = { ...createValidInput(), amountUsd: 50 + i * 50 }
-    const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+    const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
     const docId = await firestore.saveDonation(input, '192.168.1.1', refId)
     donations.push(docId)
   }
@@ -659,7 +659,7 @@ async function testExportDonations(): Promise<void> {
 // Test 17: Analytics - total donated, by status
 async function testAnalytics(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   // Create donations with different statuses
   const amounts = [25, 50, 100]
@@ -667,7 +667,7 @@ async function testAnalytics(): Promise<void> {
 
   for (const amount of amounts) {
     const input = { ...createValidInput(), amountUsd: amount }
-    const refId = await heydollr.createCheckout(amount, input.email, input.firstName)
+    const refId = await dollr.createCheckout(amount, input.email, input.firstName)
     const docId = await firestore.saveDonation(input, '192.168.1.1', refId)
     donationIds.push(docId)
   }
@@ -691,11 +691,11 @@ async function testAnalytics(): Promise<void> {
 // Test 18: Supabase failover (non-blocking)
 async function testSupabaseFailover(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
   const supabase = new MockSupabase()
 
   const input = createValidInput()
-  const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+  const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
 
   // Make Supabase fail
   supabase.setShouldFail(true)
@@ -720,13 +720,13 @@ async function testSupabaseFailover(): Promise<void> {
 // Test 19: IP address tracking
 async function testIPAddressTracking(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   const input = createValidInput()
   const ipAddresses = ['192.168.1.1', '10.0.0.1', '203.0.113.5']
 
   for (const ip of ipAddresses) {
-    const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+    const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
     const docId = await firestore.saveDonation(input, ip, refId)
 
     const donation = await firestore.getDonation(docId)
@@ -737,13 +737,13 @@ async function testIPAddressTracking(): Promise<void> {
 // Test 20: Payment method variations
 async function testPaymentMethodVariations(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   const methods = ['card', 'mobile']
 
   for (const method of methods) {
     const input = { ...createValidInput(), paymentMethod: method as any }
-    const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+    const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
     const docId = await firestore.saveDonation(input, '192.168.1.1', refId)
 
     const donation = await firestore.getDonation(docId)
@@ -754,16 +754,16 @@ async function testPaymentMethodVariations(): Promise<void> {
 // Test 21: Message field optional
 async function testMessageFieldOptional(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   // With message
   const input1 = { ...createValidInput(), message: 'Great work!' }
-  const ref1 = await heydollr.createCheckout(input1.amountUsd, input1.email, input1.firstName)
+  const ref1 = await dollr.createCheckout(input1.amountUsd, input1.email, input1.firstName)
   const id1 = await firestore.saveDonation(input1, '192.168.1.1', ref1)
 
   // Without message
   const input2 = createValidInput()
-  const ref2 = await heydollr.createCheckout(input2.amountUsd, input2.email, input2.firstName)
+  const ref2 = await dollr.createCheckout(input2.amountUsd, input2.email, input2.firstName)
   const id2 = await firestore.saveDonation(input2, '192.168.1.1', ref2)
 
   const d1 = await firestore.getDonation(id1)
@@ -776,10 +776,10 @@ async function testMessageFieldOptional(): Promise<void> {
 // Test 22: Admin notes on donation
 async function testAdminNotes(): Promise<void> {
   const firestore = new MockFirestore()
-  const heydollr = new MockHeyDollr()
+  const dollr = new MockDollr()
 
   const input = createValidInput()
-  const refId = await heydollr.createCheckout(input.amountUsd, input.email, input.firstName)
+  const refId = await dollr.createCheckout(input.amountUsd, input.email, input.firstName)
   const donationId = await firestore.saveDonation(input, '192.168.1.1', refId)
 
   // Add admin notes

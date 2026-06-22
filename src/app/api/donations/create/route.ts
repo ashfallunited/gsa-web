@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import type { DonationInput, DonationResponse } from '@/types/donation'
 import { saveDonationToFirestore } from '@/lib/donation/firestore'
 import { saveDonationToSupabase } from '@/lib/donation/supabase'
-import { heyDollr } from '@/lib/donation/heydollr'
+import { dollr } from '@/lib/donation/dollr'
 import { MIN_DONATION_USD } from '@/lib/donation/constants'
 import { COUNTRIES } from '@/lib/country-data'
 
@@ -139,7 +139,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
     let referenceId: string
     try {
       const fullName = `${input.firstName} ${input.lastName}`
-      referenceId = await heyDollr.createCheckout(totalUsd, input.email, fullName)
+      referenceId = await dollr.createCheckout(totalUsd, input.email, fullName)
     } catch (error) {
       console.error('Hey Dollr API error:', error)
       return NextResponse.json(

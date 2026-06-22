@@ -4,7 +4,7 @@ import { MIN_DONATION_USD } from '@/lib/donation/constants'
 
 /**
  * Mock implementation of the donations/create POST endpoint for testing
- * Tests validation, error handling, and integration with Hey Dollr and database layers
+ * Tests validation, error handling, and integration with Dollr and database layers
  */
 
 // Mock types and classes
@@ -19,7 +19,7 @@ interface MockResponse<T> {
 }
 
 // Mock implementations
-class MockHeyDollrClient {
+class MockDollrClient {
   async createCheckout(amountUsd: number, email: string, name: string): Promise<string> {
     if (amountUsd < MIN_DONATION_USD) {
       throw new Error('Amount too low')
@@ -131,7 +131,7 @@ function getClientIpAddress(headers: Map<string, string>): string {
 async function mockPOSTHandler(
   body: unknown,
   headers: Map<string, string>,
-  heyDollr: MockHeyDollrClient,
+  heyDollr: MockDollrClient,
   firestore: MockFirestore,
   supabase: MockSupabase
 ): Promise<MockResponse<DonationResponse>> {
@@ -165,14 +165,14 @@ async function mockPOSTHandler(
     // Get IP address
     const ipAddress = getClientIpAddress(headers)
 
-    // Call Hey Dollr API
+    // Call Dollr API
     let referenceId: string
     try {
       const fullName = `${input.firstName} ${input.lastName}`
       const amountToCharge = input.totalUsd || input.amountUsd
       referenceId = await heyDollr.createCheckout(amountToCharge, input.email, fullName)
     } catch (error) {
-      console.error('Hey Dollr API error:', error)
+      console.error('Dollr API error:', error)
       return {
         status: 500,
         data: {
@@ -228,7 +228,7 @@ async function mockPOSTHandler(
 // ============ TESTS ============
 
 async function testValidDonation(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -255,7 +255,7 @@ async function testValidDonation(): Promise<void> {
 }
 
 async function testValidDonationWithFees(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -282,7 +282,7 @@ async function testValidDonationWithFees(): Promise<void> {
 }
 
 async function testMissingFirstName(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -306,7 +306,7 @@ async function testMissingFirstName(): Promise<void> {
 }
 
 async function testMissingLastName(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -330,7 +330,7 @@ async function testMissingLastName(): Promise<void> {
 }
 
 async function testMissingEmail(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -354,7 +354,7 @@ async function testMissingEmail(): Promise<void> {
 }
 
 async function testInvalidEmailFormat(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -378,7 +378,7 @@ async function testInvalidEmailFormat(): Promise<void> {
 }
 
 async function testInvalidCountry(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -402,7 +402,7 @@ async function testInvalidCountry(): Promise<void> {
 }
 
 async function testMissingCountry(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -425,7 +425,7 @@ async function testMissingCountry(): Promise<void> {
 }
 
 async function testAmountTooLow(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -449,7 +449,7 @@ async function testAmountTooLow(): Promise<void> {
 }
 
 async function testMissingAmount(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -472,7 +472,7 @@ async function testMissingAmount(): Promise<void> {
 }
 
 async function testInvalidPaymentMethod(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -496,7 +496,7 @@ async function testInvalidPaymentMethod(): Promise<void> {
 }
 
 async function testMissingPhone(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -520,7 +520,7 @@ async function testMissingPhone(): Promise<void> {
 }
 
 async function testInvalidCoverFeesType(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -544,7 +544,7 @@ async function testInvalidCoverFeesType(): Promise<void> {
 }
 
 async function testMultipleValidationErrors(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
@@ -575,7 +575,7 @@ async function testMultipleValidationErrors(): Promise<void> {
 }
 
 async function testIPAddressExtraction(): Promise<void> {
-  const heyDollr = new MockHeyDollrClient()
+  const heyDollr = new MockDollrClient()
   const firestore = new MockFirestore()
   const supabase = new MockSupabase()
 
