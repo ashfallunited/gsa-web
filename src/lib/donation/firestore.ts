@@ -1,15 +1,4 @@
-import {
-  collection,
-  addDoc,
-  doc,
-  updateDoc,
-  getDoc,
-  query,
-  where,
-  getDocs,
-  Timestamp,
-  writeBatch,
-} from 'firebase-admin/firestore'
+import { Timestamp } from 'firebase-admin/firestore'
 import { getAdminDb } from '@/lib/firebase-admin'
 import type { Donation, DonationInput, DonationStatus } from '@/types/donation'
 import { DONATION_STATUS, PROCESSING_FEE_RATE, RETRY_EXPIRY_HOURS } from './constants'
@@ -67,7 +56,7 @@ export async function saveDonationToFirestore(
       nextRetryAt: null,
     }
 
-    const docRef = await addDoc(collection(db, DONATIONS_COLLECTION), donationData)
+    const docRef = await db.collection(DONATIONS_COLLECTION).add(donationData)
     return docRef.id
   } catch (error) {
     console.error('Error saving donation to Firestore:', error)
@@ -83,10 +72,9 @@ export async function saveDonationToFirestore(
 export async function getDonation(id: string): Promise<Donation | null> {
   try {
     const db = getAdminDb()
-    const docRef = doc(db, DONATIONS_COLLECTION, id)
-    const docSnap = await getDoc(docRef)
+    const docSnap = await db.collection(DONATIONS_COLLECTION).doc(id).get()
 
-    if (!docSnap.exists()) {
+    if (!docSnap.exists) {
       return null
     }
 
@@ -115,7 +103,6 @@ export async function updateDonationStatus(
 ): Promise<void> {
   try {
     const db = getAdminDb()
-    const docRef = doc(db, DONATIONS_COLLECTION, id)
     const now = Timestamp.now()
 
     const updateData: Record<string, unknown> = {
@@ -133,7 +120,7 @@ export async function updateDonationStatus(
       updateData.completedAt = now
     }
 
-    await updateDoc(docRef, updateData)
+    await db.collection(DONATIONS_COLLECTION).doc(id).update(updateData)
   } catch (error) {
     console.error('Error updating donation status in Firestore:', error)
     throw error
@@ -148,12 +135,11 @@ export async function queryPendingDonations(): Promise<Donation[]> {
   try {
     const db = getAdminDb()
 
-    const q = query(
-      collection(db, DONATIONS_COLLECTION),
-      where('status', 'in', [DONATION_STATUS.PENDING, DONATION_STATUS.PROCESSING])
-    )
+    const querySnapshot = await db
+      .collection(DONATIONS_COLLECTION)
+      .where('status', 'in', [DONATION_STATUS.PENDING, DONATION_STATUS.PROCESSING])
+      .get()
 
-    const querySnapshot = await getDocs(q)
     const donations: Donation[] = []
 
     querySnapshot.forEach((docSnap) => {
@@ -177,10 +163,9 @@ export async function queryPendingDonations(): Promise<Donation[]> {
 export async function markEmailSent(id: string): Promise<void> {
   try {
     const db = getAdminDb()
-    const docRef = doc(db, DONATIONS_COLLECTION, id)
     const now = Timestamp.now()
 
-    await updateDoc(docRef, {
+    await db.collection(DONATIONS_COLLECTION).doc(id).update({
       emailSent: true,
       updatedAt: now,
     })
@@ -201,19 +186,18 @@ export async function incrementRetryAttempts(
 ): Promise<void> {
   try {
     const db = getAdminDb()
-    const docRef = doc(db, DONATIONS_COLLECTION, id)
     const now = Timestamp.now()
 
     // Get current retry attempts
-    const docSnap = await getDoc(docRef)
-    if (!docSnap.exists()) {
+    const docSnap = await db.collection(DONATIONS_COLLECTION).doc(id).get()
+    if (!docSnap.exists) {
       throw new Error(`Donation with id ${id} not found`)
     }
 
-    const currentRetryAttempts = docSnap.data().retryAttempts || 0
+    const currentRetryAttempts = docSnap.data()?.retryAttempts || 0
     const nextRetryTimestamp = Timestamp.fromDate(nextRetryAt)
 
-    await updateDoc(docRef, {
+    await db.collection(DONATIONS_COLLECTION).doc(id).update({
       retryAttempts: currentRetryAttempts + 1,
       nextRetryAt: nextRetryTimestamp,
       updatedAt: now,
