@@ -25,7 +25,7 @@ function getSupabaseAdminClient() {
  * Saves a donation record to Supabase
  * @param input - DonationInput with donor and donation details
  * @param ipAddress - IP address of the donor
- * @param referenceId - Hey Dollr reference ID
+ * @param referenceId - Dollr reference ID
  * @param firebaseId - Firebase document ID (used as Supabase ID for dual-write consistency)
  * @throws Error if insert fails
  */
@@ -91,7 +91,7 @@ export async function saveDonationToSupabase(
  * Updates the status of a donation in Supabase
  * @param id - The UUID of the donation
  * @param status - The new DonationStatus
- * @param dollrStatus - The status from Hey Dollr API
+ * @param dollrStatus - The status from Dollr API
  * @param notes - Optional admin notes about the status update
  * @throws Error if update fails
  */

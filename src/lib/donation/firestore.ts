@@ -9,7 +9,7 @@ const DONATIONS_COLLECTION = 'donations'
  * Saves a new donation record to Firestore
  * @param input - DonationInput with donor and donation details
  * @param ipAddress - IP address of the donor
- * @param referenceId - Hey Dollr reference ID
+ * @param referenceId - Dollr reference ID
  * @returns The document ID of the saved donation
  */
 export async function saveDonationToFirestore(
@@ -92,7 +92,7 @@ export async function getDonation(id: string): Promise<Donation | null> {
  * Updates the status of a donation
  * @param id - The document ID of the donation
  * @param status - The new DonationStatus
- * @param dollrStatus - The status from Hey Dollr API
+ * @param dollrStatus - The status from Dollr API
  * @param notes - Optional notes about the status update
  */
 export async function updateDonationStatus(

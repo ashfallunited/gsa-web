@@ -97,7 +97,7 @@ function getClientIpAddress(req: NextRequest): string {
 
 /**
  * POST /api/donations/create
- * Creates a donation record and initiates payment with Hey Dollr
+ * Creates a donation record and initiates payment with Dollr
  */
 export async function POST(req: NextRequest): Promise<NextResponse<DonationResponse>> {
   try {
@@ -135,13 +135,13 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
     const feeUsd = input.coverFees ? Math.round(input.amountUsd * 0.029 * 100) / 100 : 0
     const totalUsd = input.amountUsd + feeUsd
 
-    // Call Hey Dollr API to create checkout
+    // Call Dollr API to create checkout
     let referenceId: string
     try {
       const fullName = `${input.firstName} ${input.lastName}`
       referenceId = await dollr.createCheckout(totalUsd, input.email, fullName)
     } catch (error) {
-      console.error('Hey Dollr API error:', error)
+      console.error('Dollr API error:', error)
       return NextResponse.json(
         {
           success: false,
@@ -181,7 +181,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
         success: true,
         donationId,
         status: 'pending',
-        paymentUrl: undefined, // Hey Dollr returns reference ID, actual payment URL is retrieved separately
+        paymentUrl: undefined, // Dollr returns reference ID, actual payment URL is retrieved separately
       },
       { status: 201 }
     )

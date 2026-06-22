@@ -19,7 +19,7 @@ export interface Donation {
   feeUsd: number
   totalUsd: number
 
-  referenceId: string // Hey Dollr reference
+  referenceId: string // Dollr reference
   status: DonationStatus
   dollrStatus: string
 

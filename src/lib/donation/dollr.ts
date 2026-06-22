@@ -55,13 +55,13 @@ export class DollrClient {
   private validateCredentials(): void {
     if (!this.clientId || !this.clientSecret) {
       throw new Error(
-        'Hey Dollr credentials are missing. Please set DOLLR_CLIENT_ID and DOLLR_CLIENT_SECRET environment variables.'
+        'Dollr credentials are missing. Please set DOLLR_CLIENT_ID and DOLLR_CLIENT_SECRET environment variables.'
       )
     }
   }
 
   /**
-   * Get access token from Hey Dollr API
+   * Get access token from Dollr API
    * Caches token until 1 minute before expiry
    */
   private async getAccessToken(): Promise<string> {

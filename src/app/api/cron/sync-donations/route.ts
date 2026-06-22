@@ -65,7 +65,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     for (const donation of pendingDonations) {
       try {
-        // 4a: Get payment status from Hey Dollr
+        // 4a: Get payment status from Dollr
         let paymentStatus: string
         try {
           const statusResponse = await dollr.getPaymentStatus(donation.referenceId)
