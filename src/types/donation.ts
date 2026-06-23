@@ -43,6 +43,12 @@ export interface DonationInput {
   paymentMethod: PaymentMethod
   coverFees: boolean
   message?: string
+  // Payment details
+  cardNumber?: string
+  cardExpiry?: string
+  cardCVV?: string
+  mobilePhone?: string
+  detectedProvider?: string
 }
 
 export interface DonationResponse {

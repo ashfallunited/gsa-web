@@ -64,7 +64,7 @@ export class DollrClient {
    * Get access token from Dollr API
    * Caches token until 1 minute before expiry
    */
-  private async getAccessToken(): Promise<string> {
+  async getAccessToken(): Promise<string> {
     this.validateCredentials()
     const now = Date.now()
 

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { Heart, ChevronLeft, Check, Smartphone, CreditCard } from 'lucide-react'
 import DonateShareCard from '@/components/DonateShareCard'
-import { ORG_EMAIL, ORG_NAME } from '@/lib/constants'
+import { ORG_NAME } from '@/lib/constants'
 import { COUNTRIES } from '@/lib/country-data'
 
 type Step = 'amount' | 'details' | 'payment' | 'review' | 'success'
@@ -23,6 +23,11 @@ type FormState = {
   message: string
   paymentMethod: PaymentMethod
   coverFees: boolean
+  // Payment details
+  cardNumber: string
+  cardExpiry: string
+  cardCVV: string
+  mobilePhone: string
 }
 
 const PRESETS_USD = [25, 50, 100, 250, 500] as const
@@ -55,6 +60,8 @@ export default function DonateForm() {
   const [referenceId, setReferenceId] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [isDetectingProvider, setIsDetectingProvider] = useState(false)
+  const [detectedProvider, setDetectedProvider] = useState<string>('')
   const [form, setForm] = useState<FormState>({
     frequency: 'once',
     amountPreset: 50,
@@ -67,6 +74,10 @@ export default function DonateForm() {
     message: '',
     paymentMethod: 'card',
     coverFees: false,
+    cardNumber: '',
+    cardExpiry: '',
+    cardCVV: '',
+    mobilePhone: '',
   })
 
   const amountUsd = useMemo(() => {
@@ -93,10 +104,31 @@ export default function DonateForm() {
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) &&
     form.country.length === 2
 
+  const canContinuePayment = form.paymentMethod === 'card'
+    ? form.cardNumber.replace(/\s/g, '').length >= 13 && form.cardExpiry && form.cardCVV.length >= 3
+    : form.mobilePhone.trim().length >= 10
+
+  const detectMobileProvider = async (phone: string) => {
+    if (phone.length < 10) return
+
+    setIsDetectingProvider(true)
+    try {
+      const response = await fetch(`/api/donations/detect-provider?phone=${encodeURIComponent(phone)}`)
+      const data = await response.json()
+      if (data.provider) {
+        setDetectedProvider(data.provider)
+      }
+    } catch (error) {
+      console.error('Failed to detect provider:', error)
+    } finally {
+      setIsDetectingProvider(false)
+    }
+  }
+
   const goNext = () => {
     if (step === 'amount' && canContinueAmount) setStep('details')
     else if (step === 'details' && canContinueDetails) setStep('payment')
-    else if (step === 'payment') setStep('review')
+    else if (step === 'payment' && canContinuePayment) setStep('review')
   }
 
   const goBack = () => {
@@ -123,6 +155,12 @@ export default function DonateForm() {
           amountUsd: amountUsd,
           paymentMethod: form.paymentMethod,
           coverFees: form.coverFees,
+          // Payment details
+          cardNumber: form.paymentMethod === 'card' ? form.cardNumber : undefined,
+          cardExpiry: form.paymentMethod === 'card' ? form.cardExpiry : undefined,
+          cardCVV: form.paymentMethod === 'card' ? form.cardCVV : undefined,
+          mobilePhone: form.paymentMethod === 'mobile' ? form.mobilePhone : undefined,
+          detectedProvider: form.paymentMethod === 'mobile' ? detectedProvider : undefined,
         }),
       })
 
@@ -189,6 +227,10 @@ export default function DonateForm() {
                   message: '',
                   paymentMethod: 'card',
                   coverFees: false,
+                  cardNumber: '',
+                  cardExpiry: '',
+                  cardCVV: '',
+                  mobilePhone: '',
                 })
               }}
               className="border border-[#01255f] text-[#01255f] px-6 py-3 text-sm font-bold tracking-wide hover:bg-[#f5f7fc]"
@@ -473,36 +515,75 @@ export default function DonateForm() {
               </div>
 
               {form.paymentMethod === 'card' && (
-                <div className="border-l-4 border-[#fee11b] bg-[#f5f7fc] p-5 space-y-3">
-                  <p className="text-sm font-bold text-[#01255f]">Secure Card Payment</p>
-                  <p className="text-sm text-[#5a6478] leading-relaxed">
-                    Your card details will be securely processed by Dollr when you review and complete your donation.
-                  </p>
+                <div className="space-y-4">
+                  <div>
+                    <label className={labelClass}>Card Number</label>
+                    <input
+                      type="text"
+                      placeholder="4242 4242 4242 4242"
+                      value={form.cardNumber}
+                      onChange={(e) => set('cardNumber', e.target.value.replace(/\D/g, '').replace(/(\d{4})/g, '$1 ').trim())}
+                      className={inputClass}
+                      maxLength={19}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className={labelClass}>Expiry (MM/YY)</label>
+                      <input
+                        type="text"
+                        placeholder="12/25"
+                        value={form.cardExpiry}
+                        onChange={(e) => {
+                          let val = e.target.value.replace(/\D/g, '')
+                          if (val.length >= 2) val = val.slice(0, 2) + '/' + val.slice(2, 4)
+                          set('cardExpiry', val)
+                        }}
+                        className={inputClass}
+                        maxLength={5}
+                      />
+                    </div>
+                    <div>
+                      <label className={labelClass}>CVV</label>
+                      <input
+                        type="text"
+                        placeholder="123"
+                        value={form.cardCVV}
+                        onChange={(e) => set('cardCVV', e.target.value.replace(/\D/g, ''))}
+                        className={inputClass}
+                        maxLength={4}
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
 
               {form.paymentMethod === 'mobile' && (
-                <div className="border-l-4 border-[#fee11b] bg-[#f5f7fc] p-5 space-y-3">
-                  <p className="text-sm font-bold text-[#01255f]">Mobile Money</p>
-                  <p className="text-sm text-[#5a6478] leading-relaxed">
-                    Send your gift via MTN or Orange Money. You'll receive payment instructions after reviewing your donation.
-                  </p>
-                </div>
-              )}
-
-              {form.paymentMethod === 'mobile' && (
-                <div className="border-l-4 border-[#fee11b] bg-[#f5f7fc] p-5 space-y-3">
-                  <p className="text-sm font-bold text-[#01255f]">Mobile money</p>
-                  <p className="text-sm text-[#5a6478] leading-relaxed">
-                    Send your gift via MTN or Orange Money, then email your receipt to{' '}
-                    <a href={`mailto:${ORG_EMAIL}`} className="text-[#01255f] font-bold hover:underline">
-                      {ORG_EMAIL}
-                    </a>{' '}
-                    with your name and amount ({formatUsd(totalUsd)}).
-                  </p>
-                  <p className="text-xs text-[#5a6478]">
-                    Payment numbers are shared by our team after you confirm — we will follow up within 2 business days.
-                  </p>
+                <div className="space-y-4">
+                  <div>
+                    <label className={labelClass}>Mobile Money Number</label>
+                    <input
+                      type="tel"
+                      placeholder="+231 77 123 4567"
+                      value={form.mobilePhone}
+                      onChange={(e) => {
+                        const phone = e.target.value
+                        set('mobilePhone', phone)
+                        if (phone.length >= 10) {
+                          detectMobileProvider(phone)
+                        }
+                      }}
+                      className={inputClass}
+                    />
+                  </div>
+                  {isDetectingProvider && (
+                    <p className="text-xs text-[#5a6478]">Detecting provider...</p>
+                  )}
+                  {detectedProvider && (
+                    <div className="border-l-4 border-green-500 bg-green-50 p-4">
+                      <p className="text-sm font-bold text-green-700">Provider detected: {detectedProvider}</p>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -517,9 +598,10 @@ export default function DonateForm() {
                 <button
                   type="button"
                   onClick={goNext}
-                  className="flex-1 bg-[#01255f] hover:bg-[#011840] text-white py-3.5 text-sm font-bold tracking-wide"
+                  disabled={form.paymentMethod === 'mobile' && !detectedProvider}
+                  className="flex-1 bg-[#01255f] hover:bg-[#011840] disabled:opacity-50 disabled:cursor-not-allowed text-white py-3.5 text-sm font-bold tracking-wide"
                 >
-                  Review donation
+                  {form.paymentMethod === 'mobile' && !detectedProvider ? 'Detecting provider...' : 'Review donation'}
                 </button>
               </div>
             </div>
@@ -557,11 +639,24 @@ export default function DonateForm() {
                   <span className="text-[#5a6478]">Frequency</span>
                   <span className="text-[#01255f] capitalize">{form.frequency}</span>
                 </div>
-                <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
-                  <span className="text-[#5a6478]">Payment</span>
-                  <span className="text-[#01255f] capitalize">
+                <div className="px-4 sm:px-5 py-4 text-sm">
+                  <span className="text-[#5a6478] block mb-1">Payment Method</span>
+                  <span className="text-[#01255f] font-medium block">
                     {form.paymentMethod === 'card' ? 'Card' : 'Mobile money'}
                   </span>
+                  {form.paymentMethod === 'card' && form.cardNumber && (
+                    <span className="text-[#5a6478] text-xs">
+                      •••• •••• •••• {form.cardNumber.slice(-4)}
+                    </span>
+                  )}
+                  {form.paymentMethod === 'mobile' && form.mobilePhone && (
+                    <div className="text-xs mt-2">
+                      <span className="text-[#5a6478] block">{form.mobilePhone}</span>
+                      {detectedProvider && (
+                        <span className="text-green-700 font-medium">{detectedProvider}</span>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="px-4 sm:px-5 py-4 text-sm">
                   <span className="text-[#5a6478] block mb-1">Donor</span>
