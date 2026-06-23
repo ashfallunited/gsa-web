@@ -205,49 +205,45 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
       }
 
       const checkoutData: any = await checkoutResponse.json()
-      const sourceId = checkoutData.id
+      const sourceId = checkoutData.source_id
 
-      // For HOSTED mode (card), return the payment URL for redirect
+      // For HOSTED mode (card), return the payment URL for redirect immediately
       if (isCardPayment) {
         console.log('[Donations] HOSTED checkout response:', JSON.stringify(checkoutData, null, 2))
 
-        // Save donation with pending status first
-        let donationId: string
-        try {
-          donationId = await saveDonationToFirestore(
-            { ...input, mobilePhone: input.mobilePhone ? formatPhoneForDollr(input.mobilePhone) : input.mobilePhone },
-            ipAddress,
-            sourceId // Use source_id as reference for HOSTED mode
-          )
-        } catch (error) {
-          console.error('Firestore save error:', error)
-          return NextResponse.json(
-            { success: false, error: 'Failed to save donation' },
-            { status: 500 }
-          )
-        }
-
-        // Save to Supabase (non-blocking)
-        try {
-          await saveDonationToSupabase(
-            { ...input, mobilePhone: input.mobilePhone ? formatPhoneForDollr(input.mobilePhone) : input.mobilePhone },
-            ipAddress,
-            sourceId,
-            donationId
-          )
-        } catch (error) {
-          console.warn('Supabase save error (non-fatal):', error)
-        }
-
-        // Return the Dollr payment URL for redirect
-        // Check for 'url' field in response
+        // Extract payment URL
         const paymentUrl = checkoutData.url || checkoutData.payment_url || checkoutData.checkout_url
         console.log('[Donations] Payment URL:', paymentUrl)
+
+        // Generate a temporary donation ID for the response
+        const tempDonationId = `temp-${sourceId}`
+
+        // Save to Firestore and Supabase asynchronously (fire-and-forget)
+        // Don't block the redirect on this
+        Promise.all([
+          saveDonationToFirestore(
+            { ...input, mobilePhone: input.mobilePhone ? formatPhoneForDollr(input.mobilePhone) : input.mobilePhone },
+            ipAddress,
+            sourceId
+          ).then((donationId) => {
+            // Save to Supabase with the real donationId
+            return saveDonationToSupabase(
+              { ...input, mobilePhone: input.mobilePhone ? formatPhoneForDollr(input.mobilePhone) : input.mobilePhone },
+              ipAddress,
+              sourceId,
+              donationId
+            ).catch((err) => {
+              console.warn('Supabase save error (non-fatal):', err)
+            })
+          }),
+        ]).catch((error) => {
+          console.error('Background save error (non-blocking):', error)
+        })
 
         return NextResponse.json(
           {
             success: true,
-            donationId,
+            donationId: tempDonationId,
             status: 'pending',
             paymentUrl: paymentUrl,
           },
