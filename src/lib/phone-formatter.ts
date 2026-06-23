@@ -56,3 +56,52 @@ export function isValidLiberianPhone(phone: string): boolean {
   // Must be 12 digits starting with 231
   return cleaned.length === 12 && cleaned.startsWith('231')
 }
+
+/**
+ * Extracts the country code from a formatted phone number
+ * e.g., 231775500512 → LR, 254700000000 → KE
+ */
+export function extractCountryCodeFromPhone(phone: string): string {
+  if (!phone) return ''
+
+  const cleaned = phone.replace(/\D/g, '')
+
+  // Common country code mappings (country code prefix → ISO country code)
+  const countryCodeMap: Record<string, string> = {
+    '231': 'LR', // Liberia
+    '254': 'KE', // Kenya
+    '256': 'UG', // Uganda
+    '255': 'TZ', // Tanzania
+    '233': 'GH', // Ghana
+    '234': 'NG', // Nigeria
+    '212': 'MA', // Morocco
+    '27': 'ZA', // South Africa
+    '1': 'US', // USA
+    '44': 'GB', // UK
+    '91': 'IN', // India
+    '86': 'CN', // China
+  }
+
+  // Check 3-digit codes first (most common in Africa)
+  for (const [code, country] of Object.entries(countryCodeMap)) {
+    if (code.length === 3 && cleaned.startsWith(code)) {
+      return country
+    }
+  }
+
+  // Check 2-digit codes
+  for (const [code, country] of Object.entries(countryCodeMap)) {
+    if (code.length === 2 && cleaned.startsWith(code)) {
+      return country
+    }
+  }
+
+  // Check 1-digit codes (like USA)
+  for (const [code, country] of Object.entries(countryCodeMap)) {
+    if (code.length === 1 && cleaned.startsWith(code)) {
+      return country
+    }
+  }
+
+  return ''
+}

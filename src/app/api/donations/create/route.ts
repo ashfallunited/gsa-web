@@ -7,7 +7,7 @@ import { saveDonorToSupabase } from '@/lib/donation/supabase-donors'
 import { dollr } from '@/lib/donation/dollr'
 import { MIN_DONATION_USD, DONATION_STATUS } from '@/lib/donation/constants'
 import { COUNTRIES } from '@/lib/country-data'
-import { formatPhoneForDollr } from '@/lib/phone-formatter'
+import { formatPhoneForDollr, extractCountryCodeFromPhone } from '@/lib/phone-formatter'
 import { randomUUID } from 'crypto'
 
 const BASE_URL = 'https://api.heydollr.app'
@@ -254,6 +254,8 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
       // Step 3: Create payment account
       let paymentAccountId: string
       if (input.paymentMethod === 'card') {
+        const phoneFormatted = formatPhoneForDollr(input.phone)
+        const countryCodeFromPhone = extractCountryCodeFromPhone(phoneFormatted)
         const cardResponse = await fetch(
           `${BASE_URL}/v1/payment-accounts/create?operation_type=COLLECTION`,
           {
@@ -264,7 +266,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
               provider: 'CARD_ONLINE',
               method: 'CARD_ONLINE',
               party_id: checkoutData.party_id,
-              country_code: input.country,
+              country_code: countryCodeFromPhone || input.country,
               insensitive_account_number: input.cardNumber!.replace(/\s/g, ''),
               card_expiry_month: input.cardExpiry!.split('/')[0],
               card_expiry_year: '20' + input.cardExpiry!.split('/')[1],
@@ -282,6 +284,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
       } else {
         // Mobile money
         const phoneFormatted = formatPhoneForDollr(input.mobilePhone!)
+        const countryCodeFromPhone = extractCountryCodeFromPhone(phoneFormatted)
         const mobileResponse = await fetch(
           `${BASE_URL}/v1/payment-accounts/create?operation_type=COLLECTION`,
           {
@@ -292,7 +295,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
               provider: input.detectedProvider,
               method: input.detectedProvider,
               party_id: checkoutData.party_id,
-              country_code: input.country,
+              country_code: countryCodeFromPhone || input.country,
               insensitive_account_number: phoneFormatted,
             }),
           }
