@@ -276,7 +276,9 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
         )
 
         if (!cardResponse.ok) {
-          throw new Error(`Card account create failed: ${cardResponse.status}`)
+          const errorData = await cardResponse.text()
+          console.error('[Donations] Card account creation error:', errorData)
+          throw new Error(`Card account create failed: ${cardResponse.status} - ${errorData}`)
         }
 
         const cardData: any = await cardResponse.json()
@@ -302,7 +304,17 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
         )
 
         if (!mobileResponse.ok) {
-          throw new Error(`Mobile account create failed: ${mobileResponse.status}`)
+          const errorData = await mobileResponse.text()
+          console.error('[Donations] Mobile account creation request:', JSON.stringify({
+            account_name: `${input.firstName} ${input.detectedProvider}`,
+            provider: input.detectedProvider,
+            method: input.detectedProvider,
+            party_id: checkoutData.party_id,
+            country_code: countryCodeFromPhone || input.country,
+            insensitive_account_number: phoneFormatted,
+          }, null, 2))
+          console.error('[Donations] Mobile account creation error:', errorData)
+          throw new Error(`Mobile account create failed: ${mobileResponse.status} - ${errorData}`)
         }
 
         const mobileData: any = await mobileResponse.json()
