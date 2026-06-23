@@ -3,7 +3,7 @@
 import { useMemo, useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heart, ChevronLeft, Check } from 'lucide-react'
+import { Heart, ChevronLeft, Check, Loader2 } from 'lucide-react'
 import DonateShareCard from '@/components/DonateShareCard'
 import { ORG_NAME } from '@/lib/constants'
 import { COUNTRIES } from '@/lib/country-data'
@@ -684,7 +684,10 @@ export default function DonateForm() {
                     />
                   </div>
                   {isDetectingProvider && (
-                    <p className="text-xs text-[#5a6478]">Detecting provider...</p>
+                    <div className="flex items-center gap-2 p-3 bg-[#f5f7fc] rounded border border-gray-200">
+                      <Loader2 className="w-4 h-4 text-[#01255f] animate-spin" />
+                      <p className="text-xs text-[#5a6478] font-medium">Detecting payment provider...</p>
+                    </div>
                   )}
                   {detectedProvider && getProviderInfo(detectedProvider) && (
                     <div className="bg-white border border-gray-200 rounded p-4 flex items-center gap-4">
@@ -839,10 +842,19 @@ export default function DonateForm() {
                   type="button"
                   onClick={completeDonation}
                   disabled={isSubmitting}
-                  className="flex-1 flex items-center justify-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] disabled:opacity-50 disabled:cursor-not-allowed text-[#01255f] py-4 text-sm font-bold tracking-wide"
+                  className="flex-1 flex items-center justify-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] disabled:opacity-50 disabled:cursor-not-allowed text-[#01255f] py-4 text-sm font-bold tracking-wide transition-colors"
                 >
-                  <Heart className="w-4 h-4 shrink-0" fill="currentColor" />
-                  {isSubmitting ? 'Processing...' : 'Complete donation'}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 shrink-0 animate-spin" />
+                      Processing payment...
+                    </>
+                  ) : (
+                    <>
+                      <Heart className="w-4 h-4 shrink-0" fill="currentColor" />
+                      Complete donation
+                    </>
+                  )}
                 </button>
               </div>
             </div>
