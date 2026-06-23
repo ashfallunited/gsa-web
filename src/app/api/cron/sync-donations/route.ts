@@ -4,6 +4,7 @@ import {
   updateDonationStatus,
   incrementRetryAttempts,
   markEmailSent,
+  getDonor,
 } from '@/lib/donation/firestore'
 import {
   updateSupabaseDonation,
@@ -136,24 +137,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             // If completed, send thank you email
             if (paymentStatus === DONATION_STATUS.COMPLETED) {
               try {
-                const emailSent = await sendThankYouEmail(donation)
-
-                if (emailSent) {
-                  // Mark email as sent in both databases
-                  await markEmailSent(donation.id)
-                  await markEmailSentSupabase(donation.id)
-
-                  // Log the email
-                  await logEmail(
-                    donation.id,
-                    'auto_thank_you',
-                    donation.email,
-                    `Thank You for Your Donation to GSA`
-                  )
-
-                  console.log(`[Cron] Sent thank you email for donation ${donation.id}`)
+                // Fetch donor information for email
+                const donor = await getDonor(donation.donorId)
+                if (!donor) {
+                  console.warn(`[Cron] Donor not found for donation ${donation.id}`)
                 } else {
-                  console.warn(`[Cron] Failed to send thank you email for donation ${donation.id}`)
+                  const emailSent = await sendThankYouEmail(donation, donor)
+
+                  if (emailSent) {
+                    // Mark email as sent in both databases
+                    await markEmailSent(donation.id)
+                    await markEmailSentSupabase(donation.id)
+
+                    // Log the email
+                    await logEmail(
+                      donation.id,
+                      'auto_thank_you',
+                      donor.email,
+                      `Thank You for Your Donation to GSA`
+                    )
+
+                    console.log(`[Cron] Sent thank you email for donation ${donation.id}`)
+                  } else {
+                    console.warn(`[Cron] Failed to send thank you email for donation ${donation.id}`)
+                  }
                 }
               } catch (emailError) {
                 console.error(`[Cron] Error sending email for donation ${donation.id}:`, emailError)
