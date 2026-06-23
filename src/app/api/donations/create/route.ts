@@ -323,13 +323,16 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
 
       // Step 4: Execute collection
       const referenceId = randomUUID()
+      // For mobile money, use the currency they selected (payer_currency)
+      // For cards, always use USD
+      const executionCurrency = input.paymentMethod === 'mobile' ? input.currency : 'USD'
       const executionResponse = await fetch(`${BASE_URL}/v1/executions/collection`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
           session_id: String(sessionId),
           payment_account_id: String(paymentAccountId),
-          currency: 'USD',
+          currency: executionCurrency,
           reference_id: referenceId,
         }),
       })
@@ -395,7 +398,9 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
           ipAddress,
           referenceId,
           input.message,
-          input.currency
+          input.currency,
+          input.amountPaid,
+          input.currencyPaid
         )
       } catch (error) {
         console.error('Firestore donation save error:', error)
@@ -416,7 +421,9 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
           ipAddress,
           referenceId,
           input.message,
-          input.currency
+          input.currency,
+          input.amountPaid,
+          input.currencyPaid
         )
       } catch (error) {
         console.warn('Supabase save error (non-fatal):', error)

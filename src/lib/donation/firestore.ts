@@ -15,6 +15,8 @@ const DONATIONS_COLLECTION = 'donations'
  * @param referenceId - Dollr order/reference ID
  * @param message - Optional donation message
  * @param currency - Currency chosen by donor (USD or LRD)
+ * @param amountPaid - Actual amount paid in chosen currency
+ * @param currencyPaid - Currency they actually paid in
  * @returns The document ID of the saved donation
  */
 export async function saveDonationToFirestore(
@@ -25,7 +27,9 @@ export async function saveDonationToFirestore(
   ipAddress: string,
   referenceId: string,
   message?: string,
-  currency: 'USD' | 'LRD' = 'USD'
+  currency: 'USD' | 'LRD' = 'USD',
+  amountPaid: number = 0,
+  currencyPaid: 'USD' | 'LRD' = 'USD'
 ): Promise<string> {
   try {
     // Calculate fees
@@ -41,6 +45,8 @@ export async function saveDonationToFirestore(
       donorId,
       amountUsd,
       currency,
+      amountPaid: amountPaid || amountUsd,
+      currencyPaid: currencyPaid || currency,
       paymentMethod,
       coverFees,
       feeUsd,

@@ -22,6 +22,8 @@ export interface Donation {
   feeUsd: number
   totalUsd: number
   currency: Currency // Currency chosen by donor (USD or LRD)
+  amountPaid: number // Actual amount paid in chosen currency
+  currencyPaid: Currency // Currency they actually paid in
   paymentMethod: PaymentMethod
   coverFees: boolean
   message: string | null
@@ -50,6 +52,8 @@ export interface DonationInput {
   country: string
   amountUsd: number
   currency: Currency
+  amountPaid: number
+  currencyPaid: Currency
   paymentMethod: PaymentMethod
   coverFees: boolean
   message?: string

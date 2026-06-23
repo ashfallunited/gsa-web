@@ -67,6 +67,13 @@ export default function DonateForm() {
   const [submitError, setSubmitError] = useState('')
   const [isDetectingProvider, setIsDetectingProvider] = useState(false)
   const [detectedProvider, setDetectedProvider] = useState<string>('')
+  const [isLoadingPrediction, setIsLoadingPrediction] = useState(false)
+  const [prediction, setPrediction] = useState<{
+    payerAmount: number
+    payerCurrency: string
+    totalFee: number
+    message: string
+  } | null>(null)
   const [countrySearchOpen, setCountrySearchOpen] = useState(false)
   const [countrySearch, setCountrySearch] = useState('')
   const countryDropdownRef = useRef<HTMLDivElement>(null)
@@ -148,6 +155,36 @@ export default function DonateForm() {
     }
   }
 
+  const getPrediction = async (currency: Currency) => {
+    setIsLoadingPrediction(true)
+    setPrediction(null)
+    try {
+      const response = await fetch('/api/donations/predict-amount', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amountUsd: amountUsd,
+          targetCurrency: currency,
+          paymentProvider: detectedProvider,
+          coverFees: form.coverFees,
+        }),
+      })
+      const data = await response.json()
+      if (data.payerAmount) {
+        setPrediction({
+          payerAmount: data.payerAmount,
+          payerCurrency: data.payerCurrency,
+          totalFee: data.totalFee,
+          message: data.message,
+        })
+      }
+    } catch (error) {
+      console.error('Failed to get prediction:', error)
+    } finally {
+      setIsLoadingPrediction(false)
+    }
+  }
+
   const goNext = () => {
     if (step === 'amount' && canContinueAmount) setStep('details')
     else if (step === 'details' && canContinueDetails) setStep('payment')
@@ -208,6 +245,8 @@ export default function DonateForm() {
           message: form.message || null,
           amountUsd: amountUsd,
           currency: form.currency,
+          amountPaid: prediction?.payerAmount || amountUsd,
+          currencyPaid: prediction?.payerCurrency || form.currency,
           paymentMethod: form.paymentMethod,
           coverFees: form.coverFees,
           // Payment details
@@ -717,13 +756,43 @@ export default function DonateForm() {
                         <label className={labelClass}>Currency</label>
                         <select
                           value={form.currency}
-                          onChange={(e) => set('currency', e.target.value as Currency)}
+                          onChange={(e) => {
+                            const selectedCurrency = e.target.value as Currency
+                            set('currency', selectedCurrency)
+                            getPrediction(selectedCurrency)
+                          }}
                           className={inputClass}
                         >
                           <option value="USD">USD (US Dollar)</option>
                           <option value="LRD">LRD (Liberian Dollar)</option>
                         </select>
                       </div>
+
+                      {isLoadingPrediction && (
+                        <div className="flex items-center gap-2 p-3 bg-[#f5f7fc] rounded border border-gray-200">
+                          <Loader2 className="w-4 h-4 text-[#01255f] animate-spin" />
+                          <p className="text-xs text-[#5a6478] font-medium">Calculating amount...</p>
+                        </div>
+                      )}
+
+                      {prediction && !isLoadingPrediction && (
+                        <div className="bg-[#f5f7fc] border border-[#01255f]/20 rounded p-4">
+                          <p className="text-xs text-[#5a6478] uppercase tracking-widest font-bold mb-2">
+                            You will pay
+                          </p>
+                          <p className="text-lg font-bold text-[#01255f] mb-2">
+                            {form.currency === 'LRD' ? '₺' : '$'}
+                            {prediction.payerAmount.toLocaleString()}
+                            <span className="text-sm font-normal text-[#5a6478] ml-2">{prediction.payerCurrency}</span>
+                          </p>
+                          {prediction.totalFee > 0 && (
+                            <p className="text-xs text-[#5a6478]">
+                              Includes {form.currency === 'LRD' ? '₺' : '$'}
+                              {prediction.totalFee.toLocaleString()} in fees
+                            </p>
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
