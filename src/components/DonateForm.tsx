@@ -50,13 +50,11 @@ function formatUsd(amount: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount)
 }
 
-function makeReferenceId() {
-  return `AU-${Date.now().toString(36).toUpperCase().slice(-8)}`
-}
-
 export default function DonateForm() {
   const [step, setStep] = useState<Step>('amount')
   const [referenceId, setReferenceId] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [form, setForm] = useState<FormState>({
     frequency: 'once',
     amountPreset: 50,
@@ -107,9 +105,41 @@ export default function DonateForm() {
     else if (step === 'review') setStep('payment')
   }
 
-  const completeDonation = () => {
-    setReferenceId(makeReferenceId())
-    setStep('success')
+  const completeDonation = async () => {
+    setIsSubmitting(true)
+    setSubmitError('')
+
+    try {
+      const response = await fetch('/api/donations/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          country: form.country,
+          message: form.message || null,
+          amountUsd: amountUsd,
+          paymentMethod: form.paymentMethod,
+          coverFees: form.coverFees,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setSubmitError(data.error || 'Failed to create donation')
+        setIsSubmitting(false)
+        return
+      }
+
+      setReferenceId(data.donationId)
+      setStep('success')
+    } catch (error) {
+      setSubmitError('Network error. Please try again.')
+      setIsSubmitting(false)
+    }
   }
 
   if (step === 'success') {
@@ -126,9 +156,12 @@ export default function DonateForm() {
             Thank you, {form.firstName}
           </h2>
           <p className="text-sm text-[#5a6478] leading-relaxed mb-6">
-            Your pledge of <strong className="text-[#01255f]">{formatUsd(totalUsd)}</strong> has been recorded.
-            {form.paymentMethod !== 'card' && (
-              <> Complete your transfer using the instructions we showed, then email your receipt to {ORG_EMAIL}.</>
+            Your donation of <strong className="text-[#01255f]">{formatUsd(totalUsd)}</strong> has been initiated.
+            {form.paymentMethod === 'card' && (
+              <> You'll be redirected to complete your card payment securely.</>
+            )}
+            {form.paymentMethod === 'mobile' && (
+              <> You'll receive instructions to complete your payment via MTN or Orange Money.</>
             )}
           </p>
           <p className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1">Reference</p>
@@ -423,62 +456,37 @@ export default function DonateForm() {
                 >
                   How would you like to pay?
                 </h2>
-                <p className="text-sm text-[#5a6478]">Select a method to see next steps.</p>
+                <p className="text-sm text-[#5a6478]">How would you like to pay?</p>
               </div>
 
-              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3">
-                {(
-                  [
-                    { id: 'card' as const, label: 'Card', Icon: CreditCard },
-                    { id: 'mobile' as const, label: 'Mobile money', Icon: Smartphone },
-                  ] as const
-                ).map(({ id, label, Icon }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => set('paymentMethod', id)}
-                    className={`flex flex-col items-center gap-2 p-5 border transition-all ${
-                      form.paymentMethod === id
-                        ? 'border-[#01255f] bg-[#01255f]/5 ring-1 ring-[#01255f]'
-                        : 'border-gray-200 hover:border-[#01255f]/40'
-                    }`}
-                  >
-                    <Icon className={`w-6 h-6 ${form.paymentMethod === id ? 'text-[#01255f]' : 'text-gray-400'}`} />
-                    <span
-                      className={`text-xs font-bold uppercase tracking-wide ${
-                        form.paymentMethod === id ? 'text-[#01255f]' : 'text-[#5a6478]'
-                      }`}
-                    >
-                      {label}
-                    </span>
-                  </button>
-                ))}
+              <div>
+                <select
+                  required
+                  value={form.paymentMethod}
+                  onChange={(e) => set('paymentMethod', e.target.value as PaymentMethod)}
+                  className={inputClass}
+                >
+                  <option value="">Select payment method...</option>
+                  <option value="card">Card (Credit/Debit)</option>
+                  <option value="mobile">Mobile Money (MTN, Orange)</option>
+                </select>
               </div>
 
               {form.paymentMethod === 'card' && (
-                <div className="border border-gray-200 p-5 space-y-4 bg-[#f5f7fc]/50">
-                  <p className="text-xs text-[#5a6478] leading-relaxed">
-                    Card payments will be processed on this site in a future update. For now, preview the form below or
-                    choose bank transfer / mobile money.
+                <div className="border-l-4 border-[#fee11b] bg-[#f5f7fc] p-5 space-y-3">
+                  <p className="text-sm font-bold text-[#01255f]">Secure Card Payment</p>
+                  <p className="text-sm text-[#5a6478] leading-relaxed">
+                    Your card details will be securely processed by Dollr when you review and complete your donation.
                   </p>
-                  <div>
-                    <label className={labelClass}>Card number</label>
-                    <input
-                      disabled
-                      placeholder="4242 4242 4242 4242"
-                      className={`${inputClass} opacity-60 cursor-not-allowed`}
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className={labelClass}>Expiry</label>
-                      <input disabled placeholder="MM / YY" className={`${inputClass} opacity-60 cursor-not-allowed`} />
-                    </div>
-                    <div>
-                      <label className={labelClass}>CVC</label>
-                      <input disabled placeholder="123" className={`${inputClass} opacity-60 cursor-not-allowed`} />
-                    </div>
-                  </div>
+                </div>
+              )}
+
+              {form.paymentMethod === 'mobile' && (
+                <div className="border-l-4 border-[#fee11b] bg-[#f5f7fc] p-5 space-y-3">
+                  <p className="text-sm font-bold text-[#01255f]">Mobile Money</p>
+                  <p className="text-sm text-[#5a6478] leading-relaxed">
+                    Send your gift via MTN or Orange Money. You'll receive payment instructions after reviewing your donation.
+                  </p>
                 </div>
               )}
 
@@ -578,27 +586,33 @@ export default function DonateForm() {
                 )}
               </div>
 
+              {submitError && (
+                <div className="bg-red-50 border border-red-200 p-4 rounded text-sm text-red-700">
+                  {submitError}
+                </div>
+              )}
+
               <p className="text-xs text-[#5a6478] leading-relaxed">
-                By completing this donation, you agree that {ORG_NAME} may contact you about your gift. This
-                preview flow does not charge your card — bank and mobile instructions apply until online payments are
-                connected.
+                By completing this donation, you agree that {ORG_NAME} may contact you about your gift.
               </p>
 
               <div className="flex flex-col-reverse sm:flex-row gap-3">
                 <button
                   type="button"
                   onClick={goBack}
-                  className="flex items-center justify-center gap-1 px-4 py-3 text-sm font-bold text-[#5a6478] hover:text-[#01255f] sm:justify-start"
+                  disabled={isSubmitting}
+                  className="flex items-center justify-center gap-1 px-4 py-3 text-sm font-bold text-[#5a6478] hover:text-[#01255f] disabled:opacity-50 disabled:cursor-not-allowed sm:justify-start"
                 >
                   <ChevronLeft className="w-4 h-4" /> Back
                 </button>
                 <button
                   type="button"
                   onClick={completeDonation}
-                  className="flex-1 flex items-center justify-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] py-4 text-sm font-bold tracking-wide"
+                  disabled={isSubmitting}
+                  className="flex-1 flex items-center justify-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] disabled:opacity-50 disabled:cursor-not-allowed text-[#01255f] py-4 text-sm font-bold tracking-wide"
                 >
                   <Heart className="w-4 h-4 shrink-0" fill="currentColor" />
-                  Complete donation
+                  {isSubmitting ? 'Processing...' : 'Complete donation'}
                 </button>
               </div>
             </div>
