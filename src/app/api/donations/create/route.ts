@@ -5,7 +5,7 @@ import { saveDonorToFirestore } from '@/lib/donation/firestore-donors'
 import { saveDonationToSupabase } from '@/lib/donation/supabase'
 import { saveDonorToSupabase } from '@/lib/donation/supabase-donors'
 import { dollr } from '@/lib/donation/dollr'
-import { MIN_DONATION_USD } from '@/lib/donation/constants'
+import { MIN_DONATION_USD, DONATION_STATUS } from '@/lib/donation/constants'
 import { COUNTRIES } from '@/lib/country-data'
 import { formatPhoneForDollr } from '@/lib/phone-formatter'
 import { randomUUID } from 'crypto'
@@ -325,6 +325,19 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
 
       const executionData: any = await executionResponse.json()
 
+      // Step 4.5: For mobile money, check payment status immediately
+      let initialPaymentStatus = executionData.status || DONATION_STATUS.AWAITING_PAYMENT
+      if (input.paymentMethod === 'mobile') {
+        try {
+          const statusResponse = await dollr.getPaymentStatus(referenceId)
+          initialPaymentStatus = statusResponse.status
+          console.log('[Donations] Immediate status check for mobile money:', initialPaymentStatus)
+        } catch (statusError) {
+          console.warn('[Donations] Could not check status immediately for mobile money:', statusError)
+          // Fall back to execution status
+        }
+      }
+
       // Step 5: Save donor to Firestore and Supabase
       let donorId: string
       try {
@@ -397,7 +410,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
         {
           success: true,
           donationId,
-          status: executionData.status || 'awaiting_payment',
+          status: initialPaymentStatus,
         },
         { status: 201 }
       )
