@@ -1,4 +1,4 @@
-import type { Timestamp } from 'firebase-admin/firestore'
+import { Timestamp } from 'firebase-admin/firestore'
 
 export type PaymentMethod = 'card' | 'mobile'
 export type DonationStatus = 'awaiting_payment' | 'processing' | 'completed' | 'failed'
@@ -30,16 +30,6 @@ export interface Donation {
 
   ipAddress: string
   transactionDate: Timestamp | null
-  createdAt: Timestamp
-  updatedAt: Timestamp
-  completedAt: Timestamp | null
-
-  emailSent: boolean
-  notes: string | null
-  retryAttempts: number
-  nextRetryAt: Timestamp | null
-}
-
   createdAt: Timestamp
   updatedAt: Timestamp
   completedAt: Timestamp | null

@@ -3,7 +3,7 @@ import { getDonation } from '@/lib/donation/firestore'
 import type { DonationStatus } from '@/types/donation'
 
 const statusMessages: Record<DonationStatus, string> = {
-  pending: 'Awaiting payment confirmation...',
+  awaiting_payment: 'Awaiting payment confirmation...',
   processing: 'Processing your payment...',
   completed: 'Thank you! Your donation is complete.',
   failed: 'Payment failed. Please try again or contact support.',

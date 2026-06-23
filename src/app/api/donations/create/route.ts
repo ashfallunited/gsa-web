@@ -227,7 +227,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
           {
             success: true,
             donationId: tempDonationId,
-            status: 'pending',
+            status: 'awaiting_payment',
             paymentUrl: paymentUrl,
           },
           { status: 201 }

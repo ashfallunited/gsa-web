@@ -1,6 +1,6 @@
 import { Timestamp } from 'firebase-admin/firestore'
 import { getAdminDb } from '@/lib/firebase-admin'
-import type { Donation, DonationInput, DonationStatus } from '@/types/donation'
+import type { Donation, DonationInput, DonationStatus, Donor } from '@/types/donation'
 import { DONATION_STATUS, PROCESSING_FEE_RATE, RETRY_EXPIRY_HOURS } from './constants'
 
 const DONATIONS_COLLECTION = 'donations'
@@ -88,6 +88,30 @@ export async function getDonation(id: string): Promise<Donation | null> {
     } as Donation
   } catch (error) {
     console.error('Error getting donation from Firestore:', error)
+    throw error
+  }
+}
+
+/**
+ * Retrieves a single donor by ID
+ * @param id - The document ID of the donor
+ * @returns The Donor object or null if not found
+ */
+export async function getDonor(id: string): Promise<Donor | null> {
+  try {
+    const db = getAdminDb()
+    const docSnap = await db.collection('donors').doc(id).get()
+
+    if (!docSnap.exists) {
+      return null
+    }
+
+    return {
+      id: docSnap.id,
+      ...docSnap.data(),
+    } as Donor
+  } catch (error) {
+    console.error('Error getting donor from Firestore:', error)
     throw error
   }
 }

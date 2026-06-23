@@ -1,5 +1,5 @@
 import * as nodemailer from 'nodemailer'
-import type { Donation } from '@/types/donation'
+import type { Donation, Donor } from '@/types/donation'
 import { ORG_NAME, ORG_EMAIL } from '@/lib/constants'
 
 /**
@@ -18,7 +18,7 @@ function createTransporter() {
 /**
  * Generate HTML email template for thank you email
  */
-function generateThankYouTemplate(donation: Donation): string {
+function generateThankYouTemplate(donation: Donation, donor: Donor): string {
   const mission = 'Your gift helps young people in Monrovia access football, education, and community programmes.'
 
   return `
@@ -82,7 +82,7 @@ function generateThankYouTemplate(donation: Donation): string {
   </head>
   <body>
     <div class="container">
-      <h1>Thank You, ${donation.firstName}!</h1>
+      <h1>Thank You, ${donor.firstName}!</h1>
 
       <div class="section">
         <p>We are deeply grateful for your generous donation to ${ORG_NAME}.</p>
@@ -117,9 +117,10 @@ function generateThankYouTemplate(donation: Donation): string {
 /**
  * Send a thank-you email to a donor
  * @param donation - The donation object
+ * @param donor - The donor object
  * @returns true if sent successfully, false if error
  */
-export async function sendThankYouEmail(donation: Donation): Promise<boolean> {
+export async function sendThankYouEmail(donation: Donation, donor: Donor): Promise<boolean> {
   try {
     const transporter = createTransporter()
     const fromEmail = process.env.GMAIL_FROM_EMAIL
@@ -129,12 +130,12 @@ export async function sendThankYouEmail(donation: Donation): Promise<boolean> {
       return false
     }
 
-    const htmlContent = generateThankYouTemplate(donation)
+    const htmlContent = generateThankYouTemplate(donation, donor)
     const subject = `Thank You for Your Donation to ${ORG_NAME}`
 
     await transporter.sendMail({
       from: fromEmail,
-      to: donation.email,
+      to: donor.email,
       subject,
       html: htmlContent,
     })

@@ -60,7 +60,7 @@ export async function POST(
     // Send thank-you email if not already sent
     let emailSent = false
     if (!donation.emailSent) {
-      const emailSuccess = await sendThankYouEmail({ ...donation, ...donor })
+      const emailSuccess = await sendThankYouEmail(donation, donor)
       if (emailSuccess) {
         // Mark as sent in both databases
         await markEmailSent(donationId)
