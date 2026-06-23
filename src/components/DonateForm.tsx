@@ -191,6 +191,13 @@ export default function DonateForm() {
         return
       }
 
+      // For card payments (HOSTED mode), redirect to Dollr payment page
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl
+        return
+      }
+
+      // For mobile money (DIRECT mode), show success screen
       setReferenceId(data.donationId)
       setStep('success')
     } catch (error) {

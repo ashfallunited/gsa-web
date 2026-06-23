@@ -156,25 +156,33 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
 
     try {
       // Step 1: Create checkout source
+      const isCardPayment = input.paymentMethod === 'card'
+      const checkoutMode = isCardPayment ? 'HOSTED' : 'DIRECT'
+
+      const checkoutBody = {
+        mode: checkoutMode,
+        source_kind: 'ORDER',
+        party_name: `${input.firstName} ${input.lastName}`,
+        party_phone: input.paymentMethod === 'mobile' ? formatPhoneForDollr(input.mobilePhone!) : 'unknown',
+        party_email: input.email,
+        currency: 'USD',
+        items: [
+          {
+            name: 'Donation',
+            currency: 'USD',
+            amount: totalUsd,
+          },
+        ],
+        ...(isCardPayment && {
+          success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/donation-success`,
+          cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/donate`,
+        }),
+      }
+
       const checkoutResponse = await fetch(`${BASE_URL}/v1/checkouts/create`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({
-          mode: 'online',
-          source_kind: 'ORDER',
-          party_name: `${input.firstName} ${input.lastName}`,
-          party_phone: input.paymentMethod === 'mobile' ? formatPhoneForDollr(input.mobilePhone!) : 'unknown',
-          party_email: input.email,
-          currency: 'USD',
-          items: [
-            {
-              name: 'Donation',
-              currency: 'USD',
-              qty: 1,
-              amount: totalUsd,
-            },
-          ],
-        }),
+        body: JSON.stringify(checkoutBody),
       })
 
       if (!checkoutResponse.ok) {
@@ -186,7 +194,49 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
       const checkoutData: any = await checkoutResponse.json()
       const sourceId = checkoutData.id
 
-      // Step 2: Create checkout session
+      // For HOSTED mode (card), return the payment URL for redirect
+      if (isCardPayment) {
+        // Save donation with pending status first
+        let donationId: string
+        try {
+          donationId = await saveDonationToFirestore(
+            { ...input, mobilePhone: input.mobilePhone ? formatPhoneForDollr(input.mobilePhone) : input.mobilePhone },
+            ipAddress,
+            sourceId // Use source_id as reference for HOSTED mode
+          )
+        } catch (error) {
+          console.error('Firestore save error:', error)
+          return NextResponse.json(
+            { success: false, error: 'Failed to save donation' },
+            { status: 500 }
+          )
+        }
+
+        // Save to Supabase (non-blocking)
+        try {
+          await saveDonationToSupabase(
+            { ...input, mobilePhone: input.mobilePhone ? formatPhoneForDollr(input.mobilePhone) : input.mobilePhone },
+            ipAddress,
+            sourceId,
+            donationId
+          )
+        } catch (error) {
+          console.warn('Supabase save error (non-fatal):', error)
+        }
+
+        // Return the Dollr payment URL for redirect
+        return NextResponse.json(
+          {
+            success: true,
+            donationId,
+            status: 'pending',
+            paymentUrl: checkoutData.url, // Hosted checkout URL
+          },
+          { status: 201 }
+        )
+      }
+
+      // Step 2: Create checkout session (for DIRECT mode - mobile money)
       const sessionResponse = await fetch(`${BASE_URL}/v1/sessions/checkout`, {
         method: 'POST',
         headers,
