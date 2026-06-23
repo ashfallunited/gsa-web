@@ -558,8 +558,8 @@ export default function DonateForm() {
                   className={inputClass}
                 >
                   <option value="">Select payment method...</option>
-                  <option value="card">Card (Credit/Debit)</option>
                   <option value="mobile">Mobile Money (MTN, Orange)</option>
+                  <option value="card">Card (Credit/Debit)</option>
                 </select>
               </div>
 

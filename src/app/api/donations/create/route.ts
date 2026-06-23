@@ -159,11 +159,24 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
       const isCardPayment = input.paymentMethod === 'card'
       const checkoutMode = isCardPayment ? 'HOSTED' : 'DIRECT'
 
+      // Format party phone: use donor's phone for cards, mobile phone for mobile money
+      const partyPhone = isCardPayment
+        ? formatPhoneForDollr(input.phone)
+        : formatPhoneForDollr(input.mobilePhone!)
+
+      // Validate that we have a valid phone number
+      if (!partyPhone || partyPhone.length < 8) {
+        return NextResponse.json(
+          { success: false, error: 'Valid phone number required' },
+          { status: 400 }
+        )
+      }
+
       const checkoutBody = {
         mode: checkoutMode,
         source_kind: 'ORDER',
         party_name: `${input.firstName} ${input.lastName}`,
-        party_phone: input.paymentMethod === 'mobile' ? formatPhoneForDollr(input.mobilePhone!) : 'unknown',
+        party_phone: partyPhone,
         party_email: input.email,
         currency: 'USD',
         items: [
@@ -196,6 +209,8 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
 
       // For HOSTED mode (card), return the payment URL for redirect
       if (isCardPayment) {
+        console.log('[Donations] HOSTED checkout response:', JSON.stringify(checkoutData, null, 2))
+
         // Save donation with pending status first
         let donationId: string
         try {
@@ -225,12 +240,16 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
         }
 
         // Return the Dollr payment URL for redirect
+        // Check for 'url' field in response
+        const paymentUrl = checkoutData.url || checkoutData.payment_url || checkoutData.checkout_url
+        console.log('[Donations] Payment URL:', paymentUrl)
+
         return NextResponse.json(
           {
             success: true,
             donationId,
             status: 'pending',
-            paymentUrl: checkoutData.url, // Hosted checkout URL
+            paymentUrl: paymentUrl,
           },
           { status: 201 }
         )
