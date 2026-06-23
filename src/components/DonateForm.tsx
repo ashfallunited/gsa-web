@@ -160,7 +160,10 @@ export default function DonateForm() {
   const pollDonationStatus = async (donationId: string, maxAttempts = 60) => {
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       try {
-        const response = await fetch(`/api/donations/${donationId}/status`)
+        // Call check-status endpoint which checks Dollr and updates if completed
+        const response = await fetch(`/api/donations/${donationId}/check-status`, {
+          method: 'POST',
+        })
         const statusData = await response.json()
 
         if (statusData.status === 'completed') {
