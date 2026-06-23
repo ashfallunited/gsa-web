@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { requireAdmin, getSession } from '@/lib/admin-auth'
 import { getDonation } from '@/lib/donation/firestore'
+import { getDonorFromFirestore } from '@/lib/donation/firestore-donors'
 import { logEmail } from '@/lib/donation/supabase'
 import { sendCustomEmail } from '@/lib/donation/email'
 
@@ -55,8 +56,17 @@ export async function POST(
       )
     }
 
+    // Get donor info
+    const donor = await getDonorFromFirestore(donation.donorId)
+    if (!donor) {
+      return NextResponse.json(
+        { error: 'Donor not found' },
+        { status: 404 }
+      )
+    }
+
     // Send custom email
-    const emailSuccess = await sendCustomEmail(donation.email, subject, emailBody)
+    const emailSuccess = await sendCustomEmail(donor.email, subject, emailBody)
     if (!emailSuccess) {
       return NextResponse.json(
         { error: 'Failed to send email' },
@@ -69,7 +79,7 @@ export async function POST(
     const adminEmail = session?.sub || undefined
 
     // Log email
-    await logEmail(donationId, 'admin_custom', donation.email, subject, adminEmail)
+    await logEmail(donationId, 'admin_custom', donor.email, subject, adminEmail)
 
     return NextResponse.json({
       success: true,

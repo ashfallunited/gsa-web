@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type { DonationInput, DonationResponse } from '@/types/donation'
 import { saveDonationToFirestore } from '@/lib/donation/firestore'
+import { saveDonorToFirestore } from '@/lib/donation/firestore-donors'
 import { saveDonationToSupabase } from '@/lib/donation/supabase'
+import { saveDonorToSupabase } from '@/lib/donation/supabase-donors'
 import { dollr } from '@/lib/donation/dollr'
 import { MIN_DONATION_USD } from '@/lib/donation/constants'
 import { COUNTRIES } from '@/lib/country-data'
@@ -218,27 +220,8 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
         // Generate a temporary donation ID for the response
         const tempDonationId = `temp-${sourceId}`
 
-        // Save to Firestore and Supabase asynchronously (fire-and-forget)
-        // Don't block the redirect on this
-        Promise.all([
-          saveDonationToFirestore(
-            { ...input, mobilePhone: input.mobilePhone ? formatPhoneForDollr(input.mobilePhone) : input.mobilePhone },
-            ipAddress,
-            sourceId
-          ).then((donationId) => {
-            // Save to Supabase with the real donationId
-            return saveDonationToSupabase(
-              { ...input, mobilePhone: input.mobilePhone ? formatPhoneForDollr(input.mobilePhone) : input.mobilePhone },
-              ipAddress,
-              sourceId,
-              donationId
-            ).catch((err) => {
-              console.warn('Supabase save error (non-fatal):', err)
-            })
-          }),
-        ]).catch((error) => {
-          console.error('Background save error (non-blocking):', error)
-        })
+        // NOTE: We skip saving to database for card payments. The donation will be saved
+        // only after the webhook confirms payment from Dollr.
 
         return NextResponse.json(
           {
@@ -342,29 +325,68 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
 
       const executionData: any = await executionResponse.json()
 
-      // Step 5: Save to Firestore
+      // Step 5: Save donor to Firestore and Supabase
+      let donorId: string
+      try {
+        donorId = await saveDonorToFirestore(
+          input.firstName,
+          input.lastName,
+          input.email,
+          input.phone,
+          input.country
+        )
+      } catch (error) {
+        console.error('Error saving donor to Firestore:', error)
+        return NextResponse.json(
+          { success: false, error: 'Failed to save donor information' },
+          { status: 500 }
+        )
+      }
+
+      // Save donor to Supabase (non-blocking)
+      try {
+        await saveDonorToSupabase(
+          input.firstName,
+          input.lastName,
+          input.email,
+          input.phone,
+          input.country
+        )
+      } catch (error) {
+        console.warn('Supabase donor save error (non-fatal):', error)
+      }
+
+      // Step 6: Save donation to Firestore
       let donationId: string
       try {
         donationId = await saveDonationToFirestore(
-          { ...input, mobilePhone: input.paymentMethod === 'mobile' ? formatPhoneForDollr(input.mobilePhone!) : input.mobilePhone },
+          donorId,
+          input.amountUsd,
+          input.paymentMethod,
+          input.coverFees,
           ipAddress,
-          referenceId
+          referenceId,
+          input.message
         )
       } catch (error) {
-        console.error('Firestore save error:', error)
+        console.error('Firestore donation save error:', error)
         return NextResponse.json(
           { success: false, error: 'Failed to save donation' },
           { status: 500 }
         )
       }
 
-      // Step 6: Save to Supabase (non-blocking)
+      // Step 7: Save donation to Supabase (non-blocking)
       try {
         await saveDonationToSupabase(
-          { ...input, mobilePhone: input.paymentMethod === 'mobile' ? formatPhoneForDollr(input.mobilePhone!) : input.mobilePhone },
+          donationId,
+          donorId,
+          input.amountUsd,
+          input.paymentMethod,
+          input.coverFees,
           ipAddress,
           referenceId,
-          donationId
+          input.message
         )
       } catch (error) {
         console.warn('Supabase save error (non-fatal):', error)
@@ -375,7 +397,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
         {
           success: true,
           donationId,
-          status: executionData.status || 'pending',
+          status: executionData.status || 'awaiting_payment',
         },
         { status: 201 }
       )

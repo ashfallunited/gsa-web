@@ -23,48 +23,52 @@ function getSupabaseAdminClient() {
 
 /**
  * Saves a donation record to Supabase
- * @param input - DonationInput with donor and donation details
+ * @param donationId - Firebase donation ID for consistency
+ * @param donorId - The ID of the donor
+ * @param amountUsd - Donation amount in USD
+ * @param paymentMethod - Payment method (card or mobile)
+ * @param coverFees - Whether the donor is covering fees
  * @param ipAddress - IP address of the donor
- * @param referenceId - Dollr reference ID
- * @param firebaseId - Firebase document ID (used as Supabase ID for dual-write consistency)
+ * @param referenceId - Dollr order/reference ID
+ * @param message - Optional donation message
  * @throws Error if insert fails
  */
 export async function saveDonationToSupabase(
-  input: DonationInput,
+  donationId: string,
+  donorId: string,
+  amountUsd: number,
+  paymentMethod: 'card' | 'mobile',
+  coverFees: boolean,
   ipAddress: string,
   referenceId: string,
-  firebaseId: string
+  message?: string
 ): Promise<void> {
   try {
     // Calculate fees using same logic as Firestore
-    const feeUsd = input.coverFees
-      ? Math.round(input.amountUsd * PROCESSING_FEE_RATE * 100) / 100
+    const feeUsd = coverFees
+      ? Math.round(amountUsd * PROCESSING_FEE_RATE * 100) / 100
       : 0
-    const totalUsd = input.amountUsd + feeUsd
+    const totalUsd = amountUsd + feeUsd
 
     const supabase = getSupabaseAdminClient()
     const now = new Date().toISOString()
 
     const donationData = {
-      id: firebaseId, // Use Firebase ID for consistency across databases
-      first_name: input.firstName,
-      last_name: input.lastName,
-      email: input.email,
-      phone: input.phone,
-      country: input.country,
-      message: input.message || null,
-      ip_address: ipAddress,
-
-      amount_usd: input.amountUsd,
-      payment_method: input.paymentMethod,
-      cover_fees: input.coverFees,
+      id: donationId,
+      donor_id: donorId,
+      amount_usd: amountUsd,
+      payment_method: paymentMethod,
+      cover_fees: coverFees,
       fee_usd: feeUsd,
       total_usd: totalUsd,
+      message: message || null,
 
       reference_id: referenceId,
-      status: DONATION_STATUS.PENDING,
+      status: DONATION_STATUS.AWAITING_PAYMENT,
       dollr_status: '',
 
+      ip_address: ipAddress,
+      transaction_date: null,
       created_at: now,
       updated_at: now,
       completed_at: null,

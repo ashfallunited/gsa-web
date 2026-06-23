@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-auth'
 import { getDonation, updateDonationStatus, markEmailSent } from '@/lib/donation/firestore'
+import { getDonorFromFirestore } from '@/lib/donation/firestore-donors'
 import { updateSupabaseDonation, markEmailSentSupabase, logEmail } from '@/lib/donation/supabase'
 import { sendThankYouEmail } from '@/lib/donation/email'
 
@@ -43,6 +44,15 @@ export async function POST(
       )
     }
 
+    // Get donor info
+    const donor = await getDonorFromFirestore(donation.donorId)
+    if (!donor) {
+      return NextResponse.json(
+        { error: 'Donor not found' },
+        { status: 404 }
+      )
+    }
+
     // Update status in both databases
     await updateDonationStatus(donationId, 'completed', 'admin_complete', notes)
     await updateSupabaseDonation(donationId, 'completed', 'admin_complete', notes)
@@ -50,7 +60,7 @@ export async function POST(
     // Send thank-you email if not already sent
     let emailSent = false
     if (!donation.emailSent) {
-      const emailSuccess = await sendThankYouEmail(donation)
+      const emailSuccess = await sendThankYouEmail({ ...donation, ...donor })
       if (emailSuccess) {
         // Mark as sent in both databases
         await markEmailSent(donationId)
@@ -60,7 +70,7 @@ export async function POST(
         await logEmail(
           donationId,
           'auto_thank_you',
-          donation.email,
+          donor.email,
           `Thank You for Your Donation to ${process.env.ORG_NAME || 'GSA'}`
         )
 

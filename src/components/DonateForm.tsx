@@ -157,6 +157,34 @@ export default function DonateForm() {
     else if (step === 'review') setStep('payment')
   }
 
+  const pollDonationStatus = async (donationId: string, maxAttempts = 60) => {
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const response = await fetch(`/api/donations/${donationId}/status`)
+        const statusData = await response.json()
+
+        if (statusData.status === 'completed') {
+          return true
+        }
+
+        if (statusData.status === 'failed') {
+          setSubmitError('Payment failed. Please try again.')
+          setIsSubmitting(false)
+          return false
+        }
+
+        // Wait 2 seconds before polling again
+        await new Promise((resolve) => setTimeout(resolve, 2000))
+      } catch (error) {
+        console.error('Error polling status:', error)
+      }
+    }
+
+    setSubmitError('Payment verification timed out. Please check your email for confirmation.')
+    setIsSubmitting(false)
+    return false
+  }
+
   const completeDonation = async () => {
     setIsSubmitting(true)
     setSubmitError('')
@@ -198,9 +226,13 @@ export default function DonateForm() {
         return
       }
 
-      // For mobile money (DIRECT mode), show success screen
+      // For mobile money (DIRECT mode), poll status until completed
       setReferenceId(data.donationId)
       setStep('success')
+      const isCompleted = await pollDonationStatus(data.donationId)
+      if (!isCompleted) {
+        setStep('review')
+      }
     } catch (error) {
       setSubmitError('Network error. Please try again.')
       setIsSubmitting(false)
@@ -211,60 +243,85 @@ export default function DonateForm() {
     return (
       <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8 px-0 sm:px-0">
         <div className="bg-white border border-gray-100 p-6 sm:p-10 lg:p-12 text-center">
-          <div className="w-14 h-14 bg-[#01255f] flex items-center justify-center mx-auto mb-6">
-            <Check className="w-7 h-7 text-[#fee11b]" strokeWidth={2.5} />
-          </div>
-          <h2
-            className="text-2xl font-bold text-[#01255f] mb-2"
-            style={{ fontFamily: 'var(--font-heading)' }}
-          >
-            Thank you, {form.firstName}
-          </h2>
-          <p className="text-sm text-[#5a6478] leading-relaxed mb-6">
-            Your donation of <strong className="text-[#01255f]">{formatUsd(totalUsd)}</strong> has been initiated.
-            {form.paymentMethod === 'card' && (
-              <> You'll be redirected to complete your card payment securely.</>
-            )}
-            {form.paymentMethod === 'mobile' && (
-              <> You'll receive instructions to complete your payment via MTN or Orange Money.</>
-            )}
-          </p>
-          <p className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1">Reference</p>
-          <p className="text-lg font-mono font-bold text-[#01255f] mb-8">{referenceId}</p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center w-full max-w-sm mx-auto sm:max-w-none">
-            <Link
-              href="/"
-              className="bg-[#01255f] hover:bg-[#011840] text-white px-6 py-3 text-sm font-bold tracking-wide"
-            >
-              Back to home
-            </Link>
-            <button
-              type="button"
-              onClick={() => {
-                setStep('amount')
-                setForm({
-                  frequency: 'once',
-                  amountPreset: 50,
-                  customAmount: '',
-                  firstName: '',
-                  lastName: '',
-                  email: '',
-                  phone: '',
-                  country: 'US',
-                  message: '',
-                  paymentMethod: 'card',
-                  coverFees: false,
-                  cardNumber: '',
-                  cardExpiry: '',
-                  cardCVV: '',
-                  mobilePhone: '',
-                })
-              }}
-              className="border border-[#01255f] text-[#01255f] px-6 py-3 text-sm font-bold tracking-wide hover:bg-[#f5f7fc]"
-            >
-              Make another gift
-            </button>
-          </div>
+          {isSubmitting && form.paymentMethod === 'mobile' ? (
+            <>
+              <div className="flex justify-center mb-6">
+                <div className="relative w-14 h-14">
+                  <div className="absolute inset-0 bg-[#01255f] rounded-lg animate-pulse"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-10 h-10 border-3 border-[#fee11b] border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                </div>
+              </div>
+              <h2
+                className="text-2xl font-bold text-[#01255f] mb-2"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Processing Payment
+              </h2>
+              <p className="text-sm text-[#5a6478] leading-relaxed mb-6">
+                Please complete the payment on your phone. We're verifying your transaction...
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="w-14 h-14 bg-[#01255f] flex items-center justify-center mx-auto mb-6">
+                <Check className="w-7 h-7 text-[#fee11b]" strokeWidth={2.5} />
+              </div>
+              <h2
+                className="text-2xl font-bold text-[#01255f] mb-2"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Thank you, {form.firstName}
+              </h2>
+              <p className="text-sm text-[#5a6478] leading-relaxed mb-6">
+                Your donation of <strong className="text-[#01255f]">{formatUsd(totalUsd)}</strong> has been{' '}
+                {form.paymentMethod === 'mobile' ? 'completed' : 'initiated'}.
+                {form.paymentMethod === 'card' && (
+                  <> You'll be redirected to complete your card payment securely.</>
+                )}
+                {form.paymentMethod === 'mobile' && (
+                  <> A confirmation email has been sent to {form.email}.</>
+                )}
+              </p>
+              <p className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1">Reference</p>
+              <p className="text-lg font-mono font-bold text-[#01255f] mb-8">{referenceId}</p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center w-full max-w-sm mx-auto sm:max-w-none">
+                <Link
+                  href="/"
+                  className="bg-[#01255f] hover:bg-[#011840] text-white px-6 py-3 text-sm font-bold tracking-wide"
+                >
+                  Back to home
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep('amount')
+                    setForm({
+                      frequency: 'once',
+                      amountPreset: 50,
+                      customAmount: '',
+                      firstName: '',
+                      lastName: '',
+                      email: '',
+                      phone: '',
+                      country: 'US',
+                      message: '',
+                      paymentMethod: 'card',
+                      coverFees: false,
+                      cardNumber: '',
+                      cardExpiry: '',
+                      cardCVV: '',
+                      mobilePhone: '',
+                    })
+                  }}
+                  className="border border-[#01255f] text-[#01255f] px-6 py-3 text-sm font-bold tracking-wide hover:bg-[#f5f7fc]"
+                >
+                  Make another gift
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         <DonateShareCard

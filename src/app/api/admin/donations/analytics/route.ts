@@ -24,7 +24,7 @@ interface ByPaymentMethod {
 
 interface ByStatus {
   completed: number
-  pending: number
+  awaiting_payment: number
   processing: number
   failed: number
 }
@@ -67,7 +67,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         },
         byStatus: {
           completed: 0,
-          pending: 0,
+          awaiting_payment: 0,
           processing: 0,
           failed: 0,
         },
@@ -83,18 +83,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       const data = doc.data()
       donations.push({
         id: doc.id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        phone: data.phone,
-        country: data.country,
-        message: data.message || null,
-        ipAddress: data.ipAddress,
+        donorId: data.donorId || `${data.email}-${data.referenceId}`,
         amountUsd: data.amountUsd,
-        paymentMethod: data.paymentMethod,
-        coverFees: data.coverFees,
         feeUsd: data.feeUsd,
         totalUsd: data.totalUsd,
+        paymentMethod: data.paymentMethod,
+        coverFees: data.coverFees,
+        message: data.message || null,
         referenceId: data.referenceId,
         status: data.status,
         dollrStatus: data.dollrStatus,
@@ -112,9 +107,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const completedDonations = donations.filter((d) => d.status === 'completed')
     const totalRaised = completedDonations.reduce((sum, d) => sum + d.totalUsd, 0)
 
-    // Unique donor count
-    const uniqueEmails = new Set(completedDonations.map((d) => d.email))
-    const donorCount = uniqueEmails.size
+    // Unique donor count (based on completed donations for now)
+    const donorCount = completedDonations.length
 
     // Average donation
     const averageDonation = donorCount > 0 ? totalRaised / donorCount : 0
@@ -139,7 +133,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // By status
     const byStatus: ByStatus = {
       completed: 0,
-      pending: 0,
+      awaiting_payment: 0,
       processing: 0,
       failed: 0,
     }
@@ -162,15 +156,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       .sort((a, b) => a.date.localeCompare(b.date))
 
     // Top countries (completed donations only)
-    const countryMap = new Map<string, number>()
-    completedDonations.forEach((d) => {
-      countryMap.set(d.country, (countryMap.get(d.country) || 0) + 1)
-    })
-
-    const topCountries: TopCountry[] = Array.from(countryMap.entries())
-      .map(([country, count]) => ({ country, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10)
+    // TODO: Fetch donor data to get country information
+    const topCountries: TopCountry[] = []
 
     return NextResponse.json({
       totalRaised: Math.round(totalRaised * 100) / 100,
@@ -183,7 +170,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         dailyTotals,
         topCountries,
       },
-    } as AnalyticsResponse)
+    } as unknown as AnalyticsResponse)
   } catch (error) {
     console.error('Error fetching analytics:', error)
     return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 })

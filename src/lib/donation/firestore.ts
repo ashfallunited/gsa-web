@@ -7,45 +7,49 @@ const DONATIONS_COLLECTION = 'donations'
 
 /**
  * Saves a new donation record to Firestore
- * @param input - DonationInput with donor and donation details
+ * @param donorId - The ID of the donor in the donors collection
+ * @param amountUsd - Donation amount in USD
+ * @param paymentMethod - Payment method (card or mobile)
+ * @param coverFees - Whether the donor is covering fees
  * @param ipAddress - IP address of the donor
- * @param referenceId - Dollr reference ID
+ * @param referenceId - Dollr order/reference ID
+ * @param message - Optional donation message
  * @returns The document ID of the saved donation
  */
 export async function saveDonationToFirestore(
-  input: DonationInput,
+  donorId: string,
+  amountUsd: number,
+  paymentMethod: 'card' | 'mobile',
+  coverFees: boolean,
   ipAddress: string,
-  referenceId: string
+  referenceId: string,
+  message?: string
 ): Promise<string> {
   try {
     // Calculate fees
-    const feeUsd = input.coverFees
-      ? Math.round(input.amountUsd * PROCESSING_FEE_RATE * 100) / 100
+    const feeUsd = coverFees
+      ? Math.round(amountUsd * PROCESSING_FEE_RATE * 100) / 100
       : 0
-    const totalUsd = input.amountUsd + feeUsd
+    const totalUsd = amountUsd + feeUsd
 
     const db = getAdminDb()
     const now = Timestamp.now()
 
     const donationData = {
-      firstName: input.firstName,
-      lastName: input.lastName,
-      email: input.email,
-      phone: input.phone,
-      country: input.country,
-      message: input.message || null,
-      ipAddress,
-
-      amountUsd: input.amountUsd,
-      paymentMethod: input.paymentMethod,
-      coverFees: input.coverFees,
+      donorId,
+      amountUsd,
+      paymentMethod,
+      coverFees,
       feeUsd,
       totalUsd,
+      message: message || null,
 
       referenceId,
-      status: DONATION_STATUS.PENDING,
+      status: DONATION_STATUS.AWAITING_PAYMENT,
       dollrStatus: '',
 
+      ipAddress,
+      transactionDate: null,
       createdAt: now,
       updatedAt: now,
       completedAt: null,
@@ -137,7 +141,7 @@ export async function queryPendingDonations(): Promise<Donation[]> {
 
     const querySnapshot = await db
       .collection(DONATIONS_COLLECTION)
-      .where('status', 'in', [DONATION_STATUS.PENDING, DONATION_STATUS.PROCESSING])
+      .where('status', 'in', [DONATION_STATUS.AWAITING_PAYMENT, DONATION_STATUS.PROCESSING])
       .get()
 
     const donations: Donation[] = []

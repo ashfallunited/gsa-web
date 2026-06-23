@@ -3,7 +3,7 @@ export const MIN_DONATION_USD = 1
 export const PROCESSING_FEE_RATE = 0.029 // 2.9%
 
 export const DONATION_STATUS = {
-  PENDING: 'pending',
+  AWAITING_PAYMENT: 'awaiting_payment',
   PROCESSING: 'processing',
   COMPLETED: 'completed',
   FAILED: 'failed',
