@@ -90,7 +90,7 @@ export default function DonateForm() {
     phone: '',
     country: 'US',
     message: '',
-    paymentMethod: 'card',
+    paymentMethod: 'mobile',
     coverFees: false,
     cardNumber: '',
     cardExpiry: '',
