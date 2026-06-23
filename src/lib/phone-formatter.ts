@@ -58,28 +58,30 @@ export function isValidLiberianPhone(phone: string): boolean {
 }
 
 /**
- * Extracts the country code from a formatted phone number
- * e.g., 231775500512 → LR, 254700000000 → KE
+ * Extracts the 3-letter country code from a formatted phone number
+ * e.g., 231775500512 → LBR, 254700000000 → KEN
+ * Returns 3-letter ISO 3166-1 alpha-3 codes for Dollr API compatibility
  */
 export function extractCountryCodeFromPhone(phone: string): string {
   if (!phone) return ''
 
   const cleaned = phone.replace(/\D/g, '')
 
-  // Common country code mappings (country code prefix → ISO country code)
+  // Country code mappings (phone prefix → 3-letter ISO 3166-1 alpha-3 code)
   const countryCodeMap: Record<string, string> = {
-    '231': 'LR', // Liberia
-    '254': 'KE', // Kenya
-    '256': 'UG', // Uganda
-    '255': 'TZ', // Tanzania
-    '233': 'GH', // Ghana
-    '234': 'NG', // Nigeria
-    '212': 'MA', // Morocco
-    '27': 'ZA', // South Africa
-    '1': 'US', // USA
-    '44': 'GB', // UK
-    '91': 'IN', // India
-    '86': 'CN', // China
+    '231': 'LBR', // Liberia
+    '254': 'KEN', // Kenya
+    '256': 'UGA', // Uganda
+    '255': 'TZA', // Tanzania
+    '233': 'GHA', // Ghana
+    '234': 'NGA', // Nigeria
+    '212': 'MAR', // Morocco
+    '27': 'ZAF', // South Africa
+    '1': 'USA', // USA
+    '44': 'GBR', // UK
+    '91': 'IND', // India
+    '86': 'CHN', // China
+    '250': 'RWA', // Rwanda
   }
 
   // Check 3-digit codes first (most common in Africa)
