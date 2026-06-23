@@ -5,6 +5,10 @@ import { saveDonationToSupabase } from '@/lib/donation/supabase'
 import { dollr } from '@/lib/donation/dollr'
 import { MIN_DONATION_USD } from '@/lib/donation/constants'
 import { COUNTRIES } from '@/lib/country-data'
+import { formatPhoneForDollr } from '@/lib/phone-formatter'
+import { randomUUID } from 'crypto'
+
+const BASE_URL = 'https://api.heydollr.app'
 
 /**
  * Validates a single email address
@@ -20,25 +24,21 @@ function validateEmail(email: string): boolean {
 function validateDonationInput(input: DonationInput): Record<string, string> | null {
   const errors: Record<string, string> = {}
 
-  // Validate firstName
-  if (!input.firstName || typeof input.firstName !== 'string' || input.firstName.trim() === '') {
+  if (!input.firstName?.trim()) {
     errors.firstName = 'First name is required'
   }
 
-  // Validate lastName
-  if (!input.lastName || typeof input.lastName !== 'string' || input.lastName.trim() === '') {
+  if (!input.lastName?.trim()) {
     errors.lastName = 'Last name is required'
   }
 
-  // Validate email
-  if (!input.email || typeof input.email !== 'string' || input.email.trim() === '') {
+  if (!input.email?.trim()) {
     errors.email = 'Email is required'
   } else if (!validateEmail(input.email)) {
     errors.email = 'Email format is invalid'
   }
 
-  // Validate country
-  if (!input.country || typeof input.country !== 'string') {
+  if (!input.country) {
     errors.country = 'Country is required'
   } else {
     const countryExists = COUNTRIES.some((c) => c.code === input.country)
@@ -47,26 +47,38 @@ function validateDonationInput(input: DonationInput): Record<string, string> | n
     }
   }
 
-  // Validate amountUsd
   if (typeof input.amountUsd !== 'number' || isNaN(input.amountUsd)) {
     errors.amountUsd = 'Amount must be a valid number'
   } else if (input.amountUsd < MIN_DONATION_USD) {
     errors.amountUsd = `Minimum donation is $${MIN_DONATION_USD}`
   }
 
-  // Validate paymentMethod
-  if (!input.paymentMethod || !['card', 'mobile'].includes(input.paymentMethod)) {
+  if (!['card', 'mobile'].includes(input.paymentMethod)) {
     errors.paymentMethod = 'Invalid payment method'
   }
 
-  // Validate coverFees
   if (typeof input.coverFees !== 'boolean') {
     errors.coverFees = 'Cover fees must be a boolean'
   }
 
-  // Validate phone
-  if (!input.phone || typeof input.phone !== 'string' || input.phone.trim() === '') {
-    errors.phone = 'Phone number is required'
+  // Validate payment details
+  if (input.paymentMethod === 'card') {
+    if (!input.cardNumber?.replace(/\s/g, '')) {
+      errors.cardNumber = 'Card number is required'
+    }
+    if (!input.cardExpiry) {
+      errors.cardExpiry = 'Card expiry is required'
+    }
+    if (!input.cardCVV) {
+      errors.cardCVV = 'Card CVV is required'
+    }
+  } else if (input.paymentMethod === 'mobile') {
+    if (!input.mobilePhone) {
+      errors.mobilePhone = 'Phone number is required'
+    }
+    if (!input.detectedProvider) {
+      errors.detectedProvider = 'Provider could not be detected'
+    }
   }
 
   return Object.keys(errors).length > 0 ? errors : null
@@ -91,26 +103,21 @@ function getClientIpAddress(req: NextRequest): string {
     return realIp
   }
 
-  // Fallback: try to get from connection info if available
   return 'unknown'
 }
 
 /**
  * POST /api/donations/create
- * Creates a donation record and initiates payment with Dollr
+ * Creates a donation and executes payment through Dollr
  */
 export async function POST(req: NextRequest): Promise<NextResponse<DonationResponse>> {
   try {
-    // Parse request body
     let input: DonationInput
     try {
       input = await req.json()
     } catch (_error) {
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Invalid request body',
-        },
+        { success: false, error: 'Invalid request body' },
         { status: 400 }
       )
     }
@@ -119,79 +126,205 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
     const validationErrors = validateDonationInput(input)
     if (validationErrors) {
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Validation failed',
-          fields: validationErrors,
-        },
+        { success: false, error: 'Validation failed', fields: validationErrors },
         { status: 400 }
       )
     }
 
-    // Get IP address
     const ipAddress = getClientIpAddress(req)
 
     // Calculate fees
     const feeUsd = input.coverFees ? Math.round(input.amountUsd * 0.029 * 100) / 100 : 0
     const totalUsd = input.amountUsd + feeUsd
 
-    // Call Dollr API to create checkout
-    let referenceId: string
+    // Get Dollr access token
+    let token: string
     try {
-      const fullName = `${input.firstName} ${input.lastName}`
-      referenceId = await dollr.createCheckout(totalUsd, input.email, fullName)
+      token = await dollr.getAccessToken()
+    } catch (error) {
+      console.error('Failed to get Dollr token:', error)
+      return NextResponse.json(
+        { success: false, error: 'Payment service unavailable' },
+        { status: 503 }
+      )
+    }
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    }
+
+    try {
+      // Step 1: Create checkout source
+      const checkoutResponse = await fetch(`${BASE_URL}/v1/checkouts/create`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          mode: 'online',
+          source_kind: 'ORDER',
+          party_name: `${input.firstName} ${input.lastName}`,
+          party_phone: input.paymentMethod === 'mobile' ? formatPhoneForDollr(input.mobilePhone!) : 'unknown',
+          party_email: input.email,
+          currency: 'USD',
+          items: [
+            {
+              name: 'Donation',
+              currency: 'USD',
+              qty: 1,
+              amount: totalUsd,
+            },
+          ],
+        }),
+      })
+
+      if (!checkoutResponse.ok) {
+        const errorData = await checkoutResponse.text()
+        console.error('Checkout create error response:', errorData)
+        throw new Error(`Checkout create failed: ${checkoutResponse.status} - ${errorData}`)
+      }
+
+      const checkoutData: any = await checkoutResponse.json()
+      const sourceId = checkoutData.id
+
+      // Step 2: Create checkout session
+      const sessionResponse = await fetch(`${BASE_URL}/v1/sessions/checkout`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          source_id: sourceId,
+          source_type: 'ORDER',
+        }),
+      })
+
+      if (!sessionResponse.ok) {
+        throw new Error(`Session create failed: ${sessionResponse.status}`)
+      }
+
+      const sessionData: any = await sessionResponse.json()
+      const sessionId = sessionData.id
+
+      // Step 3: Create payment account
+      let paymentAccountId: string
+      if (input.paymentMethod === 'card') {
+        const cardResponse = await fetch(
+          `${BASE_URL}/v1/payment-accounts/create?operation_type=COLLECTION`,
+          {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              account_name: `${input.firstName} Card`,
+              provider: 'CARD_ONLINE',
+              method: 'CARD_ONLINE',
+              party_id: checkoutData.party_id,
+              country_code: input.country,
+              insensitive_account_number: input.cardNumber!.replace(/\s/g, ''),
+              card_expiry_month: input.cardExpiry!.split('/')[0],
+              card_expiry_year: '20' + input.cardExpiry!.split('/')[1],
+              card_cvv: input.cardCVV!,
+            }),
+          }
+        )
+
+        if (!cardResponse.ok) {
+          throw new Error(`Card account create failed: ${cardResponse.status}`)
+        }
+
+        const cardData: any = await cardResponse.json()
+        paymentAccountId = cardData.id
+      } else {
+        // Mobile money
+        const phoneFormatted = formatPhoneForDollr(input.mobilePhone!)
+        const mobileResponse = await fetch(
+          `${BASE_URL}/v1/payment-accounts/create?operation_type=COLLECTION`,
+          {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              account_name: `${input.firstName} ${input.detectedProvider}`,
+              provider: input.detectedProvider,
+              method: input.detectedProvider,
+              party_id: checkoutData.party_id,
+              country_code: input.country,
+              insensitive_account_number: phoneFormatted,
+            }),
+          }
+        )
+
+        if (!mobileResponse.ok) {
+          throw new Error(`Mobile account create failed: ${mobileResponse.status}`)
+        }
+
+        const mobileData: any = await mobileResponse.json()
+        paymentAccountId = mobileData.id
+      }
+
+      // Step 4: Execute collection
+      const referenceId = randomUUID()
+      const executionResponse = await fetch(`${BASE_URL}/v1/executions/collection`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          session_id: String(sessionId),
+          payment_account_id: String(paymentAccountId),
+          currency: 'USD',
+          reference_id: referenceId,
+        }),
+      })
+
+      if (!executionResponse.ok) {
+        throw new Error(`Execution failed: ${executionResponse.status}`)
+      }
+
+      const executionData: any = await executionResponse.json()
+
+      // Step 5: Save to Firestore
+      let donationId: string
+      try {
+        donationId = await saveDonationToFirestore(
+          { ...input, mobilePhone: input.paymentMethod === 'mobile' ? formatPhoneForDollr(input.mobilePhone!) : input.mobilePhone },
+          ipAddress,
+          referenceId
+        )
+      } catch (error) {
+        console.error('Firestore save error:', error)
+        return NextResponse.json(
+          { success: false, error: 'Failed to save donation' },
+          { status: 500 }
+        )
+      }
+
+      // Step 6: Save to Supabase (non-blocking)
+      try {
+        await saveDonationToSupabase(
+          { ...input, mobilePhone: input.paymentMethod === 'mobile' ? formatPhoneForDollr(input.mobilePhone!) : input.mobilePhone },
+          ipAddress,
+          referenceId,
+          donationId
+        )
+      } catch (error) {
+        console.warn('Supabase save error (non-fatal):', error)
+      }
+
+      // Return success
+      return NextResponse.json(
+        {
+          success: true,
+          donationId,
+          status: executionData.status || 'pending',
+        },
+        { status: 201 }
+      )
     } catch (error) {
       console.error('Dollr API error:', error)
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Failed to initiate payment. Please try again.',
-        },
+        { success: false, error: 'Payment processing failed. Please try again.' },
         { status: 500 }
       )
     }
-
-    // Save to Firestore (primary storage)
-    let donationId: string
-    try {
-      donationId = await saveDonationToFirestore(input, ipAddress, referenceId)
-    } catch (error) {
-      console.error('Firestore save error:', error)
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Failed to create donation record. Please try again.',
-        },
-        { status: 500 }
-      )
-    }
-
-    // Save to Supabase (secondary storage, non-blocking)
-    // If it fails, we log it but don't fail the overall request since Firestore is primary
-    try {
-      await saveDonationToSupabase(input, ipAddress, referenceId, donationId)
-    } catch (error) {
-      console.warn('Supabase save error (non-fatal):', error)
-      // Continue - Firestore write succeeded, which is what matters
-    }
-
-    // Return success response
-    return NextResponse.json(
-      {
-        success: true,
-        donationId,
-        status: 'pending',
-        paymentUrl: undefined, // Dollr returns reference ID, actual payment URL is retrieved separately
-      },
-      { status: 201 }
-    )
   } catch (error) {
-    console.error('Unexpected error in POST /api/donations/create:', error)
+    console.error('Unexpected error:', error)
     return NextResponse.json(
-      {
-        success: false,
-        error: 'An unexpected error occurred. Please try again later.',
-      },
+      { success: false, error: 'An unexpected error occurred' },
       { status: 500 }
     )
   }

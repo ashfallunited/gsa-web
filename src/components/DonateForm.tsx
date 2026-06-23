@@ -1,11 +1,14 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { Heart, ChevronLeft, Check, Smartphone, CreditCard } from 'lucide-react'
+import { Heart, ChevronLeft, Check } from 'lucide-react'
 import DonateShareCard from '@/components/DonateShareCard'
 import { ORG_NAME } from '@/lib/constants'
 import { COUNTRIES } from '@/lib/country-data'
+import { formatPhoneForDollr } from '@/lib/phone-formatter'
+import { getProviderInfo, getProviderDisplayName } from '@/lib/provider-mapper'
 
 type Step = 'amount' | 'details' | 'payment' | 'review' | 'success'
 type Frequency = 'once' | 'monthly'
@@ -62,6 +65,21 @@ export default function DonateForm() {
   const [submitError, setSubmitError] = useState('')
   const [isDetectingProvider, setIsDetectingProvider] = useState(false)
   const [detectedProvider, setDetectedProvider] = useState<string>('')
+  const [countrySearchOpen, setCountrySearchOpen] = useState(false)
+  const [countrySearch, setCountrySearch] = useState('')
+  const countryDropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
+        setCountrySearchOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   const [form, setForm] = useState<FormState>({
     frequency: 'once',
     amountPreset: 50,
@@ -113,7 +131,8 @@ export default function DonateForm() {
 
     setIsDetectingProvider(true)
     try {
-      const response = await fetch(`/api/donations/detect-provider?phone=${encodeURIComponent(phone)}`)
+      const formattedPhone = formatPhoneForDollr(phone)
+      const response = await fetch(`/api/donations/detect-provider?phone=${encodeURIComponent(formattedPhone)}`)
       const data = await response.json()
       if (data.provider) {
         setDetectedProvider(data.provider)
@@ -159,7 +178,7 @@ export default function DonateForm() {
           cardNumber: form.paymentMethod === 'card' ? form.cardNumber : undefined,
           cardExpiry: form.paymentMethod === 'card' ? form.cardExpiry : undefined,
           cardCVV: form.paymentMethod === 'card' ? form.cardCVV : undefined,
-          mobilePhone: form.paymentMethod === 'mobile' ? form.mobilePhone : undefined,
+          mobilePhone: form.paymentMethod === 'mobile' ? formatPhoneForDollr(form.mobilePhone) : undefined,
           detectedProvider: form.paymentMethod === 'mobile' ? detectedProvider : undefined,
         }),
       })
@@ -441,20 +460,43 @@ export default function DonateForm() {
                 />
               </div>
 
-              <div>
+              <div className="relative" ref={countryDropdownRef}>
                 <label className={labelClass}>Country *</label>
-                <select
-                  required
-                  value={form.country}
-                  onChange={(e) => set('country', e.target.value)}
-                  className={inputClass}
-                >
-                  {COUNTRIES.map((country) => (
-                    <option key={country.code} value={country.code}>
-                      {country.flag} {country.name}
-                    </option>
-                  ))}
-                </select>
+                <input
+                  type="text"
+                  placeholder="Search countries..."
+                  value={countrySearchOpen ? countrySearch : (COUNTRIES.find((c) => c.code === form.country)?.name || '')}
+                  onChange={(e) => {
+                    setCountrySearch(e.target.value)
+                    setCountrySearchOpen(true)
+                  }}
+                  onFocus={() => setCountrySearchOpen(true)}
+                  className={`${inputClass} cursor-pointer`}
+                />
+                {countrySearchOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded shadow-lg z-50 max-h-48 overflow-y-auto">
+                    {COUNTRIES.filter(
+                      (country) =>
+                        country.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
+                        country.code.toLowerCase().includes(countrySearch.toLowerCase())
+                    ).map((country) => (
+                      <button
+                        key={country.code}
+                        type="button"
+                        onClick={() => {
+                          set('country', country.code)
+                          setCountrySearchOpen(false)
+                          setCountrySearch('')
+                        }}
+                        className="w-full text-left px-4 py-2.5 hover:bg-[#01255f]/5 border-b border-gray-100 last:border-b-0 text-sm transition-colors"
+                      >
+                        <span className="mr-2">{country.flag}</span>
+                        <span className="text-[#01255f]">{country.name}</span>
+                        <span className="text-[#5a6478] text-xs ml-2">({country.code})</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -579,9 +621,19 @@ export default function DonateForm() {
                   {isDetectingProvider && (
                     <p className="text-xs text-[#5a6478]">Detecting provider...</p>
                   )}
-                  {detectedProvider && (
-                    <div className="border-l-4 border-green-500 bg-green-50 p-4">
-                      <p className="text-sm font-bold text-green-700">Provider detected: {detectedProvider}</p>
+                  {detectedProvider && getProviderInfo(detectedProvider) && (
+                    <div className="bg-white border border-gray-200 rounded p-4 flex items-center gap-4">
+                      <Image
+                        src={getProviderInfo(detectedProvider)!.logo}
+                        alt={getProviderDisplayName(detectedProvider)}
+                        width={60}
+                        height={60}
+                        className="h-12 w-12 object-contain"
+                      />
+                      <div>
+                        <p className="text-xs text-[#5a6478] uppercase tracking-widest font-bold mb-1">Payment Provider</p>
+                        <p className="text-sm font-bold text-[#01255f]">{getProviderDisplayName(detectedProvider)}</p>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -601,7 +653,7 @@ export default function DonateForm() {
                   disabled={form.paymentMethod === 'mobile' && !detectedProvider}
                   className="flex-1 bg-[#01255f] hover:bg-[#011840] disabled:opacity-50 disabled:cursor-not-allowed text-white py-3.5 text-sm font-bold tracking-wide"
                 >
-                  {form.paymentMethod === 'mobile' && !detectedProvider ? 'Detecting provider...' : 'Review donation'}
+                  {isDetectingProvider ? 'Detecting provider...' : 'Review donation'}
                 </button>
               </div>
             </div>
@@ -639,25 +691,43 @@ export default function DonateForm() {
                   <span className="text-[#5a6478]">Frequency</span>
                   <span className="text-[#01255f] capitalize">{form.frequency}</span>
                 </div>
-                <div className="px-4 sm:px-5 py-4 text-sm">
-                  <span className="text-[#5a6478] block mb-1">Payment Method</span>
-                  <span className="text-[#01255f] font-medium block">
+                <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
+                  <span className="text-[#5a6478]">Payment Method</span>
+                  <span className="text-[#01255f] font-medium">
                     {form.paymentMethod === 'card' ? 'Card' : 'Mobile money'}
                   </span>
-                  {form.paymentMethod === 'card' && form.cardNumber && (
-                    <span className="text-[#5a6478] text-xs">
-                      •••• •••• •••• {form.cardNumber.slice(-4)}
-                    </span>
-                  )}
-                  {form.paymentMethod === 'mobile' && form.mobilePhone && (
-                    <div className="text-xs mt-2">
-                      <span className="text-[#5a6478] block">{form.mobilePhone}</span>
-                      {detectedProvider && (
-                        <span className="text-green-700 font-medium">{detectedProvider}</span>
-                      )}
-                    </div>
-                  )}
                 </div>
+                {form.paymentMethod === 'card' && form.cardNumber && (
+                  <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
+                    <span className="text-[#5a6478]">Card</span>
+                    <span className="text-[#01255f] font-medium">•••• •••• •••• {form.cardNumber.slice(-4)}</span>
+                  </div>
+                )}
+                {form.paymentMethod === 'mobile' && (
+                  <>
+                    {detectedProvider && getProviderInfo(detectedProvider) && (
+                      <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
+                        <span className="text-[#5a6478]">Provider</span>
+                        <div className="flex items-center gap-2">
+                          <Image
+                            src={getProviderInfo(detectedProvider)!.logo}
+                            alt={getProviderDisplayName(detectedProvider)}
+                            width={24}
+                            height={24}
+                            className="h-5 w-5 object-contain"
+                          />
+                          <span className="text-[#01255f] font-medium">{getProviderDisplayName(detectedProvider)}</span>
+                        </div>
+                      </div>
+                    )}
+                    {form.mobilePhone && (
+                      <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
+                        <span className="text-[#5a6478]">Phone Number</span>
+                        <span className="text-[#01255f] font-medium">{form.mobilePhone}</span>
+                      </div>
+                    )}
+                  </>
+                )}
                 <div className="px-4 sm:px-5 py-4 text-sm">
                   <span className="text-[#5a6478] block mb-1">Donor</span>
                   <span className="text-[#01255f] font-medium">
