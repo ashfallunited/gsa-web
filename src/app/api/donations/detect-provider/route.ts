@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
 
       const data = await response.json()
       return NextResponse.json({
-        provider: data.gateway_provider,
+        provider: data.payment_method,
         method: data.payment_method,
       })
     } catch (error) {
