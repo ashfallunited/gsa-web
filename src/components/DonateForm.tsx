@@ -120,7 +120,8 @@ export default function DonateForm() {
     form.firstName.trim() &&
     form.lastName.trim() &&
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) &&
-    form.country.length === 2
+    form.country.length === 2 &&
+    form.phone.trim().length >= 10
 
   const canContinuePayment = form.paymentMethod === 'card'
     ? form.cardNumber.replace(/\s/g, '').length >= 13 && form.cardExpiry && form.cardCVV.length >= 3
@@ -457,7 +458,7 @@ export default function DonateForm() {
               </div>
 
               <div>
-                <label className={labelClass}>Phone (optional)</label>
+                <label className={labelClass}>Phone *</label>
                 <input
                   type="tel"
                   value={form.phone}
