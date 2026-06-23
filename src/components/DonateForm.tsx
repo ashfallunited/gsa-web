@@ -13,6 +13,7 @@ import { getProviderInfo, getProviderDisplayName } from '@/lib/provider-mapper'
 type Step = 'amount' | 'details' | 'payment' | 'review' | 'success'
 type Frequency = 'once' | 'monthly'
 type PaymentMethod = 'card' | 'mobile'
+type Currency = 'USD' | 'LRD'
 
 type FormState = {
   frequency: Frequency
@@ -25,6 +26,7 @@ type FormState = {
   country: string
   message: string
   paymentMethod: PaymentMethod
+  currency: Currency
   coverFees: boolean
   // Payment details
   cardNumber: string
@@ -91,6 +93,7 @@ export default function DonateForm() {
     country: 'US',
     message: '',
     paymentMethod: 'mobile',
+    currency: 'USD',
     coverFees: false,
     cardNumber: '',
     cardExpiry: '',
@@ -204,6 +207,7 @@ export default function DonateForm() {
           country: form.country,
           message: form.message || null,
           amountUsd: amountUsd,
+          currency: form.currency,
           paymentMethod: form.paymentMethod,
           coverFees: form.coverFees,
           // Payment details
@@ -311,6 +315,7 @@ export default function DonateForm() {
                       country: 'US',
                       message: '',
                       paymentMethod: 'card',
+                      currency: 'USD',
                       coverFees: false,
                       cardNumber: '',
                       cardExpiry: '',
@@ -693,17 +698,31 @@ export default function DonateForm() {
                     </div>
                   )}
                   {detectedProvider && getProviderInfo(detectedProvider) && (
-                    <div className="bg-white border border-gray-200 rounded p-4 flex items-center gap-4">
-                      <Image
-                        src={getProviderInfo(detectedProvider)!.logo}
-                        alt={getProviderDisplayName(detectedProvider)}
-                        width={60}
-                        height={60}
-                        className="h-12 w-12 object-contain"
-                      />
+                    <div className="space-y-4">
+                      <div className="bg-white border border-gray-200 rounded p-4 flex items-center gap-4">
+                        <Image
+                          src={getProviderInfo(detectedProvider)!.logo}
+                          alt={getProviderDisplayName(detectedProvider)}
+                          width={60}
+                          height={60}
+                          className="h-12 w-12 object-contain"
+                        />
+                        <div>
+                          <p className="text-xs text-[#5a6478] uppercase tracking-widest font-bold mb-1">Payment Provider</p>
+                          <p className="text-sm font-bold text-[#01255f]">{getProviderDisplayName(detectedProvider)}</p>
+                        </div>
+                      </div>
+
                       <div>
-                        <p className="text-xs text-[#5a6478] uppercase tracking-widest font-bold mb-1">Payment Provider</p>
-                        <p className="text-sm font-bold text-[#01255f]">{getProviderDisplayName(detectedProvider)}</p>
+                        <label className={labelClass}>Currency</label>
+                        <select
+                          value={form.currency}
+                          onChange={(e) => set('currency', e.target.value as Currency)}
+                          className={inputClass}
+                        >
+                          <option value="USD">USD (US Dollar)</option>
+                          <option value="LRD">LRD (Liberian Dollar)</option>
+                        </select>
                       </div>
                     </div>
                   )}
@@ -768,6 +787,12 @@ export default function DonateForm() {
                     {form.paymentMethod === 'card' ? 'Card' : 'Mobile money'}
                   </span>
                 </div>
+                {form.paymentMethod === 'mobile' && (
+                  <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
+                    <span className="text-[#5a6478]">Currency</span>
+                    <span className="text-[#01255f] font-medium">{form.currency}</span>
+                  </div>
+                )}
                 {form.paymentMethod === 'card' && form.cardNumber && (
                   <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                     <span className="text-[#5a6478]">Card</span>

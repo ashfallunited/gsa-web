@@ -85,6 +85,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         id: doc.id,
         donorId: data.donorId || `${data.email}-${data.referenceId}`,
         amountUsd: data.amountUsd,
+        currency: data.currency || 'USD',
         feeUsd: data.feeUsd,
         totalUsd: data.totalUsd,
         paymentMethod: data.paymentMethod,

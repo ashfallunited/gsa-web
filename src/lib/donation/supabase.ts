@@ -31,6 +31,7 @@ function getSupabaseAdminClient() {
  * @param ipAddress - IP address of the donor
  * @param referenceId - Dollr order/reference ID
  * @param message - Optional donation message
+ * @param currency - Currency chosen by donor (USD or LRD)
  * @throws Error if insert fails
  */
 export async function saveDonationToSupabase(
@@ -41,7 +42,8 @@ export async function saveDonationToSupabase(
   coverFees: boolean,
   ipAddress: string,
   referenceId: string,
-  message?: string
+  message?: string,
+  currency: 'USD' | 'LRD' = 'USD'
 ): Promise<void> {
   try {
     // Calculate fees using same logic as Firestore
@@ -57,6 +59,7 @@ export async function saveDonationToSupabase(
       id: donationId,
       donor_id: donorId,
       amount_usd: amountUsd,
+      currency,
       payment_method: paymentMethod,
       cover_fees: coverFees,
       fee_usd: feeUsd,

@@ -394,7 +394,8 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
           input.coverFees,
           ipAddress,
           referenceId,
-          input.message
+          input.message,
+          input.currency
         )
       } catch (error) {
         console.error('Firestore donation save error:', error)
@@ -414,7 +415,8 @@ export async function POST(req: NextRequest): Promise<NextResponse<DonationRespo
           input.coverFees,
           ipAddress,
           referenceId,
-          input.message
+          input.message,
+          input.currency
         )
       } catch (error) {
         console.warn('Supabase save error (non-fatal):', error)

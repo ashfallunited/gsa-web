@@ -2,6 +2,7 @@ import { Timestamp } from 'firebase-admin/firestore'
 
 export type PaymentMethod = 'card' | 'mobile'
 export type DonationStatus = 'awaiting_payment' | 'processing' | 'completed' | 'failed'
+export type Currency = 'USD' | 'LRD'
 
 export interface Donor {
   id: string
@@ -20,6 +21,7 @@ export interface Donation {
   amountUsd: number
   feeUsd: number
   totalUsd: number
+  currency: Currency // Currency chosen by donor (USD or LRD)
   paymentMethod: PaymentMethod
   coverFees: boolean
   message: string | null
@@ -47,6 +49,7 @@ export interface DonationInput {
   phone: string
   country: string
   amountUsd: number
+  currency: Currency
   paymentMethod: PaymentMethod
   coverFees: boolean
   message?: string
