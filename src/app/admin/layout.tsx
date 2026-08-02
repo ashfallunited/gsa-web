@@ -29,6 +29,7 @@ import {
   Download,
   History,
   Scale,
+  ClipboardCheck,
 } from 'lucide-react'
 
 type NavItem = { href: string; label: string; Icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }> }
@@ -53,6 +54,7 @@ const analyticsNav: NavItem[] = [
   { href: '/admin/analytics/squad', label: 'Squad', Icon: Users },
   { href: '/admin/analytics/matches', label: 'Matches', Icon: Trophy },
   { href: '/admin/analytics/players', label: 'Player Stats', Icon: UserCheck },
+  { href: '/admin/analytics/evaluations', label: 'Evaluations', Icon: ClipboardCheck },
   { href: '/admin/analytics/comparison', label: 'Comparison', Icon: Scale },
   { href: '/admin/analytics/exports', label: 'Exports', Icon: Download },
   { href: '/admin/analytics/audit', label: 'Audit Log', Icon: History },

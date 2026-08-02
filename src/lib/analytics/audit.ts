@@ -5,7 +5,7 @@ export async function writeAuditLog(
   db: Firestore,
   entry: {
     action: string
-    entityType: 'match' | 'match_player_stat' | 'match_duplicate'
+    entityType: 'match' | 'match_player_stat' | 'match_duplicate' | 'coach' | 'player_evaluation'
     entityId: string
     summary: string
     actor: string
