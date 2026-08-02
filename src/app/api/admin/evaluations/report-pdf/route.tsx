@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server'
 import { Document, Page, Text, View, Image, StyleSheet, renderToBuffer } from '@react-pdf/renderer'
 import { runAnalyticsReadApi } from '@/lib/admin-api'
 import { serializeFirestoreData } from '@/lib/serialize-firestore'
-import { parseCoach, parseEvaluation } from '@/lib/evaluations/data'
+import { fetchScheduledDates, parseCoach, parseEvaluation } from '@/lib/evaluations/data'
 import { categoryMetaFor, roleForPosition } from '@/lib/evaluations/types'
 import type { EvaluationRole, MonthReport, WeekReport, YearReport } from '@/lib/evaluations/types'
 import { computeMonthReport, computeWeekReport, computeYearReport } from '@/lib/evaluations/aggregation'
@@ -99,6 +99,11 @@ function EvaluationReportDocument({
               </View>
             ))}
           </View>
+          {report.attendance.unloggedScheduledDates.length > 0 && (
+            <Text style={{ fontSize: 8, color: GREY, marginTop: 6 }}>
+              Scheduled but not logged for anyone: {report.attendance.unloggedScheduledDates.join(', ')}
+            </Text>
+          )}
 
           <Text style={styles.sectionTitle}>Category Ratings</Text>
           <View style={styles.statsGrid}>
@@ -217,9 +222,10 @@ export async function GET(req: NextRequest) {
           ? monthRange(monthParam as string)
           : yearRange(yearParam as string)
 
-    const [evalSnap, coachSnap] = await Promise.all([
+    const [evalSnap, coachSnap, scheduledDates] = await Promise.all([
       db.collection('player_evaluations').where('team', '==', team).where('date', '>=', range.start).where('date', '<=', range.end).get(),
       db.collection('coaches').get(),
+      fetchScheduledDates(db, team, range),
     ])
 
     const coachMap = new Map(coachSnap.docs.map((d) => {
@@ -238,10 +244,10 @@ export async function GET(req: NextRequest) {
 
     const report =
       period === 'week'
-        ? computeWeekReport(playerId, role, weekParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates)
+        ? computeWeekReport(playerId, role, weekParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates, scheduledDates)
         : period === 'month'
-          ? computeMonthReport(playerId, role, monthParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates)
-          : computeYearReport(playerId, role, yearParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates)
+          ? computeMonthReport(playerId, role, monthParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates, scheduledDates)
+          : computeYearReport(playerId, role, yearParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates, scheduledDates)
 
     const buffer = await renderToBuffer(<EvaluationReportDocument player={player} periodLabel={periodLabel} report={report} />)
     const safeName = player.name.replace(/[^a-zA-Z0-9]/g, '-')

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { runAnalyticsReadApi } from '@/lib/admin-api'
 import { serializeFirestoreData } from '@/lib/serialize-firestore'
-import { parseCoach, parseEvaluation } from '@/lib/evaluations/data'
+import { fetchScheduledDates, parseCoach, parseEvaluation } from '@/lib/evaluations/data'
 import { roleForPosition } from '@/lib/evaluations/types'
 import { computeMonthReport, computeWeekReport, computeYearReport } from '@/lib/evaluations/aggregation'
 import { isoWeekKeyToMonday, monthRange, sundayOf, yearRange } from '@/lib/evaluations/date-utils'
@@ -59,7 +59,7 @@ export async function GET(req: NextRequest) {
           ? monthRange(monthParam as string)
           : yearRange(yearParam as string)
 
-    const [evalSnap, coachSnap] = await Promise.all([
+    const [evalSnap, coachSnap, scheduledDates] = await Promise.all([
       db
         .collection('player_evaluations')
         .where('team', '==', team)
@@ -67,6 +67,7 @@ export async function GET(req: NextRequest) {
         .where('date', '<=', range.end)
         .get(),
       db.collection('coaches').get(),
+      fetchScheduledDates(db, team, range),
     ])
 
     const coachMap = new Map(
@@ -86,10 +87,10 @@ export async function GET(req: NextRequest) {
 
     const report =
       period === 'week'
-        ? computeWeekReport(playerId, role, weekParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates)
+        ? computeWeekReport(playerId, role, weekParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates, scheduledDates)
         : period === 'month'
-          ? computeMonthReport(playerId, role, monthParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates)
-          : computeYearReport(playerId, role, yearParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates)
+          ? computeMonthReport(playerId, role, monthParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates, scheduledDates)
+          : computeYearReport(playerId, role, yearParam as string, playerEvals, coachNameOf, teamRoleEvals, teamSessionDates, scheduledDates)
 
     return Response.json({
       player,

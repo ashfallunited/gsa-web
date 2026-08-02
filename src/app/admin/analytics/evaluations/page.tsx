@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { toPng } from 'html-to-image'
-import { Plus, TrendingUp, Download, Pencil, ChevronLeft } from 'lucide-react'
+import { Plus, TrendingUp, Download, Pencil, ChevronLeft, Calendar } from 'lucide-react'
 import PlayerAvatar from '@/components/admin/player-avatar'
 import PlayerPicker from '@/components/admin/player-picker'
 import AdminLoadError from '@/components/AdminLoadError'
@@ -231,7 +231,13 @@ export default function EvaluationsReportPage() {
           </h1>
           <p className="text-sm text-[#5a6478] mt-1">Weekly, monthly, and yearly performance report cards, built from training and match ratings.</p>
         </div>
-        <div className="flex gap-2 shrink-0">
+        <div className="flex flex-wrap gap-2 shrink-0">
+          <Link
+            href="/admin/analytics/evaluations/schedule"
+            className="inline-flex items-center gap-1.5 border border-gray-200 text-[#01255f] px-4 py-2.5 text-sm font-black hover:bg-gray-50"
+          >
+            <Calendar size={15} /> Schedule
+          </Link>
           <button
             type="button"
             onClick={() => setExportOpen(true)}
@@ -541,6 +547,11 @@ export default function EvaluationsReportPage() {
                           <p className="text-[11px] text-green-700 mt-1">No sessions missed.</p>
                         )}
                       </>
+                    )}
+                    {data.report.attendance.unloggedScheduledDates.length > 0 && (
+                      <p className="text-[11px] text-[#5a6478] mt-1.5 bg-gray-50 border border-gray-100 px-2 py-1">
+                        Scheduled but not logged for anyone: {data.report.attendance.unloggedScheduledDates.map(shortDate).join(', ')}
+                      </p>
                     )}
                   </div>
                 </div>

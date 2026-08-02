@@ -9,6 +9,7 @@ export const OUTFIELD_CATEGORY_META = [
   { key: 'ballControl', label: 'Ball Control', short: 'Control' },
   { key: 'dribbling', label: 'Dribbling', short: 'Dribble' },
   { key: 'shooting', label: 'Shooting', short: 'Shoot' },
+  { key: 'finishing', label: 'Finishing', short: 'Finish' },
   { key: 'positioning', label: 'Positioning', short: 'Position' },
   { key: 'movement', label: 'Movement', short: 'Movement' },
   { key: 'scanning', label: 'Scanning', short: 'Scanning' },
@@ -118,6 +119,11 @@ export interface TypeSplit {
  * Attendance is inferred, not separately recorded: a "session" is any date the team has at
  * least one evaluation on record (any player, any role). A player who wasn't evaluated on a
  * date the team otherwise had a session is counted absent for it.
+ *
+ * `unloggedScheduledDates` is a separate, non-punitive signal: dates that match the team's
+ * standard training schedule (and aren't marked as a break) but have zero evaluations for
+ * anyone. That almost always means the coach forgot to log the session, not that the whole
+ * squad skipped — so it's surfaced as a flag, never counted against a player's attendance rate.
  */
 export interface AttendanceSummary {
   sessionsHeld: number
@@ -125,6 +131,25 @@ export interface AttendanceSummary {
   absent: number
   attendanceRate: number | null
   absentDates: string[]
+  unloggedScheduledDates: string[]
+}
+
+/** Team-level weekly training pattern. Weekdays are 0 (Sunday) through 6 (Saturday). */
+export interface TrainingSchedule {
+  team: string
+  trainingWeekdays: number[]
+  updatedAt?: FirestoreTimestamp
+}
+
+/** A date range with no training — holidays, team breaks — excluded from the expected schedule. */
+export interface ScheduleBreak {
+  id: string
+  team: string
+  startDate: string
+  endDate: string
+  reason: string
+  createdAt?: FirestoreTimestamp
+  updatedAt?: FirestoreTimestamp
 }
 
 export interface WeekReport {

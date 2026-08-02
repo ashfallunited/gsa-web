@@ -117,7 +117,7 @@ export interface GoalkeeperCleanSheetLeader {
 export interface AuditLogEntry {
   id: string
   action: string
-  entityType: 'match' | 'match_player_stat' | 'match_duplicate' | 'coach' | 'player_evaluation'
+  entityType: 'match' | 'match_player_stat' | 'match_duplicate' | 'coach' | 'player_evaluation' | 'evaluation_schedule' | 'evaluation_break'
   entityId: string
   summary: string
   actor: string

@@ -95,3 +95,22 @@ export function monthsInYear(yearKey: string): string[] {
   const year = Number(yearKey)
   return Array.from({ length: 12 }, (_, i) => `${year}-${String(i + 1).padStart(2, '0')}`)
 }
+
+/** Every date in `[start, end]` (inclusive) whose day-of-week is in `weekdays` (0=Sun..6=Sat). */
+export function weekdaysInRange(start: string, end: string, weekdays: number[]): string[] {
+  if (weekdays.length === 0) return []
+  const wanted = new Set(weekdays)
+  const dates: string[] = []
+  let cursor = parseUTC(start)
+  const endDate = parseUTC(end)
+  while (cursor <= endDate) {
+    if (wanted.has(cursor.getUTCDay())) dates.push(toDateStr(cursor))
+    cursor = new Date(cursor.getTime() + 24 * 3600 * 1000)
+  }
+  return dates
+}
+
+/** True if `dateStr` falls within any of the given `[startDate, endDate]` break ranges. */
+export function isDateInBreaks(dateStr: string, breaks: { startDate: string; endDate: string }[]): boolean {
+  return breaks.some((b) => dateStr >= b.startDate && dateStr <= b.endDate)
+}

@@ -115,18 +115,32 @@ export function computeTypeSplit(evals: PlayerEvaluation[]): TypeSplit {
  * `teamSessionDates` is every distinct date the team (any player, any role) has at least one
  * evaluation on record for the period — the inferred "session calendar." A player missing from
  * one of those dates was absent from it.
+ *
+ * `scheduledDates` (optional) is the team's standard weekly training days within the period,
+ * with breaks already excluded. Dates in `scheduledDates` with zero evaluations for anyone are
+ * reported separately as `unloggedScheduledDates` — a coach-forgot-to-log flag — and are never
+ * counted as an absence, since a missing log isn't evidence any specific player skipped.
  */
-export function computeAttendance(playerEvals: PlayerEvaluation[], teamSessionDates: string[]): AttendanceSummary {
+export function computeAttendance(
+  playerEvals: PlayerEvaluation[],
+  teamSessionDates: string[],
+  scheduledDates: string[] = []
+): AttendanceSummary {
   const attendedDates = new Set(playerEvals.map((e) => e.date))
   const absentDates = teamSessionDates.filter((d) => !attendedDates.has(d)).sort()
   const sessionsHeld = teamSessionDates.length
   const attended = sessionsHeld - absentDates.length
+
+  const loggedDates = new Set(teamSessionDates)
+  const unloggedScheduledDates = scheduledDates.filter((d) => !loggedDates.has(d)).sort()
+
   return {
     sessionsHeld,
     attended,
     absent: absentDates.length,
     attendanceRate: sessionsHeld > 0 ? round1((attended / sessionsHeld) * 100) : null,
     absentDates,
+    unloggedScheduledDates,
   }
 }
 
@@ -192,7 +206,8 @@ export function computeWeekReport(
   weekEvals: PlayerEvaluation[],
   coachNameOf: (id: string) => string,
   teamRoleEvals: PlayerEvaluation[],
-  teamSessionDates: string[]
+  teamSessionDates: string[],
+  scheduledDates: string[] = []
 ): WeekReport {
   const sorted = [...weekEvals].sort((a, b) => a.date.localeCompare(b.date))
   return {
@@ -208,7 +223,7 @@ export function computeWeekReport(
     comments: toComments(sorted, coachNameOf),
     squadRank: computeSquadRank(computeTeamAverages(teamRoleEvals), playerId),
     typeSplit: computeTypeSplit(sorted),
-    attendance: computeAttendance(sorted, teamSessionDates),
+    attendance: computeAttendance(sorted, teamSessionDates, scheduledDates),
   }
 }
 
@@ -219,7 +234,8 @@ export function computeMonthReport(
   monthEvals: PlayerEvaluation[],
   coachNameOf: (id: string) => string,
   teamRoleEvals: PlayerEvaluation[],
-  teamSessionDates: string[]
+  teamSessionDates: string[],
+  scheduledDates: string[] = []
 ): MonthReport {
   const sorted = [...monthEvals].sort((a, b) => a.date.localeCompare(b.date))
 
@@ -262,7 +278,7 @@ export function computeMonthReport(
     comments: toComments(sorted, coachNameOf),
     squadRank: computeSquadRank(computeTeamAverages(teamRoleEvals), playerId),
     typeSplit: computeTypeSplit(sorted),
-    attendance: computeAttendance(sorted, teamSessionDates),
+    attendance: computeAttendance(sorted, teamSessionDates, scheduledDates),
   }
 }
 
@@ -273,7 +289,8 @@ export function computeYearReport(
   yearEvals: PlayerEvaluation[],
   coachNameOf: (id: string) => string,
   teamRoleEvals: PlayerEvaluation[],
-  teamSessionDates: string[]
+  teamSessionDates: string[],
+  scheduledDates: string[] = []
 ): YearReport {
   const sorted = [...yearEvals].sort((a, b) => a.date.localeCompare(b.date))
 
@@ -311,6 +328,6 @@ export function computeYearReport(
     comments: toComments(sorted, coachNameOf),
     squadRank: computeSquadRank(computeTeamAverages(teamRoleEvals), playerId),
     typeSplit: computeTypeSplit(sorted),
-    attendance: computeAttendance(sorted, teamSessionDates),
+    attendance: computeAttendance(sorted, teamSessionDates, scheduledDates),
   }
 }

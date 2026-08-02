@@ -38,3 +38,26 @@ export const evaluationInputSchema = z.discriminatedUnion('role', [
 
 export type EvaluationInput = z.infer<typeof evaluationInputSchema>
 export type CoachInput = z.infer<typeof coachSchema>
+
+export const trainingScheduleSchema = z.object({
+  team: z.string().min(1),
+  trainingWeekdays: z.array(z.number().int().min(0).max(6)).max(7),
+})
+
+const dateStringSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD')
+
+export const scheduleBreakSchema = z
+  .object({
+    team: z.string().min(1),
+    startDate: dateStringSchema,
+    endDate: dateStringSchema,
+    reason: z.string().max(200).optional().default(''),
+  })
+  .superRefine((data, ctx) => {
+    if (data.endDate < data.startDate) {
+      ctx.addIssue({ code: 'custom', path: ['endDate'], message: 'End date cannot be before start date' })
+    }
+  })
+
+export type TrainingScheduleInput = z.infer<typeof trainingScheduleSchema>
+export type ScheduleBreakInput = z.infer<typeof scheduleBreakSchema>
