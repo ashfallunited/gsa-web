@@ -23,6 +23,7 @@ function parseMatch(id: string, data: Record<string, unknown>): Match {
     competition: String(serialized.competition ?? ''),
     date: String(serialized.date ?? ''),
     opponent: String(serialized.opponent ?? ''),
+    opponentLogo: serialized.opponentLogo ? String(serialized.opponentLogo) : undefined,
     homeAway: (serialized.homeAway as Match['homeAway']) ?? 'home',
     goalsFor: Number(serialized.goalsFor ?? 0),
     goalsAgainst: Number(serialized.goalsAgainst ?? 0),
@@ -60,6 +61,14 @@ function parseStat(id: string, data: Record<string, unknown>): MatchPlayerStat {
     penaltiesScored: serialized.penaltiesScored != null ? Number(serialized.penaltiesScored) : undefined,
     penaltiesSaved: serialized.penaltiesSaved != null ? Number(serialized.penaltiesSaved) : undefined,
     penaltiesFaced: serialized.penaltiesFaced != null ? Number(serialized.penaltiesFaced) : undefined,
+    shots: serialized.shots != null ? Number(serialized.shots) : undefined,
+    shotsOnTarget: serialized.shotsOnTarget != null ? Number(serialized.shotsOnTarget) : undefined,
+    keyPasses: serialized.keyPasses != null ? Number(serialized.keyPasses) : undefined,
+    tacklesWon: serialized.tacklesWon != null ? Number(serialized.tacklesWon) : undefined,
+    interceptions: serialized.interceptions != null ? Number(serialized.interceptions) : undefined,
+    clearances: serialized.clearances != null ? Number(serialized.clearances) : undefined,
+    foulsCommitted: serialized.foulsCommitted != null ? Number(serialized.foulsCommitted) : undefined,
+    foulsWon: serialized.foulsWon != null ? Number(serialized.foulsWon) : undefined,
     goalMinutes: Array.isArray(serialized.goalMinutes)
       ? (serialized.goalMinutes as unknown[]).map(Number)
       : undefined,

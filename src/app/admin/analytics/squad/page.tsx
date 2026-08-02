@@ -149,9 +149,6 @@ export default function AnalyticsSquadPage() {
           <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
             Squad
           </h1>
-          <p className="text-sm text-[#5a6478] mt-1">
-            Add players here before entering match stats. They appear on public team pages when photos are added by admin.
-          </p>
         </div>
         <button
           type="button"

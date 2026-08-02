@@ -16,6 +16,7 @@ export interface Match {
   competition: string
   date: string
   opponent: string
+  opponentLogo?: string
   homeAway: HomeAway
   goalsFor: number
   goalsAgainst: number
@@ -50,6 +51,14 @@ export interface MatchPlayerStat {
   penaltiesScored?: number
   penaltiesSaved?: number
   penaltiesFaced?: number
+  shots?: number
+  shotsOnTarget?: number
+  keyPasses?: number
+  tacklesWon?: number
+  interceptions?: number
+  clearances?: number
+  foulsCommitted?: number
+  foulsWon?: number
   goalMinutes?: number[]
   assistMinutes?: number[]
 }
@@ -76,6 +85,14 @@ export interface PlayerSeasonTotals {
   penaltiesScored: number
   penaltiesSaved: number
   penaltiesFaced: number
+  shots: number
+  shotsOnTarget: number
+  keyPasses: number
+  tacklesWon: number
+  interceptions: number
+  clearances: number
+  foulsCommitted: number
+  foulsWon: number
 }
 
 export interface DashboardKpis {

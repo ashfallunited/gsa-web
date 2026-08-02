@@ -72,6 +72,22 @@ function ShieldPlaceholder({ size = 40 }: { size?: number }) {
   )
 }
 
+function OpponentBadge({ opponent, logo, size = 30 }: { opponent: string; logo?: string; size?: number }) {
+  if (logo) {
+    return (
+      <Image
+        src={logo}
+        alt={opponent}
+        width={size}
+        height={size}
+        className="object-contain shrink-0"
+        style={{ width: size, height: size }}
+      />
+    )
+  }
+  return <ShieldPlaceholder size={size} />
+}
+
 function CompetitionIcon({ competition }: { competition: string }) {
   const badge = getBadge(competition)
   if (badge) {
@@ -168,7 +184,7 @@ function ResultRow({ match }: { match: PublicMatch }) {
         {/* Opponent: shield (hidden on mobile) then name */}
         <div className="flex items-center gap-2 min-w-0 flex-1">
           <div className="hidden sm:block shrink-0">
-            <ShieldPlaceholder size={30} />
+            <OpponentBadge opponent={match.opponent} logo={match.opponentLogo} size={30} />
           </div>
           <div className="min-w-0">
             <p className="text-xs sm:text-sm font-bold text-[#01255f] truncate leading-tight">
@@ -262,7 +278,7 @@ function FixtureRow({ match, now }: { match: Match; now: number }) {
         {/* Opponent: shield (hidden on mobile) then name */}
         <div className="flex items-center gap-2 min-w-0 flex-1">
           <div className="hidden sm:block shrink-0">
-            <ShieldPlaceholder size={30} />
+            <OpponentBadge opponent={match.opponent} logo={match.opponentLogo} size={30} />
           </div>
           <div className="min-w-0">
             <p className="text-xs sm:text-sm font-bold text-[#01255f] truncate leading-tight">

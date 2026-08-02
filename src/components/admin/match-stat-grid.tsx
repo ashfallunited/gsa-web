@@ -19,6 +19,14 @@ export type StatRow = {
   penaltiesScored?: number
   penaltiesSaved?: number
   penaltiesFaced?: number
+  shots?: number
+  shotsOnTarget?: number
+  keyPasses?: number
+  tacklesWon?: number
+  interceptions?: number
+  clearances?: number
+  foulsCommitted?: number
+  foulsWon?: number
   goalMinutes?: number[]
   assistMinutes?: number[]
 }
@@ -42,6 +50,27 @@ const PEN_DETAIL: { label: string; field: NumField; max: number }[] = [
   { label: 'Faced', field: 'penaltiesFaced', max: 20 },
 ]
 
+const MATCH_DETAIL: { label: string; field: NumField; max: number }[] = [
+  { label: 'Shots', field: 'shots', max: 30 },
+  { label: 'Shots on Target', field: 'shotsOnTarget', max: 30 },
+  { label: 'Key Passes', field: 'keyPasses', max: 30 },
+  { label: 'Tackles Won', field: 'tacklesWon', max: 30 },
+  { label: 'Interceptions', field: 'interceptions', max: 30 },
+  { label: 'Clearances', field: 'clearances', max: 30 },
+  { label: 'Fouls Committed', field: 'foulsCommitted', max: 20 },
+  { label: 'Fouls Won', field: 'foulsWon', max: 20 },
+]
+
+const DETAIL_FIELDS: NumField[] = [
+  ...GOAL_DETAIL.map((d) => d.field),
+  ...PEN_DETAIL.map((d) => d.field),
+  ...MATCH_DETAIL.map((d) => d.field),
+]
+
+function hasDetailData(row: StatRow): boolean {
+  return DETAIL_FIELDS.some((f) => ((row[f] as number | undefined) ?? 0) > 0)
+}
+
 export function MatchStatMobileCard({
   name,
   row,
@@ -55,7 +84,7 @@ export function MatchStatMobileCard({
   onChange: (field: keyof StatRow, value: boolean | number) => void
   onMinuteChange?: (field: 'goalMinutes' | 'assistMinutes', index: number, value: number) => void
 }) {
-  const [expanded, setExpanded] = useState((row.goals ?? 0) > 0)
+  const [expanded, setExpanded] = useState((row.goals ?? 0) > 0 || hasDetailData(row))
 
   const basicFields: { label: string; field: NumField; max: number }[] = [
     { label: 'Min', field: 'minutes', max: 120 },
@@ -87,6 +116,7 @@ export function MatchStatMobileCard({
             <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-1 text-center">{label}</label>
             <input
               type="number"
+              inputMode="numeric"
               min={0}
               max={max}
               value={(row[field] as number | undefined) ?? 0}
@@ -108,13 +138,14 @@ export function MatchStatMobileCard({
                 <label className="text-[8px] text-[#5a6478]">G{i + 1}</label>
                 <input
                   type="number"
+                  inputMode="numeric"
                   min={0}
                   max={120}
                   placeholder="—"
                   value={(row.goalMinutes ?? [])[i] ?? ''}
                   disabled={isLocked}
                   onChange={(e) => onMinuteChange?.('goalMinutes', i, Number(e.target.value))}
-                  className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                  className="w-12 border border-gray-200 px-1 py-2 text-xs text-center focus:outline-none focus:border-[#01255f]"
                 />
               </div>
             ))}
@@ -130,13 +161,14 @@ export function MatchStatMobileCard({
                 <label className="text-[8px] text-[#5a6478]">A{i + 1}</label>
                 <input
                   type="number"
+                  inputMode="numeric"
                   min={0}
                   max={120}
                   placeholder="—"
                   value={(row.assistMinutes ?? [])[i] ?? ''}
                   disabled={isLocked}
                   onChange={(e) => onMinuteChange?.('assistMinutes', i, Number(e.target.value))}
-                  className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                  className="w-12 border border-gray-200 px-1 py-2 text-xs text-center focus:outline-none focus:border-[#01255f]"
                 />
               </div>
             ))}
@@ -150,11 +182,32 @@ export function MatchStatMobileCard({
         className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#5a6478] hover:text-[#01255f] transition-colors py-1 w-full"
       >
         {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-        Goal &amp; Penalty Detail
+        Match &amp; Goal Detail
       </button>
 
       {expanded && (
         <div className="space-y-3 border-t border-gray-200 pt-3">
+          <div>
+            <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Match Stats</p>
+            <div className="grid grid-cols-2 gap-2">
+              {MATCH_DETAIL.map(({ label, field, max }) => (
+                <div key={field}>
+                  <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-0.5">{label}</label>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={0}
+                    max={max}
+                    value={(row[field] as number | undefined) ?? 0}
+                    disabled={isLocked}
+                    onChange={(e) => onChange(field, Number(e.target.value))}
+                    className={inputCls}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div>
             <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Goal Breakdown</p>
             <div className="grid grid-cols-2 gap-2">
@@ -163,6 +216,7 @@ export function MatchStatMobileCard({
                   <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-0.5">{label}</label>
                   <input
                     type="number"
+                    inputMode="numeric"
                     min={0}
                     max={max}
                     value={(row[field] as number | undefined) ?? 0}
@@ -183,6 +237,7 @@ export function MatchStatMobileCard({
                   <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-0.5">{label}</label>
                   <input
                     type="number"
+                    inputMode="numeric"
                     min={0}
                     max={max}
                     value={(row[field] as number | undefined) ?? 0}
@@ -213,7 +268,9 @@ export function MatchStatDesktopTable({
   onChange: (playerId: string, field: keyof StatRow, value: boolean | number) => void
   onMinuteChange?: (playerId: string, field: 'goalMinutes' | 'assistMinutes', index: number, value: number) => void
 }) {
-  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(
+    () => new Set(rows.filter((r) => r.goals > 0 || hasDetailData(r)).map((r) => r.playerId))
+  )
 
   const toggle = (id: string) =>
     setExpandedRows((prev) => {
@@ -226,6 +283,7 @@ export function MatchStatDesktopTable({
   const numInput = (pid: string, field: keyof StatRow, val: number, max: number, w = 'w-10') => (
     <input
       type="number"
+      inputMode="numeric"
       min={0}
       max={max}
       value={val}
@@ -274,7 +332,7 @@ export function MatchStatDesktopTable({
                     <button
                       type="button"
                       onClick={() => toggle(row.playerId)}
-                      title="Goal & Penalty Detail"
+                      title="Match & Goal Detail"
                       className="text-[#5a6478] hover:text-[#01255f] transition-colors"
                     >
                       {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
@@ -298,6 +356,7 @@ export function MatchStatDesktopTable({
                                       <label className="text-[8px] text-[#5a6478]">G{i + 1}</label>
                                       <input
                                         type="number"
+                                        inputMode="numeric"
                                         min={0}
                                         max={120}
                                         placeholder="—"
@@ -320,6 +379,7 @@ export function MatchStatDesktopTable({
                                       <label className="text-[8px] text-[#5a6478]">A{i + 1}</label>
                                       <input
                                         type="number"
+                                        inputMode="numeric"
                                         min={0}
                                         max={120}
                                         placeholder="—"
@@ -335,6 +395,17 @@ export function MatchStatDesktopTable({
                             )}
                           </div>
                         )}
+                        <div>
+                          <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Match Stats</p>
+                          <div className="grid grid-cols-4 gap-2">
+                            {MATCH_DETAIL.map(({ label, field, max }) => (
+                              <div key={field}>
+                                <label className="block text-[9px] uppercase tracking-widest text-[#5a6478] mb-1">{label}</label>
+                                {numInput(row.playerId, field, (row[field] as number | undefined) ?? 0, max)}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                         <div className="grid grid-cols-2 gap-6">
                           <div>
                             <p className="text-[9px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Goal Breakdown</p>

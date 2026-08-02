@@ -222,10 +222,20 @@ export default async function MatchReviewPage({ params }: Props) {
 
               {/* Opponent */}
               <div className="flex-1 flex flex-col sm:flex-row items-center gap-3 sm:justify-start text-center sm:text-left">
-                <svg width="56" height="56" viewBox="0 0 40 48" fill="none" className="shrink-0">
-                  <path d="M20 2L4 8V22C4 33 20 46 20 46C20 46 36 33 36 22V8L20 2Z" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
-                  <text x="20" y="30" textAnchor="middle" fontSize="11" fontWeight="700" fill="rgba(255,255,255,0.4)">FC</text>
-                </svg>
+                {match.opponentLogo ? (
+                  <Image
+                    src={match.opponentLogo}
+                    alt={match.opponent}
+                    width={56}
+                    height={56}
+                    className="object-contain shrink-0"
+                  />
+                ) : (
+                  <svg width="56" height="56" viewBox="0 0 40 48" fill="none" className="shrink-0">
+                    <path d="M20 2L4 8V22C4 33 20 46 20 46C20 46 36 33 36 22V8L20 2Z" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
+                    <text x="20" y="30" textAnchor="middle" fontSize="11" fontWeight="700" fill="rgba(255,255,255,0.4)">FC</text>
+                  </svg>
+                )}
                 <div className="hidden sm:block">
                   <p className="text-white font-bold text-base sm:text-lg">{match.opponent}</p>
                   <p className="text-white/50 text-xs">{match.homeAway === 'home' ? 'Away' : match.homeAway === 'away' ? 'Home' : 'Neutral'}</p>

@@ -88,6 +88,14 @@ type SeasonTotals = {
   penaltiesScored: number
   penaltiesSaved: number
   penaltiesFaced: number
+  shots: number
+  shotsOnTarget: number
+  keyPasses: number
+  tacklesWon: number
+  interceptions: number
+  clearances: number
+  foulsCommitted: number
+  foulsWon: number
 }
 
 function cap(str: string) {
@@ -183,57 +191,69 @@ function GradesheetDocument({
           </View>
 
           {/* Goal breakdown */}
-          {(totals.headerGoals > 0 || totals.leftFootGoals > 0 || totals.rightFootGoals > 0 || totals.outsideBoxGoals > 0) && (
-            <>
-              <Text style={styles.sectionTitle}>Goal Breakdown</Text>
-              <View style={styles.statsGrid}>
-                {[
-                  { label: 'Header', value: totals.headerGoals },
-                  { label: 'Left Foot', value: totals.leftFootGoals },
-                  { label: 'Right Foot', value: totals.rightFootGoals },
-                  { label: 'Out of Box', value: totals.outsideBoxGoals },
-                ].map((s) => (
-                  <View key={s.label} style={styles.statBox}>
-                    <Text style={styles.statLabel}>{s.label}</Text>
-                    <Text style={styles.statValue}>{s.value}</Text>
-                  </View>
-                ))}
+          <Text style={styles.sectionTitle}>Goal Breakdown</Text>
+          <View style={styles.statsGrid}>
+            {[
+              { label: 'Header', value: totals.headerGoals },
+              { label: 'Left Foot', value: totals.leftFootGoals },
+              { label: 'Right Foot', value: totals.rightFootGoals },
+              { label: 'Out of Box', value: totals.outsideBoxGoals },
+            ].map((s) => (
+              <View key={s.label} style={styles.statBox}>
+                <Text style={styles.statLabel}>{s.label}</Text>
+                <Text style={styles.statValue}>{s.value}</Text>
               </View>
-            </>
-          )}
+            ))}
+          </View>
+
+          {/* Match stats */}
+          <Text style={styles.sectionTitle}>Match Stats</Text>
+          <View style={styles.statsGrid}>
+            {[
+              { label: 'Shots', value: totals.shots },
+              { label: 'On Target', value: totals.shotsOnTarget },
+              { label: 'Key Passes', value: totals.keyPasses },
+              { label: 'Tackles Won', value: totals.tacklesWon },
+              { label: 'Interceptions', value: totals.interceptions },
+              { label: 'Clearances', value: totals.clearances },
+              { label: 'Fouls Committed', value: totals.foulsCommitted },
+              { label: 'Fouls Won', value: totals.foulsWon },
+            ].map((s) => (
+              <View key={s.label} style={styles.statBox}>
+                <Text style={styles.statLabel}>{s.label}</Text>
+                <Text style={styles.statValue}>{s.value}</Text>
+              </View>
+            ))}
+          </View>
 
           {/* Penalty stats */}
-          {(totals.penaltiesTaken > 0 || totals.penaltiesSaved > 0 || totals.penaltiesFaced > 0) && (
-            <>
-              <Text style={styles.sectionTitle}>Penalty Stats</Text>
-              <View style={styles.statsGrid}>
-                {[
-                  { label: 'Taken', value: totals.penaltiesTaken },
-                  {
-                    label: 'Scored',
-                    value: totals.penaltiesScored,
-                    sub: totals.penaltiesTaken > 0
-                      ? `${Math.round((totals.penaltiesScored / totals.penaltiesTaken) * 100)}%`
-                      : undefined,
-                  },
-                  { label: 'Faced', value: totals.penaltiesFaced },
-                  {
-                    label: 'Saved',
-                    value: totals.penaltiesSaved,
-                    sub: totals.penaltiesFaced > 0
-                      ? `${Math.round((totals.penaltiesSaved / totals.penaltiesFaced) * 100)}%`
-                      : undefined,
-                  },
-                ].map((s) => (
-                  <View key={s.label} style={styles.statBox}>
-                    <Text style={styles.statLabel}>{s.label}</Text>
-                    <Text style={styles.statValue}>{s.value}</Text>
-                    {s.sub ? <Text style={{ fontSize: 8, color: GREY, marginTop: 1 }}>{s.sub}</Text> : null}
-                  </View>
-                ))}
+          <Text style={styles.sectionTitle}>Penalty Stats</Text>
+          <View style={styles.statsGrid}>
+            {[
+              { label: 'Taken', value: totals.penaltiesTaken },
+              {
+                label: 'Scored',
+                value: totals.penaltiesScored,
+                sub: totals.penaltiesTaken > 0
+                  ? `${Math.round((totals.penaltiesScored / totals.penaltiesTaken) * 100)}%`
+                  : undefined,
+              },
+              { label: 'Faced', value: totals.penaltiesFaced },
+              {
+                label: 'Saved',
+                value: totals.penaltiesSaved,
+                sub: totals.penaltiesFaced > 0
+                  ? `${Math.round((totals.penaltiesSaved / totals.penaltiesFaced) * 100)}%`
+                  : undefined,
+              },
+            ].map((s) => (
+              <View key={s.label} style={styles.statBox}>
+                <Text style={styles.statLabel}>{s.label}</Text>
+                <Text style={styles.statValue}>{s.value}</Text>
+                {s.sub ? <Text style={{ fontSize: 8, color: GREY, marginTop: 1 }}>{s.sub}</Text> : null}
               </View>
-            </>
-          )}
+            ))}
+          </View>
 
           {/* Match log */}
           {log.length > 0 && (
@@ -347,6 +367,8 @@ export async function GET(
       appearances: 0, starts: 0, minutes: 0, goals: 0, assists: 0, yellowCards: 0, redCards: 0,
       headerGoals: 0, leftFootGoals: 0, rightFootGoals: 0, outsideBoxGoals: 0,
       penaltiesTaken: 0, penaltiesScored: 0, penaltiesSaved: 0, penaltiesFaced: 0,
+      shots: 0, shotsOnTarget: 0, keyPasses: 0, tacklesWon: 0, interceptions: 0, clearances: 0,
+      foulsCommitted: 0, foulsWon: 0,
     }
     const log: MatchLogEntry[] = []
 
@@ -379,6 +401,14 @@ export async function GET(
       totals.penaltiesScored += s.penaltiesScored != null ? Number(s.penaltiesScored) : 0
       totals.penaltiesSaved += s.penaltiesSaved != null ? Number(s.penaltiesSaved) : 0
       totals.penaltiesFaced += s.penaltiesFaced != null ? Number(s.penaltiesFaced) : 0
+      totals.shots += s.shots != null ? Number(s.shots) : 0
+      totals.shotsOnTarget += s.shotsOnTarget != null ? Number(s.shotsOnTarget) : 0
+      totals.keyPasses += s.keyPasses != null ? Number(s.keyPasses) : 0
+      totals.tacklesWon += s.tacklesWon != null ? Number(s.tacklesWon) : 0
+      totals.interceptions += s.interceptions != null ? Number(s.interceptions) : 0
+      totals.clearances += s.clearances != null ? Number(s.clearances) : 0
+      totals.foulsCommitted += s.foulsCommitted != null ? Number(s.foulsCommitted) : 0
+      totals.foulsWon += s.foulsWon != null ? Number(s.foulsWon) : 0
 
       log.push({
         matchDate: match.date,

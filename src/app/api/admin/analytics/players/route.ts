@@ -69,6 +69,8 @@ export async function GET(req: NextRequest) {
         yellowCards: 0, redCards: 0,
         headerGoals: 0, leftFootGoals: 0, rightFootGoals: 0, outsideBoxGoals: 0,
         penaltiesTaken: 0, penaltiesScored: 0, penaltiesSaved: 0, penaltiesFaced: 0,
+        shots: 0, shotsOnTarget: 0, keyPasses: 0, tacklesWon: 0, interceptions: 0, clearances: 0,
+        foulsCommitted: 0, foulsWon: 0,
       }))
     const totals = [...statsTotals, ...zeroes]
 

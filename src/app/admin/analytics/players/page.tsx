@@ -31,6 +31,14 @@ type PlayerLogEntry = {
   penaltiesScored?: number
   penaltiesSaved?: number
   penaltiesFaced?: number
+  shots?: number
+  shotsOnTarget?: number
+  keyPasses?: number
+  tacklesWon?: number
+  interceptions?: number
+  clearances?: number
+  foulsCommitted?: number
+  foulsWon?: number
 }
 
 type Injury = { description?: string; injuredDate: string; expectedReturn?: string }
@@ -411,6 +419,29 @@ export default function PlayerStatsPage() {
 
                 {selectedTotal && (
                   <div className="border-t border-gray-100 pt-3">
+                    <p className="text-[10px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Match Stats</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {([
+                        { label: 'Shots', value: selectedTotal.shots },
+                        { label: 'On Target', value: selectedTotal.shotsOnTarget },
+                        { label: 'Key Passes', value: selectedTotal.keyPasses },
+                        { label: 'Tackles Won', value: selectedTotal.tacklesWon },
+                        { label: 'Interceptions', value: selectedTotal.interceptions },
+                        { label: 'Clearances', value: selectedTotal.clearances },
+                        { label: 'Fouls Committed', value: selectedTotal.foulsCommitted },
+                        { label: 'Fouls Won', value: selectedTotal.foulsWon },
+                      ] as const).map(({ label, value }) => (
+                        <div key={label} className="border border-gray-200 p-2">
+                          <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">{label}</p>
+                          <p className="font-bold text-[#01255f]">{value}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {selectedTotal && (
+                  <div className="border-t border-gray-100 pt-3">
                     <p className="text-[10px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Goal Breakdown</p>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {([
@@ -552,6 +583,19 @@ export default function PlayerStatsPage() {
                   <p className="text-[10px] text-[#5a6478] mt-0.5">
                     {(entry.penaltiesTaken ?? 0) > 0 && `Pen: ${entry.penaltiesScored ?? 0}/${entry.penaltiesTaken}`}
                     {(entry.penaltiesSaved ?? 0) > 0 && ` · Saved: ${entry.penaltiesSaved}/${entry.penaltiesFaced ?? 0}`}
+                  </p>
+                ) : null}
+                {(entry.shots ?? 0) > 0 || (entry.keyPasses ?? 0) > 0 || (entry.tacklesWon ?? 0) > 0 ||
+                (entry.interceptions ?? 0) > 0 || (entry.clearances ?? 0) > 0 ||
+                (entry.foulsCommitted ?? 0) > 0 || (entry.foulsWon ?? 0) > 0 ? (
+                  <p className="text-[10px] text-[#5a6478] mt-0.5">
+                    {(entry.shots ?? 0) > 0 && `Shots: ${entry.shotsOnTarget ?? 0}/${entry.shots}`}
+                    {(entry.keyPasses ?? 0) > 0 && ` · KP: ${entry.keyPasses}`}
+                    {(entry.tacklesWon ?? 0) > 0 && ` · Tkl: ${entry.tacklesWon}`}
+                    {(entry.interceptions ?? 0) > 0 && ` · Int: ${entry.interceptions}`}
+                    {(entry.clearances ?? 0) > 0 && ` · Clr: ${entry.clearances}`}
+                    {((entry.foulsCommitted ?? 0) > 0 || (entry.foulsWon ?? 0) > 0) &&
+                      ` · Fouls: ${entry.foulsCommitted ?? 0}/${entry.foulsWon ?? 0}`}
                   </p>
                 ) : null}
               </li>

@@ -64,6 +64,7 @@ export async function PUT(req: NextRequest, context: RouteContext) {
     if (updates.competition !== undefined) payload.competition = updates.competition
     if (updates.date !== undefined) payload.date = updates.date
     if (updates.opponent !== undefined) payload.opponent = updates.opponent
+    if (updates.opponentLogo !== undefined) payload.opponentLogo = updates.opponentLogo ?? ''
     if (updates.homeAway !== undefined) payload.homeAway = updates.homeAway
     if (updates.goalsFor !== undefined) payload.goalsFor = updates.goalsFor
     if (updates.goalsAgainst !== undefined) payload.goalsAgainst = updates.goalsAgainst

@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
+import { toPng } from 'html-to-image'
+import { Download } from 'lucide-react'
 import PlayerAvatar from '@/components/admin/player-avatar'
 import AdminLoadError from '@/components/AdminLoadError'
 import { fetchAdminJson } from '@/lib/admin-fetch'
@@ -22,6 +24,8 @@ function makeZeroTotals(p: PlayerLookup): PlayerSeasonTotals {
     yellowCards: 0, redCards: 0,
     headerGoals: 0, leftFootGoals: 0, rightFootGoals: 0, outsideBoxGoals: 0,
     penaltiesTaken: 0, penaltiesScored: 0, penaltiesSaved: 0, penaltiesFaced: 0,
+    shots: 0, shotsOnTarget: 0, keyPasses: 0, tacklesWon: 0, interceptions: 0, clearances: 0,
+    foulsCommitted: 0, foulsWon: 0,
   }
 }
 
@@ -139,6 +143,8 @@ export default function ComparisonPage() {
   const [playerB, setPlayerB] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [downloading, setDownloading] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -179,8 +185,22 @@ export default function ComparisonPage() {
         { label: 'Minutes', a: totalA.minutes, b: totalB.minutes },
         { label: 'Goals', a: totalA.goals, b: totalB.goals, accent: true },
         { label: 'Assists', a: totalA.assists, b: totalB.assists, accent: true },
+        {
+          label: 'Goal Involvement',
+          a: totalA.goals + totalA.assists,
+          b: totalB.goals + totalB.assists,
+          accent: true,
+        },
         { label: 'Yellow Cards', a: totalA.yellowCards, b: totalB.yellowCards },
         { label: 'Red Cards', a: totalA.redCards, b: totalB.redCards },
+        { label: 'Shots', a: totalA.shots, b: totalB.shots },
+        { label: 'Shots on Target', a: totalA.shotsOnTarget, b: totalB.shotsOnTarget },
+        { label: 'Key Passes', a: totalA.keyPasses, b: totalB.keyPasses },
+        { label: 'Tackles Won', a: totalA.tacklesWon, b: totalB.tacklesWon },
+        { label: 'Interceptions', a: totalA.interceptions, b: totalB.interceptions },
+        { label: 'Clearances', a: totalA.clearances, b: totalB.clearances },
+        { label: 'Fouls Committed', a: totalA.foulsCommitted, b: totalB.foulsCommitted },
+        { label: 'Fouls Won', a: totalA.foulsWon, b: totalB.foulsWon },
         {
           label: 'Goals / 90',
           a: per90(totalA.goals, totalA.minutes),
@@ -201,6 +221,23 @@ export default function ComparisonPage() {
   const playerOptions = allPlayers.length > 0
     ? allPlayers.map((p) => ({ id: p.id, name: p.name ?? 'Unknown', number: p.number ?? 0 }))
     : allTotals.map((t) => ({ id: t.playerId, name: t.playerName, number: t.playerNumber }))
+
+  const downloadPng = async () => {
+    if (!cardRef.current || !totalA || !totalB) return
+    setDownloading(true)
+    try {
+      const dataUrl = await toPng(cardRef.current, { pixelRatio: 2, backgroundColor: '#ffffff' })
+      const link = document.createElement('a')
+      const safe = (s: string) => s.replace(/[^a-zA-Z0-9]+/g, '-')
+      link.download = `${safe(totalA.playerName)}-vs-${safe(totalB.playerName)}-comparison.png`
+      link.href = dataUrl
+      link.click()
+    } catch {
+      setError('Failed to generate image. Please try again.')
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   return (
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
@@ -289,7 +326,20 @@ export default function ComparisonPage() {
       )}
 
       {totalA && totalB && (
-        <div className="bg-white border border-gray-200 overflow-hidden">
+        <div className="flex justify-end mb-3">
+          <button
+            type="button"
+            onClick={downloadPng}
+            disabled={downloading}
+            className="inline-flex items-center gap-1.5 bg-[#01255f] hover:bg-[#011840] text-white px-4 py-2 text-xs font-bold disabled:opacity-50"
+          >
+            <Download size={14} /> {downloading ? 'Generating…' : 'Download PNG'}
+          </button>
+        </div>
+      )}
+
+      {totalA && totalB && (
+        <div ref={cardRef} className="bg-white border border-gray-200 overflow-hidden">
           {/* Player header panels */}
           <div className="flex flex-col xs:flex-row sm:flex-row">
             <PlayerPanel total={totalA} lookup={playerLookup[playerA]} side="A" />

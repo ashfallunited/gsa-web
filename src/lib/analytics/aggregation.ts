@@ -81,6 +81,14 @@ export function aggregatePlayerSeasonTotals(
       penaltiesScored: 0,
       penaltiesSaved: 0,
       penaltiesFaced: 0,
+      shots: 0,
+      shotsOnTarget: 0,
+      keyPasses: 0,
+      tacklesWon: 0,
+      interceptions: 0,
+      clearances: 0,
+      foulsCommitted: 0,
+      foulsWon: 0,
     }
 
     if (stat.minutes > 0 || stat.started) {
@@ -100,6 +108,14 @@ export function aggregatePlayerSeasonTotals(
     existing.penaltiesScored += stat.penaltiesScored ?? 0
     existing.penaltiesSaved += stat.penaltiesSaved ?? 0
     existing.penaltiesFaced += stat.penaltiesFaced ?? 0
+    existing.shots += stat.shots ?? 0
+    existing.shotsOnTarget += stat.shotsOnTarget ?? 0
+    existing.keyPasses += stat.keyPasses ?? 0
+    existing.tacklesWon += stat.tacklesWon ?? 0
+    existing.interceptions += stat.interceptions ?? 0
+    existing.clearances += stat.clearances ?? 0
+    existing.foulsCommitted += stat.foulsCommitted ?? 0
+    existing.foulsWon += stat.foulsWon ?? 0
 
     totals.set(stat.playerId, existing)
   }

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Link from 'next/link'
 import ComboInput from '@/components/admin/combo-input'
+import ImageUpload from '@/components/ImageUpload'
 import { inputClass, labelClass } from '@/components/admin/analytics-filters'
 import { useAnalyticsLookups } from '@/lib/analytics/use-lookups'
 import { TEAM_LABELS, TEAM_SLUG } from '@/lib/teams'
@@ -20,6 +21,7 @@ export default function NewMatchPage() {
     competition: 'League',
     date: new Date().toISOString().slice(0, 10),
     opponent: '',
+    opponentLogo: '',
     homeAway: 'home' as const,
     goalsFor: 0,
     goalsAgainst: 0,
@@ -119,6 +121,14 @@ export default function NewMatchPage() {
           placeholder="Select or type opponent"
         />
 
+        <ImageUpload
+          value={data.opponentLogo}
+          onChange={(url) => setData((d) => ({ ...d, opponentLogo: url }))}
+          bucket="team-images"
+          folder="opponent-logos"
+          label="Opponent Logo (optional — falls back to a default shield if left blank)"
+        />
+
         <ComboInput
           label="Competition / League"
           listId="new-match-competition"
@@ -131,11 +141,11 @@ export default function NewMatchPage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Goals For</label>
-            <input type="number" min={0} max={99} value={data.goalsFor} onChange={set('goalsFor')} className={inputClass} />
+            <input type="number" inputMode="numeric" min={0} max={99} value={data.goalsFor} onChange={set('goalsFor')} className={inputClass} />
           </div>
           <div>
             <label className={labelClass}>Goals Against</label>
-            <input type="number" min={0} max={99} value={data.goalsAgainst} onChange={set('goalsAgainst')} className={inputClass} />
+            <input type="number" inputMode="numeric" min={0} max={99} value={data.goalsAgainst} onChange={set('goalsAgainst')} className={inputClass} />
           </div>
         </div>
 

@@ -10,6 +10,7 @@ export const matchInputSchema = z.object({
   competition: z.string().min(1).max(120),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD'),
   opponent: z.string().min(1).max(120),
+  opponentLogo: z.string().max(500).optional().or(z.literal('')),
   homeAway: homeAwaySchema,
   goalsFor: z.number().int().min(0).max(99),
   goalsAgainst: z.number().int().min(0).max(99),
@@ -39,6 +40,14 @@ export const matchPlayerStatInputSchema = z
     penaltiesScored: z.number().int().min(0).max(20).optional(),
     penaltiesSaved: z.number().int().min(0).max(20).optional(),
     penaltiesFaced: z.number().int().min(0).max(20).optional(),
+    shots: z.number().int().min(0).max(30).optional(),
+    shotsOnTarget: z.number().int().min(0).max(30).optional(),
+    keyPasses: z.number().int().min(0).max(30).optional(),
+    tacklesWon: z.number().int().min(0).max(30).optional(),
+    interceptions: z.number().int().min(0).max(30).optional(),
+    clearances: z.number().int().min(0).max(30).optional(),
+    foulsCommitted: z.number().int().min(0).max(20).optional(),
+    foulsWon: z.number().int().min(0).max(20).optional(),
     goalMinutes: z.array(z.number().int().min(0).max(120)).optional(),
     assistMinutes: z.array(z.number().int().min(0).max(120)).optional(),
   })
@@ -58,6 +67,9 @@ export const matchPlayerStatInputSchema = z
     }
     if ((data.penaltiesSaved ?? 0) > (data.penaltiesFaced ?? 0)) {
       ctx.addIssue({ code: 'custom', path: ['penaltiesSaved'], message: 'Penalties saved cannot exceed penalties faced' })
+    }
+    if ((data.shotsOnTarget ?? 0) > (data.shots ?? 0)) {
+      ctx.addIssue({ code: 'custom', path: ['shotsOnTarget'], message: 'Shots on target cannot exceed total shots' })
     }
   })
 

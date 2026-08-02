@@ -193,7 +193,7 @@ function DashboardBody({ data }: { data: DashboardData }) {
           title="Top Scorers"
           items={data.topScorers}
           empty="No goals recorded yet."
-          renderValue={(p) => `${p.goals}G`}
+          renderValue={(p) => `${p.goals}`}
           renderSub={(p) => p.assists > 0 ? `${p.assists}A` : undefined}
         />
       </div>
@@ -204,7 +204,7 @@ function DashboardBody({ data }: { data: DashboardData }) {
           title="Top Assists"
           items={data.topAssists}
           empty="No assists recorded yet."
-          renderValue={(p) => `${p.assists}A`}
+          renderValue={(p) => `${p.assists}`}
           renderSub={(p) => p.goals > 0 ? `${p.goals}G` : undefined}
         />
         <RankedList

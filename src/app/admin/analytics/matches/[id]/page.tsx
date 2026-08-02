@@ -8,6 +8,7 @@ const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), { ss
 import { Copy, Save, Trash2, Download, Plus, UserPlus } from 'lucide-react'
 import AdminLoadError from '@/components/AdminLoadError'
 import ComboInput from '@/components/admin/combo-input'
+import ImageUpload from '@/components/ImageUpload'
 import { MatchStatDesktopTable, MatchStatMobileCard } from '@/components/admin/match-stat-grid'
 import { inputClass, labelClass } from '@/components/admin/analytics-filters'
 import { useAnalyticsLookups } from '@/lib/analytics/use-lookups'
@@ -34,6 +35,14 @@ type StatRow = {
   penaltiesScored: number
   penaltiesSaved: number
   penaltiesFaced: number
+  shots: number
+  shotsOnTarget: number
+  keyPasses: number
+  tacklesWon: number
+  interceptions: number
+  clearances: number
+  foulsCommitted: number
+  foulsWon: number
   goalMinutes: number[]
   assistMinutes: number[]
 }
@@ -43,8 +52,23 @@ function emptyStat(playerId: string): StatRow {
     playerId, started: false, minutes: 0, goals: 0, assists: 0, yellowCards: 0, redCards: 0, notes: '',
     headerGoals: 0, leftFootGoals: 0, rightFootGoals: 0, outsideBoxGoals: 0,
     penaltiesTaken: 0, penaltiesScored: 0, penaltiesSaved: 0, penaltiesFaced: 0,
+    shots: 0, shotsOnTarget: 0, keyPasses: 0, tacklesWon: 0, interceptions: 0, clearances: 0,
+    foulsCommitted: 0, foulsWon: 0,
     goalMinutes: [], assistMinutes: [],
   }
+}
+
+const ACTIVE_STAT_NUM_FIELDS: (keyof StatRow)[] = [
+  'minutes', 'goals', 'assists', 'yellowCards', 'redCards',
+  'headerGoals', 'leftFootGoals', 'rightFootGoals', 'outsideBoxGoals',
+  'penaltiesTaken', 'penaltiesScored', 'penaltiesSaved', 'penaltiesFaced',
+  'shots', 'shotsOnTarget', 'keyPasses', 'tacklesWon', 'interceptions',
+  'clearances', 'foulsCommitted', 'foulsWon',
+]
+
+function isActiveStatRow(r: StatRow): boolean {
+  if (r.started) return true
+  return ACTIVE_STAT_NUM_FIELDS.some((f) => ((r[f] as number | undefined) ?? 0) > 0)
 }
 
 function buildStatRows(teamPlayers: PlayerOption[], existingStats: MatchPlayerStat[]): StatRow[] {
@@ -69,6 +93,14 @@ function buildStatRows(teamPlayers: PlayerOption[], existingStats: MatchPlayerSt
       penaltiesScored: existing.penaltiesScored ?? 0,
       penaltiesSaved: existing.penaltiesSaved ?? 0,
       penaltiesFaced: existing.penaltiesFaced ?? 0,
+      shots: existing.shots ?? 0,
+      shotsOnTarget: existing.shotsOnTarget ?? 0,
+      keyPasses: existing.keyPasses ?? 0,
+      tacklesWon: existing.tacklesWon ?? 0,
+      interceptions: existing.interceptions ?? 0,
+      clearances: existing.clearances ?? 0,
+      foulsCommitted: existing.foulsCommitted ?? 0,
+      foulsWon: existing.foulsWon ?? 0,
       goalMinutes: existing.goalMinutes ?? [],
       assistMinutes: existing.assistMinutes ?? [],
     }
@@ -173,11 +205,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
     setError('')
     setMessage('')
     try {
-      const activeStats = statRows.filter(
-        (r) =>
-          r.minutes > 0 || r.started || r.goals > 0 || r.assists > 0 || r.yellowCards > 0 || r.redCards > 0 ||
-          r.penaltiesTaken > 0 || r.penaltiesSaved > 0 || r.penaltiesFaced > 0
-      )
+      const activeStats = statRows.filter(isActiveStatRow)
       const res = await fetch(`/api/admin/matches/${id}/stats`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -300,6 +328,27 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
             <input type="date" value={match.date} onChange={(e) => updateMatchField('date', e.target.value)} className={inputClass} disabled={isLocked} />
           </div>
           <ComboInput label="Opponent" listId="edit-opponent" value={match.opponent} options={lookups.opponents} onChange={(v) => updateMatchField('opponent', v)} disabled={isLocked} />
+          <div className="sm:col-span-2">
+            {isLocked ? (
+              <div>
+                <label className={labelClass}>Opponent Logo</label>
+                {match.opponentLogo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={match.opponentLogo} alt={match.opponent} className="h-16 object-contain" />
+                ) : (
+                  <p className="text-sm text-[#5a6478]">No logo uploaded.</p>
+                )}
+              </div>
+            ) : (
+              <ImageUpload
+                value={match.opponentLogo ?? ''}
+                onChange={(url) => setMatch({ ...match, opponentLogo: url || undefined })}
+                bucket="team-images"
+                folder="opponent-logos"
+                label="Opponent Logo (optional — falls back to a default shield if left blank)"
+              />
+            )}
+          </div>
           <ComboInput label="Competition / League" listId="edit-competition" value={match.competition} options={lookups.competitions} onChange={(v) => updateMatchField('competition', v)} disabled={isLocked} />
           <div>
             <label className={labelClass}>Home / Away</label>
@@ -311,11 +360,11 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
           </div>
           <div>
             <label className={labelClass}>Goals For</label>
-            <input type="number" min={0} value={match.goalsFor} onChange={(e) => updateMatchField('goalsFor', Number(e.target.value))} className={inputClass} disabled={isLocked} />
+            <input type="number" inputMode="numeric" min={0} value={match.goalsFor} onChange={(e) => updateMatchField('goalsFor', Number(e.target.value))} className={inputClass} disabled={isLocked} />
           </div>
           <div>
             <label className={labelClass}>Goals Against</label>
-            <input type="number" min={0} value={match.goalsAgainst} onChange={(e) => updateMatchField('goalsAgainst', Number(e.target.value))} className={inputClass} disabled={isLocked} />
+            <input type="number" inputMode="numeric" min={0} value={match.goalsAgainst} onChange={(e) => updateMatchField('goalsAgainst', Number(e.target.value))} className={inputClass} disabled={isLocked} />
           </div>
           <div>
             <label className={labelClass}>Status</label>
