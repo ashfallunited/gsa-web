@@ -40,6 +40,13 @@ export function isoWeekKey(dateStr: string): string {
   return `${isoYear}-W${String(week).padStart(2, '0')}`
 }
 
+/** Week key shifted by `delta` ISO weeks (negative moves backward). */
+export function shiftWeek(weekKey: string, delta: number): string {
+  const d = parseUTC(isoWeekKeyToMonday(weekKey))
+  d.setUTCDate(d.getUTCDate() + delta * 7)
+  return isoWeekKey(toDateStr(d))
+}
+
 /** Monday date for a `YYYY-Www` week key. */
 export function isoWeekKeyToMonday(weekKey: string): string {
   const [yearStr, weekStr] = weekKey.split('-W')
