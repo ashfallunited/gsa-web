@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { toPng } from 'html-to-image'
-import { Plus, TrendingUp, Download, Pencil, ChevronLeft, Calendar } from 'lucide-react'
+import { Plus, TrendingUp, Download, Pencil, ChevronLeft, ChevronRight, Calendar } from 'lucide-react'
 import PlayerAvatar from '@/components/admin/player-avatar'
 import PlayerPicker from '@/components/admin/player-picker'
 import AdminLoadError from '@/components/AdminLoadError'
@@ -18,7 +18,7 @@ import { inputClass, labelClass } from '@/components/admin/analytics-filters'
 import { fetchAdminJson } from '@/lib/admin-fetch'
 import { TEAM_LABELS, TEAM_SLUG, playerMatchesTeamFilter } from '@/lib/teams'
 import { categoryMetaFor } from '@/lib/evaluations/types'
-import { isoWeekKey } from '@/lib/evaluations/date-utils'
+import { isoWeekKey, shiftWeek } from '@/lib/evaluations/date-utils'
 import type {
   EvaluationRole,
   MonthReport,
@@ -302,7 +302,27 @@ export default function EvaluationsReportPage() {
           </div>
           <div>
             <label className={labelClass}>{periodType === 'week' ? 'Week' : periodType === 'month' ? 'Month' : 'Year'}</label>
-            {periodType === 'week' && <input type="week" value={week} onChange={(e) => setWeek(e.target.value)} className={inputClass} />}
+            {periodType === 'week' && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setWeek((w) => shiftWeek(w, -1))}
+                  className="p-2 border border-gray-200 text-[#5a6478] hover:bg-gray-50 transition-colors"
+                  aria-label="Previous week"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <input type="week" value={week} onChange={(e) => setWeek(e.target.value)} className={`${inputClass} flex-1`} />
+                <button
+                  type="button"
+                  onClick={() => setWeek((w) => shiftWeek(w, 1))}
+                  className="p-2 border border-gray-200 text-[#5a6478] hover:bg-gray-50 transition-colors"
+                  aria-label="Next week"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
             {periodType === 'month' && <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} className={inputClass} />}
             {periodType === 'year' && (
               <select value={year} onChange={(e) => setYear(e.target.value)} className={inputClass}>
