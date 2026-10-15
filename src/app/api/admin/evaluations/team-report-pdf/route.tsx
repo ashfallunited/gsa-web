@@ -11,29 +11,29 @@ import { computeSquadCategoryAverages, computeTeamLeaderboard, computeTopCategor
 import { isoWeekKeyToMonday, monthRange, sundayOf, yearRange } from '@/lib/evaluations/date-utils'
 import { normalizeTeamSlug, playerMatchesTeamFilter, TEAM_LABELS } from '@/lib/teams'
 
-const NAVY = '#01255f'
-const YELLOW = '#fee11b'
+const GREEN = '#026632'
+const MINT = '#74f3be'
 const GREY = '#5a6478'
-const LIGHT = '#f5f7fc'
+const LIGHT = '#f3f9f5'
 
 const styles = StyleSheet.create({
   page: { fontFamily: 'Helvetica', backgroundColor: '#ffffff', padding: 0 },
-  header: { backgroundColor: NAVY, padding: 28 },
+  header: { backgroundColor: GREEN, padding: 28 },
   teamName: { fontSize: 22, fontFamily: 'Helvetica-Bold', color: '#ffffff', letterSpacing: 0.5 },
   teamSub: { fontSize: 10, color: 'rgba(255,255,255,0.7)', marginTop: 4 },
   body: { padding: 24 },
-  roleTitle: { fontSize: 13, fontFamily: 'Helvetica-Bold', color: NAVY, marginTop: 22, marginBottom: 4 },
+  roleTitle: { fontSize: 13, fontFamily: 'Helvetica-Bold', color: GREEN, marginTop: 22, marginBottom: 4 },
   sectionTitle: { fontSize: 9, fontFamily: 'Helvetica-Bold', color: GREY, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 10, marginTop: 14 },
   statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  statBox: { width: '22%', backgroundColor: LIGHT, padding: 10, borderLeft: `3px solid ${YELLOW}` },
+  statBox: { width: '22%', backgroundColor: LIGHT, padding: 10, borderLeft: `3px solid ${MINT}` },
   statLabel: { fontSize: 8, color: GREY, textTransform: 'uppercase', letterSpacing: 1 },
-  statValue: { fontSize: 16, fontFamily: 'Helvetica-Bold', color: NAVY, marginTop: 2 },
+  statValue: { fontSize: 16, fontFamily: 'Helvetica-Bold', color: GREEN, marginTop: 2 },
   table: { marginTop: 8 },
-  tableHeader: { flexDirection: 'row', backgroundColor: NAVY, paddingVertical: 6, paddingHorizontal: 8 },
+  tableHeader: { flexDirection: 'row', backgroundColor: GREEN, paddingVertical: 6, paddingHorizontal: 8 },
   tableHeaderCell: { fontSize: 8, fontFamily: 'Helvetica-Bold', color: '#ffffff', letterSpacing: 0.8, textTransform: 'uppercase' },
   tableRow: { flexDirection: 'row', paddingVertical: 5, paddingHorizontal: 8, borderBottom: '1px solid #e5e7eb' },
   tableRowAlt: { flexDirection: 'row', paddingVertical: 5, paddingHorizontal: 8, backgroundColor: LIGHT, borderBottom: '1px solid #e5e7eb' },
-  tableCell: { fontSize: 8, color: NAVY },
+  tableCell: { fontSize: 8, color: GREEN },
   tableCellGrey: { fontSize: 8, color: GREY },
   footer: { position: 'absolute', bottom: 16, left: 24, right: 24, flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #e5e7eb', paddingTop: 8 },
   footerText: { fontSize: 8, color: GREY },
@@ -111,7 +111,7 @@ function TeamReportDocument({
   goalkeeper: TeamLeaderboard
 }) {
   return (
-    <Document title={`${teamLabel} — Team Evaluation Overview`} author="Ashfall United">
+    <Document title={`${teamLabel} — Team Evaluation Overview`} author="Graceland Football Club">
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={styles.teamName}>{teamLabel}</Text>
@@ -127,7 +127,7 @@ function TeamReportDocument({
         </View>
 
         <View style={styles.footer} fixed>
-          <Text style={styles.footerText}>Ashfall United — Team Evaluation Overview</Text>
+          <Text style={styles.footerText}>Graceland Football Club — Team Evaluation Overview</Text>
           <Text style={styles.footerText}>{new Date().toLocaleDateString('en-GB')}</Text>
         </View>
       </Page>

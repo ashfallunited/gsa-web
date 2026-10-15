@@ -28,14 +28,14 @@ function useCounter(target: number, running: boolean) {
 function Metric({ m, running }: { m: (typeof metrics)[0]; running: boolean }) {
   const val = useCounter(m.value, running)
   return (
-    <div className="border-l-2 border-[#fee11b] pl-5 sm:pl-6 py-2">
+    <div className="border-l-2 border-[#74f3be] pl-5 sm:pl-6 py-2">
       <div
         className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-1"
         style={{ fontFamily: 'var(--font-heading)' }}
       >
         {val.toLocaleString()}{m.suffix}
       </div>
-      <div className="text-[#fee11b] font-semibold text-xs sm:text-sm mb-1">{m.label}</div>
+      <div className="text-[#74f3be] font-semibold text-xs sm:text-sm mb-1">{m.label}</div>
       <div className="text-white/50 text-[11px] sm:text-xs">{m.sub}</div>
     </div>
   )
@@ -57,7 +57,7 @@ export default function ImpactMetrics() {
   }, [])
 
   return (
-    <section id="impact" className="py-16 sm:py-24 lg:py-32 bg-[#01255f]" ref={ref}>
+    <section id="impact" className="py-16 sm:py-24 lg:py-32 bg-[#026632]" ref={ref}>
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
 
         <div className="grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16 items-start">
@@ -74,7 +74,7 @@ export default function ImpactMetrics() {
               Every figure represents a young person in Monrovia whose life has been
               touched by our work.
             </p>
-            <div className="mt-6 h-px w-10 bg-[#fee11b]" />
+            <div className="mt-6 h-px w-10 bg-[#74f3be]" />
           </div>
 
           <div className="grid grid-cols-2 gap-6 sm:gap-8">

@@ -10,7 +10,7 @@ const PLACEHOLDER = IMAGE_PLACEHOLDER
 
 type Member = { id: string; name: string; role: string; image: string; order: number }
 const empty: Omit<Member, 'id'> = { name: '', role: '', image: '', order: 99 }
-const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f] transition-colors'
+const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#026632] transition-colors'
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
 function BoardForm({ initial, memberId, onSaved, onCancel }: {
@@ -57,10 +57,10 @@ function BoardForm({ initial, memberId, onSaved, onCancel }: {
         <input type="text" value={data.role} onChange={set('role')} className={inputClass} placeholder="e.g. Chairman" />
       </div>
       <div className="flex gap-3 pt-2">
-        <button onClick={save} disabled={saving} className="bg-[#01255f] hover:bg-[#011840] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50">
+        <button onClick={save} disabled={saving} className="bg-[#026632] hover:bg-[#014a24] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50">
           {saving ? 'Saving…' : memberId ? 'Update' : 'Add'}
         </button>
-        <button onClick={onCancel} disabled={saving} className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#01255f] hover:text-[#01255f] transition-colors disabled:opacity-50">
+        <button onClick={onCancel} disabled={saving} className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#026632] hover:text-[#026632] transition-colors disabled:opacity-50">
           Cancel
         </button>
       </div>
@@ -94,11 +94,11 @@ export default function AdminBoard() {
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full min-w-0">
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Board of Directors</h1>
+          <h1 className="text-2xl font-bold text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>Board of Directors</h1>
           <p className="text-[#5a6478] text-sm mt-1">{members.length} members</p>
         </div>
         {!adding && !editing && (
-          <button onClick={() => setAdding(true)} className="bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors">
+          <button onClick={() => setAdding(true)} className="bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors">
             + Add Member
           </button>
         )}
@@ -106,7 +106,7 @@ export default function AdminBoard() {
 
       {(adding || editing) && (
         <div className="mb-8">
-          <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest mb-4">{editing ? 'Edit Member' : 'New Member'}</h2>
+          <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest mb-4">{editing ? 'Edit Member' : 'New Member'}</h2>
           <BoardForm initial={editing ?? undefined} memberId={editing?.id} onSaved={onSaved} onCancel={() => { setAdding(false); setEditing(null) }} />
         </div>
       )}
@@ -116,21 +116,21 @@ export default function AdminBoard() {
       ) : members.length === 0 && !adding ? (
         <div className="bg-white border border-gray-100 p-10 text-center text-sm text-[#5a6478]">
           No board members yet.{' '}
-          <button onClick={() => setAdding(true)} className="text-[#01255f] underline">Add the first one.</button>
+          <button onClick={() => setAdding(true)} className="text-[#026632] underline">Add the first one.</button>
         </div>
       ) : (
         <div className="bg-white border border-gray-100 overflow-hidden">
           {members.map((m) => (
-            <div key={m.id} className="flex items-center gap-4 px-6 py-4 border-b border-gray-50 last:border-0 hover:bg-[#f5f7fc] transition-colors">
+            <div key={m.id} className="flex items-center gap-4 px-6 py-4 border-b border-gray-50 last:border-0 hover:bg-[#f3f9f5] transition-colors">
               <div className="flex-shrink-0 w-12 h-12 bg-gray-100 overflow-hidden">
                 <Image src={m.image || PLACEHOLDER} alt={m.name} width={48} height={48} className="w-full h-full object-cover object-top" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-[#01255f] text-sm">{m.name}</p>
+                <p className="font-bold text-[#026632] text-sm">{m.name}</p>
                 <p className="text-[#5a6478] text-xs">{m.role}</p>
               </div>
               <div className="flex gap-3 flex-shrink-0">
-                <button onClick={() => { setEditing(m); setAdding(false) }} className="text-xs font-bold text-[#01255f] hover:underline">Edit</button>
+                <button onClick={() => { setEditing(m); setAdding(false) }} className="text-xs font-bold text-[#026632] hover:underline">Edit</button>
                 <button onClick={() => del(m.id)} className="text-xs font-bold text-red-400 hover:text-red-600">Remove</button>
               </div>
             </div>

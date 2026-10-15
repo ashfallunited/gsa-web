@@ -41,14 +41,14 @@ export default async function DonationSuccessPage(props: { searchParams: Promise
   const verification = await verifyPaymentStatus(props)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#01255f]/5 to-white flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#026632]/5 to-white flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full text-center space-y-6">
         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
           <Check className="w-8 h-8 text-green-600" strokeWidth={3} />
         </div>
 
         <div>
-          <h1 className="text-3xl font-bold text-[#01255f] mb-2">Thank You!</h1>
+          <h1 className="text-3xl font-bold text-[#026632] mb-2">Thank You!</h1>
           {verification.verified ? (
             <>
               <p className="text-gray-600 leading-relaxed">
@@ -69,13 +69,13 @@ export default async function DonationSuccessPage(props: { searchParams: Promise
         <div className="pt-4 space-y-3">
           <Link
             href="/"
-            className="block w-full bg-[#01255f] hover:bg-[#011840] text-white font-bold py-3 rounded transition-colors"
+            className="block w-full bg-[#026632] hover:bg-[#014a24] text-white font-bold py-3 rounded transition-colors"
           >
             Back to Home
           </Link>
           <Link
             href="/donate"
-            className="block w-full border-2 border-[#01255f] text-[#01255f] hover:bg-[#01255f]/5 font-bold py-3 rounded transition-colors"
+            className="block w-full border-2 border-[#026632] text-[#026632] hover:bg-[#026632]/5 font-bold py-3 rounded transition-colors"
           >
             Make Another Donation
           </Link>

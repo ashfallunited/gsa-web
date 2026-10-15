@@ -15,7 +15,7 @@ export default function AdminLoadError({ title = 'Could not load data', message 
           This app stores players, blog posts, inquiries, and similar data in{' '}
           <strong>Firebase Firestore</strong> (not Supabase). Add{' '}
           <code className="font-mono">FIREBASE_SERVICE_ACCOUNT_KEY</code> or the three split fields to{' '}
-          <code className="font-mono">.env.local</code>, then restart <code className="font-mono">npm run dev</code>.
+          <code className="font-mono">.env.local</code>, then restart <code className="font-mono">pnpm dev</code>.
           Supabase keys are only for image uploads.
         </p>
       )}

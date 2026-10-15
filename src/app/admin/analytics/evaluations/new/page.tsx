@@ -200,10 +200,10 @@ function EvaluationForm() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 max-w-6xl mx-auto pb-24">
       <div className="mb-6 sm:mb-8">
-        <Link href="/admin/analytics/evaluations" className="text-xs text-[#5a6478] hover:text-[#01255f] mb-2 inline-block">
+        <Link href="/admin/analytics/evaluations" className="text-xs text-[#5a6478] hover:text-[#026632] mb-2 inline-block">
           ← Back to evaluations
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
           {editId ? 'Edit Evaluation' : 'Player Evaluation'}
         </h1>
         <p className="text-sm text-[#5a6478] mt-1">
@@ -251,7 +251,7 @@ function EvaluationForm() {
                   type="button"
                   onClick={() => setShowAddCoach((v) => !v)}
                   title="Add coach"
-                  className="shrink-0 border border-gray-200 px-3 text-[#01255f] hover:bg-gray-50"
+                  className="shrink-0 border border-gray-200 px-3 text-[#026632] hover:bg-gray-50"
                 >
                   <UserPlus size={16} />
                 </button>
@@ -260,7 +260,7 @@ function EvaluationForm() {
           </div>
 
           {showAddCoach && (
-            <div className="border border-dashed border-[#01255f]/30 p-3 flex gap-2 items-end bg-[#01255f]/5">
+            <div className="border border-dashed border-[#026632]/30 p-3 flex gap-2 items-end bg-[#026632]/5">
               <div className="flex-1">
                 <label className={labelClass}>New coach name</label>
                 <input
@@ -275,7 +275,7 @@ function EvaluationForm() {
                 type="button"
                 onClick={addCoach}
                 disabled={savingCoach || !newCoachName.trim()}
-                className="inline-flex items-center gap-1.5 bg-[#01255f] text-white px-4 py-2 text-xs font-bold disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 bg-[#026632] text-white px-4 py-2 text-xs font-bold disabled:opacity-50"
               >
                 <Plus size={14} /> Add
               </button>
@@ -292,7 +292,7 @@ function EvaluationForm() {
                     type="button"
                     onClick={() => setType(t)}
                     className={`py-2 text-sm font-bold uppercase tracking-wide border transition-colors ${
-                      type === t ? 'bg-[#01255f] text-white border-[#01255f]' : 'bg-white text-[#5a6478] border-gray-200'
+                      type === t ? 'bg-[#026632] text-white border-[#026632]' : 'bg-white text-[#5a6478] border-gray-200'
                     }`}
                   >
                     {t === 'training' ? 'Training' : 'Match'}
@@ -326,7 +326,7 @@ function EvaluationForm() {
               <div className="flex items-center justify-between border border-gray-100 bg-gray-50 px-3 py-2">
                 <div>
                   <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">Position</p>
-                  <p className="text-sm font-bold text-[#01255f] capitalize">{selectedPlayer.position}</p>
+                  <p className="text-sm font-bold text-[#026632] capitalize">{selectedPlayer.position}</p>
                 </div>
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#5a6478] bg-white border border-gray-200 px-2 py-1">
                   {role === 'goalkeeper' ? 'Goalkeeper Form' : 'Outfield Form'}
@@ -336,13 +336,13 @@ function EvaluationForm() {
               <div className="space-y-3 border-t border-gray-100 pt-4">
                 {categoryMeta.map(({ key, label }) => (
                   <div key={key} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <label className="text-sm font-semibold text-[#01255f]">{label}</label>
+                    <label className="text-sm font-semibold text-[#026632]">{label}</label>
                     <RatingInput value={categories[key] ?? 3} onChange={(v) => setRating(key, v)} />
                   </div>
                 ))}
               </div>
 
-              <div className="flex items-center justify-between bg-[#01255f] text-white px-4 py-3">
+              <div className="flex items-center justify-between bg-[#026632] text-white px-4 py-3">
                 <span className="text-xs font-bold uppercase tracking-widest">Total</span>
                 <span className="text-xl font-black" style={{ fontFamily: 'var(--font-heading)' }}>
                   {total} <span className="text-sm font-normal text-white/60">/ {maxTotal}</span>
@@ -371,7 +371,7 @@ function EvaluationForm() {
               type="button"
               onClick={save}
               disabled={saving || !selectedPlayer}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#fee11b] text-[#01255f] px-6 py-3 text-sm font-black disabled:opacity-50"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#74f3be] text-[#026632] px-6 py-3 text-sm font-black disabled:opacity-50"
             >
               <Save size={15} /> {saving ? 'Saving…' : editId ? 'Update Evaluation' : 'Save Evaluation'}
             </button>

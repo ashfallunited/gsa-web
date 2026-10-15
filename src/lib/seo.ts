@@ -19,14 +19,14 @@ export type SeoImage = {
 }
 
 export type BuildPageMetadataOptions = {
-  /** Segment used with layout template → "{title} | Ashfall United" */
+  /** Segment used with layout template → "{title} | Graceland Football Club" */
   readonly title: string
   readonly description: string
   /** Path only, e.g. `/blog` */
   readonly path: string
   readonly image?: SeoImage
   readonly openGraphType?: 'website' | 'article'
-  /** Full OG/Twitter headline (defaults to "{title} | Ashfall United") */
+  /** Full OG/Twitter headline (defaults to "{title} | Graceland Football Club") */
   readonly openGraphTitle?: string
   readonly keywords?: readonly string[]
   readonly noIndex?: boolean
@@ -48,8 +48,8 @@ export function absoluteUrl(path: string): string {
 export function normalizePageTitle(raw: string): string {
   return (
     raw
-      .replace(/\s*\|\s*Ashfall United\s*$/i, '')
-      .replace(/\s*\|\s*Ashfall United\s*$/i, '')
+      .replace(/\s*\|\s*Graceland Football Club\s*$/i, '')
+      .replace(/\s*\|\s*Graceland Football Club\s*$/i, '')
       .trim() || raw
   )
 }
@@ -123,16 +123,16 @@ export function buildOrganizationJsonLd(): Record<string, unknown> {
     '@context': 'https://schema.org',
     '@type': ['SportsTeam', 'SportsOrganization', 'LocalBusiness'],
     name: ORG_NAME,
-    alternateName: 'Ashfall United FC',
+    alternateName: 'Graceland FC',
     sport: 'Soccer',
     url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
-      url: absoluteUrl('/Logo.png'),
+      url: absoluteUrl('/gl-crest.png'),
       width: 400,
       height: 120,
     },
-    image: absoluteUrl('/Logo.png'),
+    image: absoluteUrl('/gl-crest.png'),
     description: ORG_DESCRIPTION,
     foundingDate: '2019',
     address: {
@@ -159,7 +159,7 @@ export function buildOrganizationJsonLd(): Record<string, unknown> {
       availableLanguage: ['English'],
     },
     sameAs: [ORG_INSTAGRAM, ORG_FACEBOOK],
-    keywords: 'football club Liberia, youth football Monrovia, sport for development Liberia, Ashfall United',
+    keywords: 'football club Liberia, youth football Monrovia, sport for development Liberia, Graceland Football Club',
   }
 }
 
@@ -168,7 +168,7 @@ export function buildBlogIndexJsonLd(): Record<string, unknown> {
     '@context': 'https://schema.org',
     '@type': 'Blog',
     name: `${ORG_NAME} News`,
-    description: 'Stories and updates from Ashfall United programmes in Liberia.',
+    description: 'Stories and updates from Graceland Football Club programmes in Liberia.',
     url: absoluteUrl('/blog'),
     publisher: {
       '@type': 'SportsTeam',
@@ -196,7 +196,7 @@ export function buildBlogPostingJsonLd(post: BlogPost): Record<string, unknown> 
     publisher: {
       '@type': 'Organization',
       name: ORG_NAME,
-      logo: { '@type': 'ImageObject', url: absoluteUrl('/Logo.png') },
+      logo: { '@type': 'ImageObject', url: absoluteUrl('/gl-crest.png') },
     },
   }
 
@@ -210,15 +210,15 @@ export function buildBlogPostingJsonLd(post: BlogPost): Record<string, unknown> 
 
 export const SEO_KEYWORDS = {
   core: [
-    'Ashfall United',
+    'Graceland Football Club',
     'football club Liberia',
     'youth football Monrovia',
     'sport for development Liberia',
   ],
   donate: ['donate football Liberia', 'support youth Monrovia', 'charity football Liberia'],
-  blog: ['Ashfall United news', 'Liberia football news', 'youth development stories'],
-  shop: ['Ashfall United kit', 'Liberia football jersey', 'club shop Monrovia'],
-  team: ['Ashfall United squad', 'Liberia first team football'],
-  gallery: ['Ashfall United photos', 'Monrovia football gallery'],
+  blog: ['Graceland FC news', 'Liberia football news', 'youth development stories'],
+  shop: ['Graceland FC kit', 'Liberia football jersey', 'club shop Monrovia'],
+  team: ['Graceland FC squad', 'Liberia first team football'],
+  gallery: ['Graceland FC photos', 'Monrovia football gallery'],
   involved: ['volunteer football Liberia', 'partner youth development Monrovia'],
 } as const

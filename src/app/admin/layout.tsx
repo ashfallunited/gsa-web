@@ -88,7 +88,7 @@ function AdminNav({
     <>
       <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between lg:block">
         <div className="relative h-10 w-36 sm:h-12 sm:w-44">
-          <Image src="/Logo.png" alt={ORG_NAME} fill className="object-contain object-left" sizes="176px" />
+          <Image src="/gl-crest.png" alt={ORG_NAME} fill className="object-contain object-left" sizes="176px" />
         </div>
         <button
           type="button"
@@ -122,7 +122,7 @@ function AdminNav({
                   onClick={onNavigate}
                   className={`flex items-center gap-3 px-4 sm:px-5 py-3 text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-[#fee11b] text-[#01255f]'
+                      ? 'bg-[#74f3be] text-[#026632]'
                       : 'text-white/70 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -203,15 +203,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (isLogin) {
     return (
-      <div className="min-h-screen bg-[#f5f7fc]" style={{ fontFamily: 'var(--font-body)' }}>
+      <div className="min-h-screen bg-[#f3f9f5]" style={{ fontFamily: 'var(--font-body)' }}>
         {children}
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f7fc]" style={{ fontFamily: 'var(--font-body)' }}>
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#01255f] border-b border-white/10 flex items-center justify-between px-4">
+    <div className="min-h-screen bg-[#f3f9f5]" style={{ fontFamily: 'var(--font-body)' }}>
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#026632] border-b border-white/10 flex items-center justify-between px-4">
         <button
           type="button"
           onClick={() => setMenuOpen(true)}
@@ -244,7 +244,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       )}
 
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-[min(100vw-3rem,17rem)] sm:w-56 bg-[#01255f] flex flex-col shadow-xl transition-transform duration-200 ease-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-[min(100vw-3rem,17rem)] sm:w-56 bg-[#026632] flex flex-col shadow-xl transition-transform duration-200 ease-out lg:translate-x-0 ${
           menuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

@@ -33,8 +33,8 @@ export type StatRow = {
 
 type NumField = keyof Omit<StatRow, 'playerId' | 'started' | 'goalMinutes' | 'assistMinutes'>
 
-const inputCls = 'w-full border border-gray-200 bg-white px-2 py-2.5 text-sm focus:outline-none focus:border-[#01255f]'
-const tableInputCls = 'border border-gray-200 px-1 py-1 text-xs focus:outline-none focus:border-[#01255f]'
+const inputCls = 'w-full border border-gray-200 bg-white px-2 py-2.5 text-sm focus:outline-none focus:border-[#026632]'
+const tableInputCls = 'border border-gray-200 px-1 py-1 text-xs focus:outline-none focus:border-[#026632]'
 
 const GOAL_DETAIL: { label: string; field: NumField; max: number }[] = [
   { label: 'Header', field: 'headerGoals', max: 20 },
@@ -97,7 +97,7 @@ export function MatchStatMobileCard({
   return (
     <div className="border border-gray-200 p-3 sm:p-4 space-y-3 bg-gray-50/50">
       <div className="flex items-center justify-between gap-2">
-        <p className="font-bold text-[#01255f] text-sm truncate">{name}</p>
+        <p className="font-bold text-[#026632] text-sm truncate">{name}</p>
         <label className="flex items-center gap-2 text-xs font-semibold text-[#5a6478] shrink-0 cursor-pointer py-1">
           <input
             type="checkbox"
@@ -145,7 +145,7 @@ export function MatchStatMobileCard({
                   value={(row.goalMinutes ?? [])[i] ?? ''}
                   disabled={isLocked}
                   onChange={(e) => onMinuteChange?.('goalMinutes', i, Number(e.target.value))}
-                  className="w-12 border border-gray-200 px-1 py-2 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                  className="w-12 border border-gray-200 px-1 py-2 text-xs text-center focus:outline-none focus:border-[#026632]"
                 />
               </div>
             ))}
@@ -168,7 +168,7 @@ export function MatchStatMobileCard({
                   value={(row.assistMinutes ?? [])[i] ?? ''}
                   disabled={isLocked}
                   onChange={(e) => onMinuteChange?.('assistMinutes', i, Number(e.target.value))}
-                  className="w-12 border border-gray-200 px-1 py-2 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                  className="w-12 border border-gray-200 px-1 py-2 text-xs text-center focus:outline-none focus:border-[#026632]"
                 />
               </div>
             ))}
@@ -179,7 +179,7 @@ export function MatchStatMobileCard({
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
-        className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#5a6478] hover:text-[#01255f] transition-colors py-1 w-full"
+        className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#5a6478] hover:text-[#026632] transition-colors py-1 w-full"
       >
         {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
         Match &amp; Goal Detail
@@ -314,7 +314,7 @@ export function MatchStatDesktopTable({
             return (
               <React.Fragment key={row.playerId}>
                 <tr className="border-b border-gray-50">
-                  <td className="py-2 pr-2 font-medium text-[#01255f] whitespace-nowrap">{playerName(row.playerId)}</td>
+                  <td className="py-2 pr-2 font-medium text-[#026632] whitespace-nowrap">{playerName(row.playerId)}</td>
                   <td className="py-2 px-1">
                     <input
                       type="checkbox"
@@ -333,7 +333,7 @@ export function MatchStatDesktopTable({
                       type="button"
                       onClick={() => toggle(row.playerId)}
                       title="Match & Goal Detail"
-                      className="text-[#5a6478] hover:text-[#01255f] transition-colors"
+                      className="text-[#5a6478] hover:text-[#026632] transition-colors"
                     >
                       {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
                     </button>
@@ -341,7 +341,7 @@ export function MatchStatDesktopTable({
                 </tr>
 
                 {isExpanded && (
-                  <tr className="bg-[#f5f7fc] border-b border-gray-100">
+                  <tr className="bg-[#f3f9f5] border-b border-gray-100">
                     <td colSpan={8} className="px-3 py-3">
                       <div className="space-y-4">
                         {/* Goal / assist minute timestamps */}
@@ -363,7 +363,7 @@ export function MatchStatDesktopTable({
                                         value={(row.goalMinutes ?? [])[i] ?? ''}
                                         disabled={isLocked}
                                         onChange={(e) => onMinuteChange?.(row.playerId, 'goalMinutes', i, Number(e.target.value))}
-                                        className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                                        className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#026632]"
                                       />
                                     </div>
                                   ))}
@@ -386,7 +386,7 @@ export function MatchStatDesktopTable({
                                         value={(row.assistMinutes ?? [])[i] ?? ''}
                                         disabled={isLocked}
                                         onChange={(e) => onMinuteChange?.(row.playerId, 'assistMinutes', i, Number(e.target.value))}
-                                        className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#01255f]"
+                                        className="w-12 border border-gray-200 px-1 py-1 text-xs text-center focus:outline-none focus:border-[#026632]"
                                       />
                                     </div>
                                   ))}

@@ -10,12 +10,12 @@ export default async function Partners() {
   ])
 
   return (
-    <section id="partners" className="py-12 sm:py-16 lg:py-20 bg-[#f5f7fc]">
+    <section id="partners" className="py-12 sm:py-16 lg:py-20 bg-[#f3f9f5]">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
         <div className="mb-7 sm:mb-10">
           <span className="label">Our Network</span>
           <h2
-            className="heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#01255f] leading-tight"
+            className="heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#026632] leading-tight"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Partners & Supporters
@@ -32,7 +32,7 @@ export default async function Partners() {
             <div>
               <span className="label">Ambassadors</span>
               <h3
-                className="text-xl sm:text-2xl font-bold text-[#01255f] mt-2 mb-4"
+                className="text-xl sm:text-2xl font-bold text-[#026632] mt-2 mb-4"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Champions of
@@ -55,17 +55,17 @@ export default async function Partners() {
                         className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full bg-[#01255f]/10 flex items-center justify-center text-[#01255f] text-3xl font-bold">
+                      <div className="w-full h-full bg-[#026632]/10 flex items-center justify-center text-[#026632] text-3xl font-bold">
                         {a.name.charAt(0)}
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-[#01255f]/0 group-hover:bg-[#01255f]/20 transition-colors" />
+                    <div className="absolute inset-0 bg-[#026632]/0 group-hover:bg-[#026632]/20 transition-colors" />
                   </div>
-                  <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.12em] font-bold text-[#fee11b] bg-[#01255f] inline-block px-2 py-0.5 mb-1.5">
+                  <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.12em] font-bold text-[#74f3be] bg-[#026632] inline-block px-2 py-0.5 mb-1.5">
                     {a.title}
                     {a.sport ? ` · ${a.sport}` : ''}
                   </div>
-                  <h4 className="font-bold text-[#01255f] text-xs sm:text-sm leading-tight">{a.name}</h4>
+                  <h4 className="font-bold text-[#026632] text-xs sm:text-sm leading-tight">{a.name}</h4>
                 </div>
               ))}
             </div>

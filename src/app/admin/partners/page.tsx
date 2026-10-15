@@ -12,7 +12,7 @@ type Partner = {
   order: number
 }
 
-const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f] transition-colors'
+const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#026632] transition-colors'
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
 type FormState = { name: string; logo: string; url: string; order: number }
@@ -86,7 +86,7 @@ export default function AdminPartners() {
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
             Partners
           </h1>
           <p className="text-[#5a6478] text-sm mt-1">{partners.length} partners</p>
@@ -94,7 +94,7 @@ export default function AdminPartners() {
         {!showForm && (
           <button
             onClick={() => setShowForm(true)}
-            className="inline-flex items-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
+            className="inline-flex items-center gap-2 bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
           >
             <Plus size={16} />
             Add Partner
@@ -104,7 +104,7 @@ export default function AdminPartners() {
 
       {showForm && (
         <div className="bg-white border border-gray-200 p-6 mb-8 space-y-5">
-          <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest">
+          <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest">
             {editingId ? 'Edit Partner' : 'New Partner'}
           </h2>
 
@@ -144,14 +144,14 @@ export default function AdminPartners() {
             <button
               onClick={save}
               disabled={saving}
-              className="bg-[#01255f] hover:bg-[#011840] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50"
+              className="bg-[#026632] hover:bg-[#014a24] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50"
             >
               {saving ? 'Saving…' : editingId ? 'Update' : 'Add Partner'}
             </button>
             <button
               onClick={cancel}
               disabled={saving}
-              className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#01255f] hover:text-[#01255f] transition-colors disabled:opacity-50"
+              className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#026632] hover:text-[#026632] transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
@@ -164,7 +164,7 @@ export default function AdminPartners() {
       ) : partners.length === 0 && !showForm ? (
         <div className="bg-white border border-gray-100 p-10 text-center text-sm text-[#5a6478]">
           No partners yet.{' '}
-          <button onClick={() => setShowForm(true)} className="text-[#01255f] underline">Add the first one.</button>
+          <button onClick={() => setShowForm(true)} className="text-[#026632] underline">Add the first one.</button>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
@@ -174,7 +174,7 @@ export default function AdminPartners() {
                 <img src={p.logo} alt={p.name} className="max-h-16 max-w-full w-auto object-contain" />
               </div>
               <div className="p-3 flex-1">
-                <p className="font-bold text-[#01255f] text-sm truncate">{p.name}</p>
+                <p className="font-bold text-[#026632] text-sm truncate">{p.name}</p>
                 {p.url && (
                   <a href={p.url} target="_blank" rel="noopener noreferrer" className="text-[10px] text-[#5a6478] hover:underline truncate block mt-0.5">
                     {p.url}
@@ -184,7 +184,7 @@ export default function AdminPartners() {
               <div className="flex border-t border-gray-100">
                 <button
                   onClick={() => startEdit(p)}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#01255f] hover:bg-[#01255f] hover:text-white transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#026632] hover:bg-[#026632] hover:text-white transition-colors"
                 >
                   <Pencil size={12} />
                   Edit

@@ -45,7 +45,7 @@ export default function AdminNewsletterPage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+        <h1 className="text-2xl font-bold text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
           Newsletter
         </h1>
         <p className="text-[#5a6478] text-sm mt-1">{subscribers.length} subscribers</p>
@@ -72,7 +72,7 @@ export default function AdminNewsletterPage() {
             <tbody>
               {subscribers.map((s) => (
                 <tr key={s.id} className="border-b border-gray-50 last:border-0">
-                  <td className="px-5 py-3 font-medium text-[#01255f]">{s.email}</td>
+                  <td className="px-5 py-3 font-medium text-[#026632]">{s.email}</td>
                   <td className="px-5 py-3 text-[#5a6478]">{s.source ?? 'website'}</td>
                   <td className="px-5 py-3 text-[#5a6478]">{formatDate(s.subscribedAt)}</td>
                 </tr>

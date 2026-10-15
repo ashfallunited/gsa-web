@@ -11,7 +11,7 @@ import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
 export const metadata = buildPageMetadata({
   title: 'Gallery',
   description:
-    'Photos and videos from Asfall United — football training, community programmes, and youth development in Monrovia, Liberia.',
+    'Photos and videos from Graceland Football Club — football training, community programmes, and youth development in Monrovia, Liberia.',
   path: '/gallery',
   keywords: SEO_KEYWORDS.gallery,
 })
@@ -23,7 +23,7 @@ export default async function GalleryPage() {
     <>
       <Navbar />
       <main className="pt-16 lg:pt-[70px]">
-        <div className="bg-[#01255f] py-16 sm:py-20">
+        <div className="bg-[#026632] py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
             <span className="label-light">Media</span>
             <h1
@@ -38,7 +38,7 @@ export default async function GalleryPage() {
           </div>
         </div>
 
-        <div className="bg-[#f5f7fc] py-14 sm:py-20">
+        <div className="bg-[#f3f9f5] py-14 sm:py-20">
           <GalleryClient items={items} />
         </div>
       </main>

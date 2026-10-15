@@ -35,8 +35,8 @@ export default function RatingInput({
             <Star
               size={28}
               strokeWidth={1.5}
-              className={filled ? 'text-[#fee11b]' : 'text-gray-300'}
-              fill={filled ? '#fee11b' : 'none'}
+              className={filled ? 'text-[#74f3be]' : 'text-gray-300'}
+              fill={filled ? '#74f3be' : 'none'}
             />
           </button>
         )

@@ -54,7 +54,7 @@ function RankedList({
 }) {
   return (
     <div className="bg-white border border-gray-200 p-4 sm:p-5">
-      <h2 className="font-bold text-[#01255f] mb-4">{title}</h2>
+      <h2 className="font-bold text-[#026632] mb-4">{title}</h2>
       {items.length === 0 ? (
         <p className="text-sm text-[#5a6478]">{empty}</p>
       ) : (
@@ -63,8 +63,8 @@ function RankedList({
             <li key={p.playerId} className="flex items-center gap-2 border-b border-gray-100 pb-2 last:border-0 last:pb-0">
               <span className="text-[#5a6478] text-xs w-5 shrink-0 text-center font-medium">{i + 1}</span>
               <PlayerAvatar image={p.playerImage} name={p.playerName} size={26} />
-              <span className="min-w-0 truncate flex-1 text-sm font-semibold text-[#01255f]">{p.playerName}</span>
-              <span className="font-bold text-sm shrink-0 text-[#01255f]">{renderValue(p)}</span>
+              <span className="min-w-0 truncate flex-1 text-sm font-semibold text-[#026632]">{p.playerName}</span>
+              <span className="font-bold text-sm shrink-0 text-[#026632]">{renderValue(p)}</span>
               {renderSub && (
                 <span className="text-xs text-[#5a6478] shrink-0 w-10 text-right">{renderSub(p)}</span>
               )}
@@ -181,12 +181,12 @@ function DashboardBody({ data }: { data: DashboardData }) {
       {/* — Goals chart + Top Scorers — */}
       <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
         <div className="bg-white border border-gray-200 p-4 sm:p-5">
-          <h2 className="font-bold text-[#01255f] mb-4">Goals by Month</h2>
+          <h2 className="font-bold text-[#026632] mb-4">Goals by Month</h2>
           <SimpleBarChart
             data={data.goalsChart.map((g) => ({ month: g.month, goals: g.goals }))}
             labelKey="month"
             valueKey="goals"
-            color="#fee11b"
+            color="#74f3be"
           />
         </div>
         <RankedList
@@ -218,7 +218,7 @@ function DashboardBody({ data }: { data: DashboardData }) {
 
       {/* — Recent Matches — */}
       <div className="bg-white border border-gray-200 p-4 sm:p-5 mb-6">
-        <h2 className="font-bold text-[#01255f] mb-4">Recent Matches</h2>
+        <h2 className="font-bold text-[#026632] mb-4">Recent Matches</h2>
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -235,7 +235,7 @@ function DashboardBody({ data }: { data: DashboardData }) {
                 <tr key={m.id} className="border-b border-gray-50">
                   <td className="py-2.5 pr-3 whitespace-nowrap">{m.date}</td>
                   <td className="py-2.5 pr-3">
-                    <Link href={`/admin/analytics/matches/${m.id}`} className="font-medium text-[#01255f] hover:underline">
+                    <Link href={`/admin/analytics/matches/${m.id}`} className="font-medium text-[#026632] hover:underline">
                       {m.opponent}
                     </Link>
                   </td>
@@ -261,11 +261,11 @@ function DashboardBody({ data }: { data: DashboardData }) {
             >
               <div className="min-w-0">
                 <p className="text-xs text-[#5a6478]">{m.date} · {displayTeamLabel(m.team)}</p>
-                <p className="font-bold text-[#01255f] truncate">vs {m.opponent}</p>
+                <p className="font-bold text-[#026632] truncate">vs {m.opponent}</p>
                 <p className="text-xs text-[#5a6478] mt-0.5">{m.competition}</p>
               </div>
               <div className="text-right shrink-0">
-                <p className="font-black text-lg text-[#01255f]">{m.goalsFor}–{m.goalsAgainst}</p>
+                <p className="font-black text-lg text-[#026632]">{m.goalsFor}–{m.goalsAgainst}</p>
                 {m.status === 'final' && (
                   <span className={`text-[10px] font-bold px-1.5 py-0.5 ${RESULT_CLR[m.result]}`}>{m.result}</span>
                 )}
@@ -308,7 +308,7 @@ export default function AnalyticsDashboardPage() {
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
             Analytics Dashboard
           </h1>
           <p className="text-sm text-[#5a6478] mt-1">Season stats from finalized matches.</p>
@@ -316,14 +316,14 @@ export default function AnalyticsDashboardPage() {
         <div className="flex flex-col xs:flex-row gap-2 w-full sm:w-auto">
           <Link
             href="/admin/analytics/squad"
-            className="inline-flex items-center justify-center gap-2 border border-[#01255f] text-[#01255f] px-4 py-2.5 text-sm font-bold hover:bg-[#01255f]/5"
+            className="inline-flex items-center justify-center gap-2 border border-[#026632] text-[#026632] px-4 py-2.5 text-sm font-bold hover:bg-[#026632]/5"
           >
             <Users size={16} />
             Manage Squad
           </Link>
           <Link
             href="/admin/analytics/matches/new"
-            className="inline-flex items-center justify-center gap-2 bg-[#01255f] hover:bg-[#011840] text-white px-4 py-2.5 text-sm font-bold"
+            className="inline-flex items-center justify-center gap-2 bg-[#026632] hover:bg-[#014a24] text-white px-4 py-2.5 text-sm font-bold"
           >
             <Plus size={16} />
             New Match
@@ -332,7 +332,7 @@ export default function AnalyticsDashboardPage() {
       </div>
 
       {data && data.playerCount === 0 && (
-        <div className="mb-6 bg-[#fee11b]/20 border border-[#fee11b] px-4 py-3 text-sm text-[#01255f]">
+        <div className="mb-6 bg-[#74f3be]/20 border border-[#74f3be] px-4 py-3 text-sm text-[#026632]">
           No squad players yet.{' '}
           <Link href="/admin/analytics/squad" className="font-bold underline">Add players</Link>
           {' '}before entering match stats.

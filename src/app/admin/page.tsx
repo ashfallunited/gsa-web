@@ -86,7 +86,7 @@ export default async function AdminDashboard() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto">
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-xl sm:text-2xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+        <h1 className="text-xl sm:text-2xl font-bold text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
           Dashboard
         </h1>
         <p className="text-[#5a6478] text-sm mt-1">Welcome back, Admin.</p>
@@ -96,7 +96,7 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4">
         <Link
           href="/admin/analytics"
-          className="bg-[#01255f] text-white p-4 sm:p-5 hover:bg-[#011840] transition-colors min-w-0"
+          className="bg-[#026632] text-white p-4 sm:p-5 hover:bg-[#014a24] transition-colors min-w-0"
         >
           <p className="text-[10px] uppercase tracking-widest font-bold text-white/60 mb-2">
             {stats.record ? `Season Record · ${stats.record.season}` : 'Season Record'}
@@ -108,10 +108,10 @@ export default async function AdminDashboard() {
         </Link>
         <Link
           href="/admin/players"
-          className="bg-white border border-gray-100 p-4 sm:p-5 hover:border-[#01255f]/30 transition-colors min-w-0"
+          className="bg-white border border-gray-100 p-4 sm:p-5 hover:border-[#026632]/30 transition-colors min-w-0"
         >
           <p className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-2">Squad Size</p>
-          <p className="text-2xl sm:text-3xl font-black text-[#01255f] leading-none" style={{ fontFamily: 'var(--font-heading)' }}>
+          <p className="text-2xl sm:text-3xl font-black text-[#026632] leading-none" style={{ fontFamily: 'var(--font-heading)' }}>
             {stats.squadSize}
           </p>
           <p className="text-xs text-[#5a6478] mt-1.5">Registered players →</p>
@@ -124,10 +124,10 @@ export default async function AdminDashboard() {
           <Link
             key={c.label}
             href={c.href}
-            className="bg-white border border-gray-100 p-4 sm:p-6 hover:border-[#01255f]/30 transition-colors min-w-0"
+            className="bg-white border border-gray-100 p-4 sm:p-6 hover:border-[#026632]/30 transition-colors min-w-0"
           >
             <p className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-2">{c.label}</p>
-            <p className="text-2xl sm:text-3xl font-bold text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+            <p className="text-2xl sm:text-3xl font-bold text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
               {c.value}
             </p>
             <p className="text-xs text-[#5a6478] mt-1">{c.sub}</p>
@@ -136,13 +136,13 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="bg-white border border-gray-100 p-4 sm:p-6">
-        <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest mb-4">Quick Links</h2>
+        <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest mb-4">Quick Links</h2>
         <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-3">
           {quickLinks.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-[#01255f] border border-gray-200 px-4 py-2 hover:bg-[#f5f7fc] transition-colors"
+              className="text-sm font-medium text-[#026632] border border-gray-200 px-4 py-2 hover:bg-[#f3f9f5] transition-colors"
             >
               {l.label}
             </Link>

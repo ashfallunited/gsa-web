@@ -64,8 +64,8 @@ export function SkeletonMatchCard() {
 
 export function SkeletonPlayerCard() {
   return (
-    <div className="bg-[#01255f]/30 overflow-hidden animate-pulse">
-      <div className="h-44 sm:h-52 bg-[#01255f]/20" />
+    <div className="bg-[#026632]/30 overflow-hidden animate-pulse">
+      <div className="h-44 sm:h-52 bg-[#026632]/20" />
       <div className="p-3 sm:p-4 space-y-2">
         <div className="flex justify-between items-center">
           <div className="h-6 w-8 bg-white/20 rounded" />

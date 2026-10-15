@@ -4,9 +4,9 @@ import { useState } from 'react'
 
 type PieSlice = { label: string; value: number }
 
-const PALETTE = ['#01255f', '#fee11b', '#4a68a8', '#5a6478', '#8fa3cf', '#c9a227', '#2f4b8a', '#9aa5b8', '#c9d3e8', '#7c8ba1']
+const PALETTE = ['#026632', '#74f3be', '#2f8a5b', '#5a6478', '#8cc4a5', '#c9a227', '#1f7a4a', '#9aa5b8', '#c6e2d1', '#7c8ba1']
 // Readable text color for each palette color above, paired by index.
-const TEXT_ON = ['#ffffff', '#01255f', '#ffffff', '#ffffff', '#01255f', '#01255f', '#ffffff', '#01255f', '#01255f', '#ffffff']
+const TEXT_ON = ['#ffffff', '#026632', '#ffffff', '#ffffff', '#026632', '#026632', '#ffffff', '#026632', '#026632', '#ffffff']
 
 function polarPoint(cx: number, cy: number, r: number, angleDeg: number) {
   const rad = (angleDeg * Math.PI) / 180
@@ -95,7 +95,7 @@ export default function PieChart({ data, size = 180 }: { data: PieSlice[]; size?
       </svg>
       <p className="text-xs text-center min-h-[1rem]">
         {activeSlice ? (
-          <span className="font-bold text-[#01255f]">
+          <span className="font-bold text-[#026632]">
             {activeSlice.label}: {activeSlice.value} ({Math.round(activeSlice.pct)}%)
           </span>
         ) : (

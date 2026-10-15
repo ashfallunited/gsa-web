@@ -51,7 +51,7 @@ export default function AdminContacts() {
       <div className="mb-6 sm:mb-8">
         <div>
           <h1
-            className="text-2xl sm:text-3xl font-black text-[#01255f]"
+            className="text-2xl sm:text-3xl font-black text-[#026632]"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Enquiries
@@ -77,13 +77,13 @@ export default function AdminContacts() {
               <button
                 key={c.id}
                 onClick={() => openContact(c)}
-                className={`w-full text-left px-5 py-4 border-b border-gray-50 last:border-0 hover:bg-[#f5f7fc] transition-colors ${
-                  selected?.id === c.id ? 'bg-[#f5f7fc]' : ''
+                className={`w-full text-left px-5 py-4 border-b border-gray-50 last:border-0 hover:bg-[#f3f9f5] transition-colors ${
+                  selected?.id === c.id ? 'bg-[#f3f9f5]' : ''
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className={`text-sm ${c.read ? 'font-medium text-[#5a6478]' : 'font-bold text-[#01255f]'}`}>
+                    <p className={`text-sm ${c.read ? 'font-medium text-[#5a6478]' : 'font-bold text-[#026632]'}`}>
                       {c.firstName} {c.lastName}
                     </p>
                     <p className="text-xs text-[#5a6478] truncate max-w-full sm:max-w-[200px]">{c.email}</p>
@@ -91,7 +91,7 @@ export default function AdminContacts() {
                   <div className="flex-shrink-0 flex flex-col items-end gap-1">
                     <span className="text-[10px] text-gray-400">{formatDate(c.submittedAt)}</span>
                     {!c.read && (
-                      <span className="w-2 h-2 bg-[#fee11b] rounded-full" />
+                      <span className="w-2 h-2 bg-[#74f3be] rounded-full" />
                     )}
                   </div>
                 </div>
@@ -107,12 +107,12 @@ export default function AdminContacts() {
                   <button
                     type="button"
                     onClick={() => setSelected(null)}
-                    className="lg:hidden flex items-center gap-1 text-xs font-bold text-[#5a6478] hover:text-[#01255f] mb-3 transition-colors"
+                    className="lg:hidden flex items-center gap-1 text-xs font-bold text-[#5a6478] hover:text-[#026632] mb-3 transition-colors"
                   >
                     ← Back to all enquiries
                   </button>
-                  <h2 className="font-bold text-[#01255f] text-base">{selected.firstName} {selected.lastName}</h2>
-                  <a href={`mailto:${selected.email}`} className="text-[#fee11b] text-sm hover:underline">{selected.email}</a>
+                  <h2 className="font-bold text-[#026632] text-base">{selected.firstName} {selected.lastName}</h2>
+                  <a href={`mailto:${selected.email}`} className="text-[#74f3be] text-sm hover:underline">{selected.email}</a>
                   {selected.phone && <p className="text-[#5a6478] text-xs mt-0.5">{selected.phone}</p>}
                 </div>
                 <span className="text-xs text-gray-400">{formatDate(selected.submittedAt)}</span>
@@ -123,8 +123,8 @@ export default function AdminContacts() {
               </div>
               <div className="mt-5 pt-5 border-t border-gray-100">
                 <a
-                  href={`mailto:${selected.email}?subject=Re: Your Enquiry to Asfall United`}
-                  className="inline-block bg-[#01255f] hover:bg-[#011840] text-white px-5 py-2.5 text-xs font-bold tracking-wide transition-colors"
+                  href={`mailto:${selected.email}?subject=Re: Your Enquiry to Graceland Football Club`}
+                  className="inline-block bg-[#026632] hover:bg-[#014a24] text-white px-5 py-2.5 text-xs font-bold tracking-wide transition-colors"
                 >
                   Reply via Email
                 </a>

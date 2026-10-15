@@ -95,7 +95,7 @@ async function main() {
       slug,
       excerpt: entry.excerpt,
       content,
-      author: entry.author ?? 'Ashfall United',
+      author: entry.author ?? 'Graceland Football Club',
       tags: entry.tags ?? [],
       status: 'published',
       featuredImage: entry.featuredImage ?? '',

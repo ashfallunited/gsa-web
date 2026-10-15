@@ -34,8 +34,8 @@ export default function RadarChart({
   label = 'Player',
   compareLabel = 'Squad Avg',
   size = 340,
-  color = '#01255f',
-  compareColor = '#fee11b',
+  color = '#026632',
+  compareColor = '#74f3be',
 }: {
   data: RadarPoint[]
   max: number

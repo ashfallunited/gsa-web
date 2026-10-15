@@ -39,7 +39,7 @@ function NewsCard({
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className={`group relative block w-full overflow-hidden rounded-lg bg-[#01255f] ${
+      className={`group relative block w-full overflow-hidden rounded-lg bg-[#026632] ${
         featured
           ? 'aspect-[16/10] sm:aspect-[16/9]'
           : 'aspect-[16/9] sm:aspect-[5/4]'
@@ -58,7 +58,7 @@ function NewsCard({
       />
 
       <div
-        className="absolute inset-0 bg-gradient-to-t from-[#011840]/95 via-[#01255f]/50 to-[#01255f]/20"
+        className="absolute inset-0 bg-gradient-to-t from-[#014a24]/95 via-[#026632]/50 to-[#026632]/20"
         aria-hidden
       />
 
@@ -116,7 +116,7 @@ export default async function BlogSection() {
           <div className="min-w-0">
             <span className="label">Latest News</span>
             <h2
-              className="heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#01255f] leading-tight"
+              className="heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#026632] leading-tight"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               Stories from the Field
@@ -124,7 +124,7 @@ export default async function BlogSection() {
           </div>
           <Link
             href="/blog"
-            className="text-xs font-bold text-[#01255f] uppercase tracking-widest hover:underline shrink-0 self-start sm:self-auto min-h-0 min-w-0"
+            className="text-xs font-bold text-[#026632] uppercase tracking-widest hover:underline shrink-0 self-start sm:self-auto min-h-0 min-w-0"
           >
             All Posts →
           </Link>

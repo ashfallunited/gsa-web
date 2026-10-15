@@ -6,11 +6,11 @@ import type { EvaluationRole, EvaluationSessionSummary } from '@/lib/evaluations
 
 // Sequential single-hue scale (on-brand navy) rather than red/green — clearer for ordinal 1-5 data.
 const HEAT_COLORS: Record<number, { bg: string; text: string }> = {
-  1: { bg: '#eef1f8', text: '#5a6478' },
-  2: { bg: '#c9d3e8', text: '#01255f' },
-  3: { bg: '#8fa3cf', text: '#01255f' },
-  4: { bg: '#4a68a8', text: '#ffffff' },
-  5: { bg: '#01255f', text: '#ffffff' },
+  1: { bg: '#e9f4ed', text: '#5a6478' },
+  2: { bg: '#c6e2d1', text: '#026632' },
+  3: { bg: '#8cc4a5', text: '#026632' },
+  4: { bg: '#2f8a5b', text: '#ffffff' },
+  5: { bg: '#026632', text: '#ffffff' },
 }
 
 function shortDate(dateStr: string): string {
@@ -51,12 +51,12 @@ export default function CategoryHeatmap({
         <tbody>
           {sessions.map((s) => (
             <tr key={s.id}>
-              <td className="text-[#01255f] font-semibold px-2 py-1 whitespace-nowrap sticky left-0 bg-white border-r border-gray-100">
+              <td className="text-[#026632] font-semibold px-2 py-1 whitespace-nowrap sticky left-0 bg-white border-r border-gray-100">
                 {onSelectSession ? (
                   <button
                     type="button"
                     onClick={() => onSelectSession(s.id)}
-                    className="flex items-center gap-1 hover:text-[#01255f]/70 transition-colors"
+                    className="flex items-center gap-1 hover:text-[#026632]/70 transition-colors"
                     title="Edit this evaluation"
                   >
                     {shortDate(s.date)}

@@ -22,7 +22,7 @@ export default function LegalPage({ title, subtitle, lastUpdated, sections }: Le
     <>
       <Navbar />
       <main className="pt-16 lg:pt-[70px]">
-        <div className="bg-[#01255f] py-12 sm:py-16">
+        <div className="bg-[#026632] py-12 sm:py-16">
           <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-10">
             <span className="label-light">Legal</span>
             <h1
@@ -36,12 +36,12 @@ export default function LegalPage({ title, subtitle, lastUpdated, sections }: Le
           </div>
         </div>
 
-        <article className="bg-[#f5f7fc] py-12 sm:py-16">
+        <article className="bg-[#f3f9f5] py-12 sm:py-16">
           <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-10 legal-content">
             {sections.map((section) => (
               <section key={section.id} id={section.id} className="mb-10 last:mb-0">
                 <h2
-                  className="text-lg sm:text-xl font-bold text-[#01255f] mb-4"
+                  className="text-lg sm:text-xl font-bold text-[#026632] mb-4"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   {section.title}
@@ -63,14 +63,14 @@ export default function LegalPage({ title, subtitle, lastUpdated, sections }: Le
 
             <p className="mt-12 pt-8 border-t border-gray-200 text-sm text-[#5a6478]">
               Questions about this policy? Contact{' '}
-              <a href={`mailto:${ORG_EMAIL}`} className="text-[#01255f] font-semibold hover:underline">
+              <a href={`mailto:${ORG_EMAIL}`} className="text-[#026632] font-semibold hover:underline">
                 {ORG_EMAIL}
               </a>
               . {ORG_NAME} is based in Monrovia, Liberia.
             </p>
 
             <p className="mt-6 text-sm">
-              <Link href="/" className="text-[#01255f] font-semibold hover:underline">
+              <Link href="/" className="text-[#026632] font-semibold hover:underline">
                 ← Back to home
               </Link>
             </p>

@@ -226,7 +226,7 @@ export default function EvaluationsReportPage() {
     <div className="p-4 sm:p-8 lg:p-10 max-w-6xl mx-auto">
       <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
             Player Evaluations
           </h1>
           <p className="text-sm text-[#5a6478] mt-1">Weekly, monthly, and yearly performance report cards, built from training and match ratings.</p>
@@ -234,20 +234,20 @@ export default function EvaluationsReportPage() {
         <div className="flex flex-wrap gap-2 shrink-0">
           <Link
             href="/admin/analytics/evaluations/schedule"
-            className="inline-flex items-center gap-1.5 border border-gray-200 text-[#01255f] px-4 py-2.5 text-sm font-black hover:bg-gray-50"
+            className="inline-flex items-center gap-1.5 border border-gray-200 text-[#026632] px-4 py-2.5 text-sm font-black hover:bg-gray-50"
           >
             <Calendar size={15} /> Schedule
           </Link>
           <button
             type="button"
             onClick={() => setExportOpen(true)}
-            className="inline-flex items-center gap-1.5 border border-gray-200 text-[#01255f] px-4 py-2.5 text-sm font-black hover:bg-gray-50"
+            className="inline-flex items-center gap-1.5 border border-gray-200 text-[#026632] px-4 py-2.5 text-sm font-black hover:bg-gray-50"
           >
             <Download size={15} /> Export
           </button>
           <Link
             href="/admin/analytics/evaluations/new"
-            className="inline-flex items-center gap-1.5 bg-[#fee11b] text-[#01255f] px-4 py-2.5 text-sm font-black"
+            className="inline-flex items-center gap-1.5 bg-[#74f3be] text-[#026632] px-4 py-2.5 text-sm font-black"
           >
             <Plus size={15} /> New Evaluation
           </Link>
@@ -292,7 +292,7 @@ export default function EvaluationsReportPage() {
                   type="button"
                   onClick={() => setPeriodType(p)}
                   className={`py-2 text-sm font-bold uppercase tracking-wide border transition-colors ${
-                    periodType === p ? 'bg-[#01255f] text-white border-[#01255f]' : 'bg-white text-[#5a6478] border-gray-200'
+                    periodType === p ? 'bg-[#026632] text-white border-[#026632]' : 'bg-white text-[#5a6478] border-gray-200'
                   }`}
                 >
                   {p}
@@ -338,7 +338,7 @@ export default function EvaluationsReportPage() {
       {/* Team Overview — only when no player is selected */}
       {!playerId && (
         <div ref={teamOverviewRef} className="bg-white border border-gray-200 p-4 sm:p-5">
-          <h2 className="font-bold text-[#01255f] mb-1">Team Overview</h2>
+          <h2 className="font-bold text-[#026632] mb-1">Team Overview</h2>
           <p className="text-xs text-[#5a6478] mb-4">
             Average total for {TEAM_LABELS[team as keyof typeof TEAM_LABELS] ?? team}, {periodLabel}. Select a player above to see their full report.
           </p>
@@ -360,11 +360,11 @@ export default function EvaluationsReportPage() {
 
                       <div className="grid sm:grid-cols-2 gap-4 mb-4">
                         <div>
-                          <p className="text-xs font-semibold text-[#01255f] mb-1">Squad Category Averages</p>
+                          <p className="text-xs font-semibold text-[#026632] mb-1">Squad Category Averages</p>
                           <RadarChart data={radarDataFor('outfield', teamReport.outfield.categoryAverages)} max={5} />
                         </div>
                         <div>
-                          <p className="text-xs font-semibold text-[#01255f] mb-1">Where Players Peak</p>
+                          <p className="text-xs font-semibold text-[#026632] mb-1">Where Players Peak</p>
                           <PieChart data={teamReport.outfield.topCategoryDistribution.map((c) => ({ label: c.label, value: c.count }))} />
                         </div>
                       </div>
@@ -379,7 +379,7 @@ export default function EvaluationsReportPage() {
                         <button
                           type="button"
                           onClick={() => setShowAllOutfield((v) => !v)}
-                          className="text-xs font-bold text-[#01255f] hover:underline mt-2"
+                          className="text-xs font-bold text-[#026632] hover:underline mt-2"
                         >
                           {showAllOutfield ? 'Show top 5 only' : `Show all ${teamReport.outfield.entries.length}`}
                         </button>
@@ -394,11 +394,11 @@ export default function EvaluationsReportPage() {
 
                       <div className="grid sm:grid-cols-2 gap-4 mb-4">
                         <div>
-                          <p className="text-xs font-semibold text-[#01255f] mb-1">Squad Category Averages</p>
+                          <p className="text-xs font-semibold text-[#026632] mb-1">Squad Category Averages</p>
                           <RadarChart data={radarDataFor('goalkeeper', teamReport.goalkeeper.categoryAverages)} max={5} />
                         </div>
                         <div>
-                          <p className="text-xs font-semibold text-[#01255f] mb-1">Where Players Peak</p>
+                          <p className="text-xs font-semibold text-[#026632] mb-1">Where Players Peak</p>
                           <PieChart data={teamReport.goalkeeper.topCategoryDistribution.map((c) => ({ label: c.label, value: c.count }))} />
                         </div>
                       </div>
@@ -413,7 +413,7 @@ export default function EvaluationsReportPage() {
                         <button
                           type="button"
                           onClick={() => setShowAllGoalkeeper((v) => !v)}
-                          className="text-xs font-bold text-[#01255f] hover:underline mt-2"
+                          className="text-xs font-bold text-[#026632] hover:underline mt-2"
                         >
                           {showAllGoalkeeper ? 'Show top 5 only' : `Show all ${teamReport.goalkeeper.entries.length}`}
                         </button>
@@ -433,7 +433,7 @@ export default function EvaluationsReportPage() {
           <button
             type="button"
             onClick={() => setPlayerId('')}
-            className="flex items-center gap-1 text-xs font-bold text-[#5a6478] hover:text-[#01255f] transition-colors mb-4"
+            className="flex items-center gap-1 text-xs font-bold text-[#5a6478] hover:text-[#026632] transition-colors mb-4"
           >
             <ChevronLeft size={14} /> Back to Team Overview
           </button>
@@ -446,7 +446,7 @@ export default function EvaluationsReportPage() {
 
           {!loading && !error && data && !data.hasData && (
             <div className="bg-white border border-dashed border-gray-300 p-12 text-center">
-              <p className="text-[#01255f] font-bold">No evaluations recorded for {data.player.name} {periodLabel}.</p>
+              <p className="text-[#026632] font-bold">No evaluations recorded for {data.player.name} {periodLabel}.</p>
               <p className="text-sm text-[#5a6478] mt-1">Record a session to see their report card here.</p>
             </div>
           )}
@@ -458,15 +458,15 @@ export default function EvaluationsReportPage() {
                 <div className="flex items-center gap-3">
                   <PlayerAvatar image={data.player.image} name={data.player.name} size={48} />
                   <div>
-                    <p className="font-black text-[#01255f] text-lg" style={{ fontFamily: 'var(--font-heading)' }}>{data.player.name}</p>
+                    <p className="font-black text-[#026632] text-lg" style={{ fontFamily: 'var(--font-heading)' }}>{data.player.name}</p>
                     <p className="text-xs text-[#5a6478]">
                       #{data.player.number} · <span className="capitalize">{data.player.position}</span> · {TEAM_LABELS[team as keyof typeof TEAM_LABELS] ?? team}
                     </p>
                   </div>
                 </div>
                 {data.report.squadRank && (
-                  <div className="flex items-center gap-2 bg-[#01255f] text-white px-4 py-2">
-                    <TrendingUp size={14} className="text-[#fee11b]" />
+                  <div className="flex items-center gap-2 bg-[#026632] text-white px-4 py-2">
+                    <TrendingUp size={14} className="text-[#74f3be]" />
                     <span className="text-sm font-bold">
                       #{data.report.squadRank.rank} <span className="text-white/60 font-normal">of {data.report.squadRank.outOf} in squad</span>
                     </span>
@@ -477,21 +477,21 @@ export default function EvaluationsReportPage() {
               {/* Summary + radar */}
               <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
                 <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                  <h2 className="font-bold text-[#01255f] mb-4">Category Ratings</h2>
+                  <h2 className="font-bold text-[#026632] mb-4">Category Ratings</h2>
                   <RadarChart data={radarData} compareData={squadRadarData} max={5} label="Player" compareLabel="Squad Avg" />
                 </div>
                 <div className="bg-white border border-gray-200 p-4 sm:p-5 flex flex-col">
-                  <h2 className="font-bold text-[#01255f] mb-4">Summary</h2>
+                  <h2 className="font-bold text-[#026632] mb-4">Summary</h2>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="border border-gray-100 p-3">
                       <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">Average Total</p>
-                      <p className="text-2xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+                      <p className="text-2xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
                         {data.report.averageTotal} <span className="text-sm font-normal text-[#5a6478]">/ {data.report.maxTotal}</span>
                       </p>
                     </div>
                     <div className="border border-gray-100 p-3">
                       <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">Sessions</p>
-                      <p className="text-2xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+                      <p className="text-2xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
                         {data.report.sessionCount}
                       </p>
                     </div>
@@ -500,7 +500,7 @@ export default function EvaluationsReportPage() {
                   {isMonthPeriod(periodType, data.report) && (
                     <div className="mt-3 border border-gray-100 p-3">
                       <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">Weeks With a Session</p>
-                      <p className="text-lg font-black text-[#01255f]">
+                      <p className="text-lg font-black text-[#026632]">
                         {data.report.weeksWithSessions} <span className="text-sm font-normal text-[#5a6478]">of {data.report.totalWeeksInMonth}</span>
                       </p>
                       {data.report.weeksWithSessions < data.report.totalWeeksInMonth && (
@@ -513,7 +513,7 @@ export default function EvaluationsReportPage() {
                   {isYearPeriod(periodType, data.report) && (
                     <div className="mt-3 border border-gray-100 p-3">
                       <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">Months With a Session</p>
-                      <p className="text-lg font-black text-[#01255f]">
+                      <p className="text-lg font-black text-[#026632]">
                         {data.report.monthsWithSessions} <span className="text-sm font-normal text-[#5a6478]">of {data.report.totalMonthsInYear}</span>
                       </p>
                       {data.report.monthsWithSessions < data.report.totalMonthsInYear && (
@@ -528,21 +528,21 @@ export default function EvaluationsReportPage() {
 
               {/* Training vs Match split + Attendance */}
               <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                <h2 className="font-bold text-[#01255f] mb-4">Training vs Match &amp; Attendance</h2>
+                <h2 className="font-bold text-[#026632] mb-4">Training vs Match &amp; Attendance</h2>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-[#5a6478] font-bold mb-2">Training vs Match</p>
                     <div className="grid grid-cols-2 gap-2">
                       <div className="border border-gray-100 p-2.5">
                         <p className="text-[9px] uppercase tracking-widest text-[#5a6478]">Training</p>
-                        <p className="font-black text-[#01255f]">
+                        <p className="font-black text-[#026632]">
                           {data.report.typeSplit.training.sessionCount > 0 ? data.report.typeSplit.training.averageTotal : '—'}
                           <span className="text-[10px] font-normal text-[#5a6478]"> ({data.report.typeSplit.training.sessionCount})</span>
                         </p>
                       </div>
                       <div className="border border-gray-100 p-2.5">
                         <p className="text-[9px] uppercase tracking-widest text-[#5a6478]">Match</p>
-                        <p className="font-black text-[#01255f]">
+                        <p className="font-black text-[#026632]">
                           {data.report.typeSplit.match.sessionCount > 0 ? data.report.typeSplit.match.averageTotal : '—'}
                           <span className="text-[10px] font-normal text-[#5a6478]"> ({data.report.typeSplit.match.sessionCount})</span>
                         </p>
@@ -555,7 +555,7 @@ export default function EvaluationsReportPage() {
                       <p className="text-sm text-[#5a6478]">No team sessions recorded {periodLabel}.</p>
                     ) : (
                       <>
-                        <p className="font-black text-[#01255f]">
+                        <p className="font-black text-[#026632]">
                           {data.report.attendance.attended}/{data.report.attendance.sessionsHeld}
                           <span className="text-[10px] font-normal text-[#5a6478]"> ({data.report.attendance.attendanceRate}%)</span>
                         </p>
@@ -580,7 +580,7 @@ export default function EvaluationsReportPage() {
               {/* Trend chart(s) */}
               {isWeekPeriod(periodType, data.report) && (
                 <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                  <h2 className="font-bold text-[#01255f] mb-4">Session-by-Session Trend</h2>
+                  <h2 className="font-bold text-[#026632] mb-4">Session-by-Session Trend</h2>
                   <LineChart
                     points={data.report.sessions.map((s) => ({ label: shortDate(s.date), value: s.total }))}
                     max={data.report.maxTotal}
@@ -590,14 +590,14 @@ export default function EvaluationsReportPage() {
               {isMonthPeriod(periodType, data.report) && (
                 <>
                   <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                    <h2 className="font-bold text-[#01255f] mb-4">Week-by-Week Trend</h2>
+                    <h2 className="font-bold text-[#026632] mb-4">Week-by-Week Trend</h2>
                     <LineChart
                       points={data.report.weeklyTrend.map((w) => ({ label: shortDate(w.weekStart), value: w.averageTotal }))}
                       max={data.report.maxTotal}
                     />
                   </div>
                   <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                    <h2 className="font-bold text-[#01255f] mb-1">Session-by-Session Trend</h2>
+                    <h2 className="font-bold text-[#026632] mb-1">Session-by-Session Trend</h2>
                     <p className="text-xs text-[#5a6478] mb-4">Finer detail behind the weekly averages above.</p>
                     <LineChart
                       points={data.report.sessionTrend.map((s) => ({ label: shortDate(s.date), value: s.total }))}
@@ -609,14 +609,14 @@ export default function EvaluationsReportPage() {
               {isYearPeriod(periodType, data.report) && (
                 <>
                   <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                    <h2 className="font-bold text-[#01255f] mb-4">Month-by-Month Trend</h2>
+                    <h2 className="font-bold text-[#026632] mb-4">Month-by-Month Trend</h2>
                     <LineChart
                       points={data.report.monthlyTrend.map((m) => ({ label: shortMonth(m.month), value: m.averageTotal }))}
                       max={data.report.maxTotal}
                     />
                   </div>
                   <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                    <h2 className="font-bold text-[#01255f] mb-1">Session-by-Session Trend</h2>
+                    <h2 className="font-bold text-[#026632] mb-1">Session-by-Session Trend</h2>
                     <p className="text-xs text-[#5a6478] mb-4">Finer detail behind the monthly averages above.</p>
                     <LineChart
                       points={data.report.sessionTrend.map((s) => ({ label: shortDate(s.date), value: s.total }))}
@@ -628,7 +628,7 @@ export default function EvaluationsReportPage() {
 
               {/* Category heatmap */}
               <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                <h2 className="font-bold text-[#01255f] mb-1">Category Heatmap</h2>
+                <h2 className="font-bold text-[#026632] mb-1">Category Heatmap</h2>
                 <p className="text-xs text-[#5a6478] mb-4">Score per category, session by session. Click a session to edit it.</p>
                 <CategoryHeatmap sessions={data.report.sessions} role={data.player.role} onSelectSession={editSession} />
               </div>
@@ -636,7 +636,7 @@ export default function EvaluationsReportPage() {
               {/* Sessions list (week view) */}
               {isWeekPeriod(periodType, data.report) && (
                 <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                  <h2 className="font-bold text-[#01255f] mb-4">Sessions This Week</h2>
+                  <h2 className="font-bold text-[#026632] mb-4">Sessions This Week</h2>
                   {data.report.sessions.length === 0 ? (
                     <p className="text-sm text-[#5a6478]">No sessions.</p>
                   ) : (
@@ -653,15 +653,15 @@ export default function EvaluationsReportPage() {
                               <span className="text-xs text-[#5a6478] w-16 shrink-0">{shortDate(s.date)}</span>
                               <span
                                 className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 shrink-0 ${
-                                  s.type === 'match' ? 'bg-[#fee11b] text-[#01255f]' : 'bg-gray-100 text-[#5a6478]'
+                                  s.type === 'match' ? 'bg-[#74f3be] text-[#026632]' : 'bg-gray-100 text-[#5a6478]'
                                 }`}
                               >
                                 {s.type}
                               </span>
-                              <span className="text-[#01255f] font-medium truncate">{s.coachName}</span>
+                              <span className="text-[#026632] font-medium truncate">{s.coachName}</span>
                               <Pencil size={11} className="text-[#5a6478] shrink-0" />
                             </div>
-                            <span className="font-bold text-[#01255f] shrink-0">{s.total} / {s.maxTotal}</span>
+                            <span className="font-bold text-[#026632] shrink-0">{s.total} / {s.maxTotal}</span>
                           </button>
                         </li>
                       ))}
@@ -672,15 +672,15 @@ export default function EvaluationsReportPage() {
 
               {/* Comments */}
               <div className="bg-white border border-gray-200 p-4 sm:p-5">
-                <h2 className="font-bold text-[#01255f] mb-4">Coach Comments</h2>
+                <h2 className="font-bold text-[#026632] mb-4">Coach Comments</h2>
                 {data.report.comments.length === 0 ? (
                   <p className="text-sm text-[#5a6478]">No comments recorded for this period.</p>
                 ) : (
                   <ul className="space-y-3">
                     {data.report.comments.map((c) => (
-                      <li key={c.evaluationId} className="border-l-2 border-[#fee11b] pl-3">
-                        <p className="text-xs text-[#5a6478] mb-0.5">{shortDate(c.date)} · <span className="font-bold text-[#01255f]">{c.coachName}</span></p>
-                        <p className="text-sm text-[#01255f]">{c.comment}</p>
+                      <li key={c.evaluationId} className="border-l-2 border-[#74f3be] pl-3">
+                        <p className="text-xs text-[#5a6478] mb-0.5">{shortDate(c.date)} · <span className="font-bold text-[#026632]">{c.coachName}</span></p>
+                        <p className="text-sm text-[#026632]">{c.comment}</p>
                       </li>
                     ))}
                   </ul>

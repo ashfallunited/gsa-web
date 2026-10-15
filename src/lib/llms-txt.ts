@@ -6,7 +6,7 @@ export function buildLlmsTxt(): string {
 
 > ${ORG_DESCRIPTION}
 
-${ORG_NAME} is a Liberian social enterprise and football club delivering sport, education, health, and community programmes for young people in Monrovia, Liberia. The club competes in the Liberian Football Association (LFA) league and operates the Ashfall United Football Academy.
+${ORG_NAME} is a Liberian social enterprise and football club delivering sport, education, health, and community programmes for young people in Monrovia, Liberia. The club competes in the Liberian Football Association (LFA) league and operates the Graceland Football Club Football Academy.
 
 ## Mission
 

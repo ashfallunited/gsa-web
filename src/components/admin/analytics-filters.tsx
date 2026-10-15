@@ -3,7 +3,7 @@
 import { TEAM_LABELS, TEAM_SLUG } from '@/lib/teams'
 
 const inputClass =
-  'w-full border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-[#01255f] transition-colors'
+  'w-full border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-[#026632] transition-colors'
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
 export type AnalyticsFiltersState = {

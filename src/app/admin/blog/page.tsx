@@ -29,7 +29,7 @@ function PostCard({ post, onDelete }: { post: Post; onDelete: (id: string) => vo
   return (
     <div className="group bg-white border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
       {/* Image / accent strip */}
-      <div className="relative h-40 overflow-hidden bg-[#01255f] shrink-0">
+      <div className="relative h-40 overflow-hidden bg-[#026632] shrink-0">
         {post.featuredImage ? (
           <img
             src={post.featuredImage}
@@ -49,7 +49,7 @@ function PostCard({ post, onDelete }: { post: Post; onDelete: (id: string) => vo
         {/* Status badge */}
         <span
           className={`absolute top-3 left-3 text-[9px] font-black uppercase tracking-widest px-2 py-1 ${
-            isPublished ? 'bg-[#fee11b] text-[#01255f]' : 'bg-white/20 text-white'
+            isPublished ? 'bg-[#74f3be] text-[#026632]' : 'bg-white/20 text-white'
           }`}
         >
           {post.status}
@@ -60,7 +60,7 @@ function PostCard({ post, onDelete }: { post: Post; onDelete: (id: string) => vo
       <div className="flex flex-col flex-1 p-4 sm:p-5">
         <p className="text-[10px] text-[#5a6478] mb-2">{formatDate(post.createdAt)}</p>
         <h3
-          className="font-black text-[#01255f] text-sm sm:text-base leading-snug line-clamp-2 mb-2"
+          className="font-black text-[#026632] text-sm sm:text-base leading-snug line-clamp-2 mb-2"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           {post.title}
@@ -72,7 +72,7 @@ function PostCard({ post, onDelete }: { post: Post; onDelete: (id: string) => vo
       <div className="flex items-center gap-1 px-4 sm:px-5 py-3 border-t border-gray-100 bg-gray-50">
         <Link
           href={`/admin/blog/${post.id}`}
-          className="flex items-center gap-1.5 text-xs font-bold text-[#01255f] hover:bg-[#01255f] hover:text-white px-3 py-1.5 transition-colors"
+          className="flex items-center gap-1.5 text-xs font-bold text-[#026632] hover:bg-[#026632] hover:text-white px-3 py-1.5 transition-colors"
         >
           <Pencil size={12} />
           Edit
@@ -148,7 +148,7 @@ export default function AdminBlog() {
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1
-            className="text-2xl sm:text-3xl font-black text-[#01255f]"
+            className="text-2xl sm:text-3xl font-black text-[#026632]"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Blog Posts
@@ -157,7 +157,7 @@ export default function AdminBlog() {
         </div>
         <Link
           href="/admin/blog/new"
-          className="inline-flex items-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
+          className="inline-flex items-center gap-2 bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
         >
           <Plus size={16} />
           New Post
@@ -176,8 +176,8 @@ export default function AdminBlog() {
 
       {!loading && !loadError && posts.length === 0 && (
         <div className="bg-white border border-dashed border-gray-300 p-12 text-center">
-          <p className="text-[#01255f] font-bold mb-2">No posts yet</p>
-          <Link href="/admin/blog/new" className="inline-flex items-center gap-2 bg-[#fee11b] text-[#01255f] px-5 py-2 text-sm font-bold">
+          <p className="text-[#026632] font-bold mb-2">No posts yet</p>
+          <Link href="/admin/blog/new" className="inline-flex items-center gap-2 bg-[#74f3be] text-[#026632] px-5 py-2 text-sm font-bold">
             <Plus size={14} />
             Write your first post
           </Link>

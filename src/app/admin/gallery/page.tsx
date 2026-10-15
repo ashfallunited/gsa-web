@@ -107,7 +107,7 @@ export default function AdminGallery() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
           Gallery
         </h1>
         <p className="text-[#5a6478] text-sm mt-1">
@@ -116,7 +116,7 @@ export default function AdminGallery() {
       </div>
 
       <div className="mb-10 bg-white border border-gray-200 p-6">
-        <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest mb-4">Add YouTube video</h2>
+        <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest mb-4">Add YouTube video</h2>
         <form onSubmit={addVideo} className="space-y-4">
           <div>
             <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5">
@@ -127,7 +127,7 @@ export default function AdminGallery() {
               value={videoUrl}
               onChange={(e) => setVideoUrl(e.target.value)}
               placeholder="https://www.youtube.com/watch?v=..."
-              className="w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f]"
+              className="w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#026632]"
             />
           </div>
           <div>
@@ -138,13 +138,13 @@ export default function AdminGallery() {
               type="text"
               value={videoCaption}
               onChange={(e) => setVideoCaption(e.target.value)}
-              className="w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f]"
+              className="w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#026632]"
             />
           </div>
           <button
             type="submit"
             disabled={addingVideo}
-            className="bg-[#01255f] text-white px-6 py-2.5 text-sm font-bold disabled:opacity-60"
+            className="bg-[#026632] text-white px-6 py-2.5 text-sm font-bold disabled:opacity-60"
           >
             {addingVideo ? 'Adding…' : 'Add video'}
           </button>
@@ -152,7 +152,7 @@ export default function AdminGallery() {
       </div>
 
       <div className="mb-10 bg-white border border-gray-200 p-6">
-        <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest mb-4">Upload photos</h2>
+        <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest mb-4">Upload photos</h2>
         <div className="mb-4">
           <label className="block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5">
             Caption (optional — next upload)
@@ -161,7 +161,7 @@ export default function AdminGallery() {
             type="text"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-            className="w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f]"
+            className="w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#026632]"
           />
         </div>
         <div
@@ -172,7 +172,7 @@ export default function AdminGallery() {
           onDragOver={(e) => e.preventDefault()}
           onClick={() => !uploading && inputRef.current?.click()}
           className={`border-2 border-dashed py-12 text-center cursor-pointer ${
-            uploading ? 'border-[#fee11b] bg-[#fee11b]/5' : 'border-gray-200 hover:border-[#01255f]'
+            uploading ? 'border-[#74f3be] bg-[#74f3be]/5' : 'border-gray-200 hover:border-[#026632]'
           }`}
         >
           {uploading ? (
@@ -193,7 +193,7 @@ export default function AdminGallery() {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {items.map((item) => (
-            <div key={item.id} className="group relative bg-[#f5f7fc] overflow-hidden aspect-square">
+            <div key={item.id} className="group relative bg-[#f3f9f5] overflow-hidden aspect-square">
               {item.type === 'video' && item.youtubeId ? (
                 <img
                   src={`https://img.youtube.com/vi/${item.youtubeId}/hqdefault.jpg`}
@@ -203,8 +203,8 @@ export default function AdminGallery() {
               ) : item.imageUrl ? (
                 <Image src={item.imageUrl} alt={item.caption || 'Photo'} fill className="object-cover" sizes="200px" />
               ) : null}
-              <div className="absolute inset-0 bg-[#01255f]/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-3">
-                <span className="text-[9px] uppercase font-bold text-[#fee11b]">{item.type ?? 'photo'}</span>
+              <div className="absolute inset-0 bg-[#026632]/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-3">
+                <span className="text-[9px] uppercase font-bold text-[#74f3be]">{item.type ?? 'photo'}</span>
                 {item.caption && <p className="text-white text-xs text-center line-clamp-2">{item.caption}</p>}
                 <button
                   type="button"

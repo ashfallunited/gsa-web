@@ -7,7 +7,7 @@ export default function LineChart({
   points,
   max,
   height = 160,
-  color = '#01255f',
+  color = '#026632',
 }: {
   points: LinePoint[]
   max?: number
@@ -48,7 +48,7 @@ export default function LineChart({
             <text x={c.x} y={padTop + innerHeight + 16} textAnchor="middle" fontSize={9} fill="#5a6478" fontWeight={600}>
               {c.label}
             </text>
-            <text x={c.x} y={c.y - 8} textAnchor="middle" fontSize={9.5} fill="#01255f" fontWeight={700}>
+            <text x={c.x} y={c.y - 8} textAnchor="middle" fontSize={9.5} fill="#026632" fontWeight={700}>
               {c.value}
             </text>
           </g>

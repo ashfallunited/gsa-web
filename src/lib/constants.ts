@@ -1,10 +1,10 @@
-export const ORG_NAME = 'Ashfall United'
+export const ORG_NAME = 'Graceland Football Club'
 
 /** Homepage `<title>` and default Google / social preview headline. */
-export const SITE_HOME_TITLE = 'Ashfall United | Sports for social Impact'
+export const SITE_HOME_TITLE = 'Graceland Football Club | Sports for social Impact'
 
-/** Inner pages: layout template renders `{segment} | Ashfall United` (e.g. Shop | Ashfall United). */
-export const SITE_PAGE_TITLE_SUFFIX = 'Ashfall United'
+/** Inner pages: layout template renders `{segment} | Graceland Football Club` (e.g. Shop | Graceland Football Club). */
+export const SITE_PAGE_TITLE_SUFFIX = 'Graceland Football Club'
 
 export const SITE_URL = 'https://www.ashfallunited.com'
 
@@ -23,7 +23,7 @@ export const ORG_INSTAGRAM_HANDLE =
   process.env.NEXT_PUBLIC_ORG_INSTAGRAM_HANDLE ?? '@asfallunited'
 
 export const ORG_DESCRIPTION =
-  'Ashfall United — football and youth development through sport, education, and community programmes.'
+  'Graceland Football Club — football and youth development through sport, education, and community programmes.'
 
 /** Default social preview image (1200×630+). Used site-wide and on /donate. */
 export const SITE_OG_IMAGE =

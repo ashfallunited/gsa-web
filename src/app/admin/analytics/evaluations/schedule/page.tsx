@@ -126,10 +126,10 @@ export default function EvaluationSchedulePage() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 max-w-6xl mx-auto pb-24">
       <div className="mb-6 sm:mb-8">
-        <Link href="/admin/analytics/evaluations" className="text-xs text-[#5a6478] hover:text-[#01255f] mb-2 inline-block">
+        <Link href="/admin/analytics/evaluations" className="text-xs text-[#5a6478] hover:text-[#026632] mb-2 inline-block">
           ← Back to evaluations
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
           Training Schedule
         </h1>
         <p className="text-sm text-[#5a6478] mt-1">
@@ -157,7 +157,7 @@ export default function EvaluationSchedulePage() {
       ) : (
         <div className="space-y-6">
           <div className="bg-white border border-gray-200 p-4 sm:p-6">
-            <h2 className="font-bold text-[#01255f] mb-4">Standard Training Days</h2>
+            <h2 className="font-bold text-[#026632] mb-4">Standard Training Days</h2>
             <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 mb-5">
               {WEEKDAYS.map(({ value, label }) => (
                 <button
@@ -165,7 +165,7 @@ export default function EvaluationSchedulePage() {
                   type="button"
                   onClick={() => toggleWeekday(value)}
                   className={`py-3 text-sm font-bold uppercase tracking-wide border transition-colors ${
-                    weekdays.includes(value) ? 'bg-[#01255f] text-white border-[#01255f]' : 'bg-white text-[#5a6478] border-gray-200'
+                    weekdays.includes(value) ? 'bg-[#026632] text-white border-[#026632]' : 'bg-white text-[#5a6478] border-gray-200'
                   }`}
                 >
                   {label}
@@ -176,7 +176,7 @@ export default function EvaluationSchedulePage() {
               type="button"
               onClick={saveSchedule}
               disabled={saving}
-              className="inline-flex items-center gap-2 bg-[#fee11b] text-[#01255f] px-5 py-2.5 text-sm font-black disabled:opacity-50"
+              className="inline-flex items-center gap-2 bg-[#74f3be] text-[#026632] px-5 py-2.5 text-sm font-black disabled:opacity-50"
             >
               <Save size={15} /> {saving ? 'Saving…' : 'Save Schedule'}
             </button>
@@ -184,18 +184,18 @@ export default function EvaluationSchedulePage() {
 
           <div className="bg-white border border-gray-200 p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-bold text-[#01255f]">Breaks &amp; Holidays</h2>
+              <h2 className="font-bold text-[#026632]">Breaks &amp; Holidays</h2>
               <button
                 type="button"
                 onClick={() => setShowAddBreak((v) => !v)}
-                className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-1.5 text-xs font-bold text-[#01255f] hover:bg-gray-50"
+                className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-1.5 text-xs font-bold text-[#026632] hover:bg-gray-50"
               >
                 <Plus size={14} /> Add Break
               </button>
             </div>
 
             {showAddBreak && (
-              <div className="border border-dashed border-[#01255f]/30 p-4 mb-4 bg-[#01255f]/5 space-y-3">
+              <div className="border border-dashed border-[#026632]/30 p-4 mb-4 bg-[#026632]/5 space-y-3">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <label className={labelClass}>Start Date</label>
@@ -220,7 +220,7 @@ export default function EvaluationSchedulePage() {
                   type="button"
                   onClick={addBreak}
                   disabled={savingBreak}
-                  className="inline-flex items-center gap-1.5 bg-[#01255f] text-white px-4 py-2 text-xs font-bold disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 bg-[#026632] text-white px-4 py-2 text-xs font-bold disabled:opacity-50"
                 >
                   <Plus size={14} /> Add
                 </button>
@@ -234,7 +234,7 @@ export default function EvaluationSchedulePage() {
                 {breaks.map((b) => (
                   <li key={b.id} className="py-2.5 flex items-center justify-between gap-3 text-sm">
                     <div className="min-w-0">
-                      <span className="text-[#01255f] font-medium">
+                      <span className="text-[#026632] font-medium">
                         {b.startDate}{b.endDate !== b.startDate ? ` – ${b.endDate}` : ''}
                       </span>
                       {b.reason && <span className="text-[#5a6478]"> · {b.reason}</span>}

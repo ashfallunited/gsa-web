@@ -11,7 +11,7 @@ import { IMAGE_PLACEHOLDER } from '@/lib/constants'
 
 const PLACEHOLDER = IMAGE_PLACEHOLDER
 
-const inputClass = 'w-full border border-gray-200 bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#01255f] transition-colors'
+const inputClass = 'w-full border border-gray-200 bg-white px-4 py-3 text-sm focus:outline-none focus:border-[#026632] transition-colors'
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
 const CONTACT_METHODS = ['WhatsApp', 'Email', 'Direct Phone Call'] as const
@@ -78,23 +78,23 @@ export default function CheckoutPage() {
     return (
       <>
         <Navbar />
-        <main className="pt-16 lg:pt-[70px] min-h-screen bg-[#f5f7fc] flex items-center justify-center px-5">
+        <main className="pt-16 lg:pt-[70px] min-h-screen bg-[#f3f9f5] flex items-center justify-center px-5">
           <div className="bg-white border border-gray-100 p-10 max-w-md w-full text-center">
-            <div className="w-14 h-14 bg-[#fee11b] flex items-center justify-center mx-auto mb-5">
-              <svg className="w-7 h-7 text-[#01255f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-14 h-14 bg-[#74f3be] flex items-center justify-center mx-auto mb-5">
+              <svg className="w-7 h-7 text-[#026632]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h1 className="text-2xl font-black text-[#01255f] mb-2" style={{ fontFamily: 'var(--font-heading)' }}>
+            <h1 className="text-2xl font-black text-[#026632] mb-2" style={{ fontFamily: 'var(--font-heading)' }}>
               Order Placed!
             </h1>
             <p className="text-[#5a6478] text-sm mb-2">Thank you for your order. We&apos;ll be in touch shortly.</p>
             <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-8">
-              Order ID: <span className="text-[#01255f] font-bold">{orderId.slice(0, 8).toUpperCase()}</span>
+              Order ID: <span className="text-[#026632] font-bold">{orderId.slice(0, 8).toUpperCase()}</span>
             </p>
             <Link
               href="/shop"
-              className="bg-[#01255f] hover:bg-[#011840] text-white text-sm font-bold px-8 py-3 inline-block transition-colors"
+              className="bg-[#026632] hover:bg-[#014a24] text-white text-sm font-bold px-8 py-3 inline-block transition-colors"
             >
               Continue Shopping
             </Link>
@@ -110,10 +110,10 @@ export default function CheckoutPage() {
     return (
       <>
         <Navbar />
-        <main className="pt-16 lg:pt-[70px] min-h-screen bg-[#f5f7fc] flex items-center justify-center px-5">
+        <main className="pt-16 lg:pt-[70px] min-h-screen bg-[#f3f9f5] flex items-center justify-center px-5">
           <div className="text-center">
-            <p className="text-[#01255f] font-bold mb-2">Your cart is empty</p>
-            <Link href="/shop" className="text-sm text-[#5a6478] hover:text-[#01255f] underline transition-colors">
+            <p className="text-[#026632] font-bold mb-2">Your cart is empty</p>
+            <Link href="/shop" className="text-sm text-[#5a6478] hover:text-[#026632] underline transition-colors">
               Back to shop
             </Link>
           </div>
@@ -126,13 +126,13 @@ export default function CheckoutPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-16 lg:pt-[70px] bg-[#f5f7fc] min-h-screen">
+      <main className="pt-16 lg:pt-[70px] bg-[#f3f9f5] min-h-screen">
         <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-10 py-14 sm:py-20">
           <div className="mb-8">
-            <Link href="/shop" className="text-xs text-[#5a6478] hover:text-[#01255f] transition-colors uppercase tracking-widest">
+            <Link href="/shop" className="text-xs text-[#5a6478] hover:text-[#026632] transition-colors uppercase tracking-widest">
               ← Back to shop
             </Link>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#01255f] mt-3" style={{ fontFamily: 'var(--font-heading)' }}>
+            <h1 className="text-2xl sm:text-3xl font-black text-[#026632] mt-3" style={{ fontFamily: 'var(--font-heading)' }}>
               Checkout
             </h1>
           </div>
@@ -141,7 +141,7 @@ export default function CheckoutPage() {
             {/* Form */}
             <form onSubmit={submit} className="space-y-5 order-2 lg:order-1">
               <div className="bg-white border border-gray-100 p-6 space-y-5">
-                <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest">Contact Details</h2>
+                <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest">Contact Details</h2>
 
                 {error && (
                   <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">{error}</div>
@@ -187,13 +187,13 @@ export default function CheckoutPage() {
                           onClick={() => toggleContact(method)}
                           className={`flex items-center gap-2 px-4 py-2 text-xs font-bold border transition-all ${
                             active
-                              ? 'bg-[#01255f] text-white border-[#01255f]'
-                              : 'border-gray-200 text-[#5a6478] hover:border-[#01255f] hover:text-[#01255f]'
+                              ? 'bg-[#026632] text-white border-[#026632]'
+                              : 'border-gray-200 text-[#5a6478] hover:border-[#026632] hover:text-[#026632]'
                           }`}
                         >
-                          <span className={`w-3.5 h-3.5 border flex-shrink-0 flex items-center justify-center transition-colors ${active ? 'bg-[#fee11b] border-[#fee11b]' : 'border-gray-300'}`}>
+                          <span className={`w-3.5 h-3.5 border flex-shrink-0 flex items-center justify-center transition-colors ${active ? 'bg-[#74f3be] border-[#74f3be]' : 'border-gray-300'}`}>
                             {active && (
-                              <svg className="w-2.5 h-2.5 text-[#01255f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-2.5 h-2.5 text-[#026632]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                               </svg>
                             )}
@@ -214,7 +214,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={submitting || hasMissingSize}
-                className="w-full bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] font-black uppercase tracking-widest py-4 text-sm transition-colors disabled:opacity-50"
+                className="w-full bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632] font-black uppercase tracking-widest py-4 text-sm transition-colors disabled:opacity-50"
               >
                 {hasMissingSize
                   ? 'Select All Sizes to Continue'
@@ -226,25 +226,25 @@ export default function CheckoutPage() {
 
             {/* Order Summary */}
             <div className="bg-white border border-gray-100 p-6 h-fit order-1 lg:order-2">
-              <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest mb-5">Order Summary</h2>
+              <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest mb-5">Order Summary</h2>
               <ul className="space-y-4 mb-5">
                 {items.map((item, i) => (
                   <li key={`${item.id}-${item.size}-${i}`} className="flex gap-3">
-                    <div className="relative w-14 h-14 flex-shrink-0 bg-[#f5f7fc] overflow-hidden">
+                    <div className="relative w-14 h-14 flex-shrink-0 bg-[#f3f9f5] overflow-hidden">
                       <Image src={item.image || PLACEHOLDER} alt={item.name} fill sizes="56px" className="object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-[#01255f] line-clamp-2">{item.name}</p>
+                      <p className="text-sm font-bold text-[#026632] line-clamp-2">{item.name}</p>
                       <div className="flex items-center gap-2 mt-0.5">
                         <p className="text-xs text-[#5a6478]">Qty: {item.quantity}</p>
                         {item.size && item.size !== 'One Size' && (
-                          <span className="text-[9px] font-bold bg-[#f5f7fc] border border-gray-200 px-1.5 py-0.5 text-[#01255f] uppercase">
+                          <span className="text-[9px] font-bold bg-[#f3f9f5] border border-gray-200 px-1.5 py-0.5 text-[#026632] uppercase">
                             {item.size}
                           </span>
                         )}
                       </div>
                     </div>
-                    <p className="text-sm font-bold text-[#01255f] flex-shrink-0">
+                    <p className="text-sm font-bold text-[#026632] flex-shrink-0">
                       ${(item.price * item.quantity).toFixed(2)}
                     </p>
                   </li>
@@ -257,9 +257,9 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-xs text-[#5a6478]">
                   <span>Shipping</span>
-                  <span className="text-[#01255f] font-bold">TBD</span>
+                  <span className="text-[#026632] font-bold">TBD</span>
                 </div>
-                <div className="flex justify-between font-black text-[#01255f] text-base pt-1 border-t border-gray-100" style={{ fontFamily: 'var(--font-heading)' }}>
+                <div className="flex justify-between font-black text-[#026632] text-base pt-1 border-t border-gray-100" style={{ fontFamily: 'var(--font-heading)' }}>
                   <span>Total</span>
                   <span>${total.toFixed(2)}</span>
                 </div>

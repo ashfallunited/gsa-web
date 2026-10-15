@@ -10,7 +10,7 @@ import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
 export const metadata = buildPageMetadata({
   title: 'Shop',
   description:
-    'Official Asfall United merchandise and kits. Every purchase supports youth football and development programmes in Liberia.',
+    'Official Graceland Football Club merchandise and kits. Every purchase supports youth football and development programmes in Liberia.',
   path: '/shop',
   keywords: SEO_KEYWORDS.shop,
 })
@@ -31,7 +31,7 @@ export default async function ShopPage() {
     <>
       <Navbar />
       <main className="pt-16 lg:pt-[70px]">
-        <div className="bg-[#01255f] py-16 sm:py-20">
+        <div className="bg-[#026632] py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
             <span className="label-light">Merchandise</span>
             <h1
@@ -45,7 +45,7 @@ export default async function ShopPage() {
             </p>
           </div>
         </div>
-        <div className="bg-[#f5f7fc] py-14 sm:py-20">
+        <div className="bg-[#f3f9f5] py-14 sm:py-20">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
             <ShopGrid products={products} />
           </div>

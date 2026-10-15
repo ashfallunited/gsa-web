@@ -49,7 +49,7 @@ const empty: Omit<Player, 'id'> = {
   weight: undefined,
   preferredFoot: undefined,
 }
-const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f] transition-colors'
+const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#026632] transition-colors'
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
 const POS_LABELS: Record<string, string> = { goalkeeper: 'Goalkeeper', defender: 'Defender', midfielder: 'Midfielder', forward: 'Forward' }
@@ -201,10 +201,10 @@ function PlayerForm({ initial, playerId, onSaved, onCancel }: {
       </div>
 
       <div className="flex gap-3 pt-2">
-        <button onClick={save} disabled={saving} className="bg-[#01255f] hover:bg-[#011840] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50">
+        <button onClick={save} disabled={saving} className="bg-[#026632] hover:bg-[#014a24] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50">
           {saving ? 'Saving…' : playerId ? 'Update' : 'Add Player'}
         </button>
-        <button onClick={onCancel} disabled={saving} className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#01255f] hover:text-[#01255f] transition-colors disabled:opacity-50">
+        <button onClick={onCancel} disabled={saving} className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#026632] hover:text-[#026632] transition-colors disabled:opacity-50">
           Cancel
         </button>
       </div>
@@ -267,13 +267,13 @@ export default function AdminPlayers() {
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Players</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>Players</h1>
           <p className="text-[#5a6478] text-sm mt-1">{players.length} total players</p>
         </div>
         {!adding && !editing && (
           <button
             onClick={() => setAdding(true)}
-            className="bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
+            className="bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632] px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
           >
             + Add Player
           </button>
@@ -284,7 +284,7 @@ export default function AdminPlayers() {
 
       {(adding || editing) && (
         <div className="mb-8 max-w-2xl">
-          <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest mb-4">
+          <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest mb-4">
             {editing ? 'Edit Player' : 'New Player'}
           </h2>
           <PlayerForm
@@ -309,7 +309,7 @@ export default function AdminPlayers() {
             <button
               key={v}
               onClick={() => setTeamFilter(v)}
-              className={`px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors ${teamFilter === v ? 'bg-[#01255f] text-white' : 'border border-gray-200 text-[#5a6478] hover:border-[#01255f]'}`}
+              className={`px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors ${teamFilter === v ? 'bg-[#026632] text-white' : 'border border-gray-200 text-[#5a6478] hover:border-[#026632]'}`}
             >
               {l}
             </button>
@@ -325,8 +325,8 @@ export default function AdminPlayers() {
 
       {!loading && !loadError && filtered.length === 0 && !adding && (
         <div className="bg-white border border-dashed border-gray-300 p-10 text-center">
-          <p className="text-[#01255f] font-bold mb-2">No players yet</p>
-          <button onClick={() => setAdding(true)} className="bg-[#fee11b] text-[#01255f] px-5 py-2 text-sm font-bold">
+          <p className="text-[#026632] font-bold mb-2">No players yet</p>
+          <button onClick={() => setAdding(true)} className="bg-[#74f3be] text-[#026632] px-5 py-2 text-sm font-bold">
             Add the first player
           </button>
         </div>
@@ -335,7 +335,7 @@ export default function AdminPlayers() {
       {!loading && !adding && !editing && filtered.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
           {filtered.map((p) => (
-            <div key={p.id} className="group relative bg-[#01255f] overflow-hidden">
+            <div key={p.id} className="group relative bg-[#026632] overflow-hidden">
               {/* Jersey number watermark */}
               <div
                 className="absolute bottom-2 right-2 text-[5rem] font-black text-white/10 leading-none select-none pointer-events-none z-0"
@@ -363,19 +363,19 @@ export default function AdminPlayers() {
                     </span>
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#01255f] via-[#01255f]/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#026632] via-[#026632]/20 to-transparent" />
               </div>
 
               {/* Info */}
               <div className="relative z-10 p-3 sm:p-4 -mt-8 sm:-mt-10">
                 <div className="flex items-end justify-between mb-1.5">
                   <span
-                    className="text-[#fee11b] font-black text-xl sm:text-2xl leading-none"
+                    className="text-[#74f3be] font-black text-xl sm:text-2xl leading-none"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
                     {p.number}
                   </span>
-                  <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-[#fee11b] text-[#01255f]">
+                  <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-[#74f3be] text-[#026632]">
                     {POS_SHORT[p.position] ?? p.position}
                   </span>
                 </div>
@@ -396,7 +396,7 @@ export default function AdminPlayers() {
                   </span>
                   <span
                     className={`text-[9px] uppercase font-bold px-1.5 py-0.5 ${
-                      p.showOnSite === false ? 'bg-white/10 text-white/40' : 'bg-[#fee11b]/20 text-[#fee11b]'
+                      p.showOnSite === false ? 'bg-white/10 text-white/40' : 'bg-[#74f3be]/20 text-[#74f3be]'
                     }`}
                   >
                     {p.showOnSite === false ? 'Hidden' : 'Visible'}

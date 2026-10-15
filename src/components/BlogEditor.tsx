@@ -85,14 +85,14 @@ export default function BlogEditor({ initialData, postId }: Props) {
   }
 
   const inputClass =
-    'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f] transition-colors'
+    'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#026632] transition-colors'
   const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-w-0">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1
-          className="text-xl sm:text-2xl font-bold text-[#01255f]"
+          className="text-xl sm:text-2xl font-bold text-[#026632]"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           {postId ? 'Edit Post' : 'New Post'}
@@ -101,14 +101,14 @@ export default function BlogEditor({ initialData, postId }: Props) {
           <button
             onClick={() => save('draft')}
             disabled={saving}
-            className="border border-gray-200 px-4 py-2 text-sm font-semibold text-[#5a6478] hover:border-[#01255f] hover:text-[#01255f] transition-colors disabled:opacity-50"
+            className="border border-gray-200 px-4 py-2 text-sm font-semibold text-[#5a6478] hover:border-[#026632] hover:text-[#026632] transition-colors disabled:opacity-50"
           >
             Save Draft
           </button>
           <button
             onClick={() => save('published')}
             disabled={saving}
-            className="bg-[#01255f] hover:bg-[#011840] text-white px-5 py-2 text-sm font-bold tracking-wide transition-colors disabled:opacity-50"
+            className="bg-[#026632] hover:bg-[#014a24] text-white px-5 py-2 text-sm font-bold tracking-wide transition-colors disabled:opacity-50"
           >
             {saving ? 'Saving…' : 'Publish'}
           </button>
@@ -127,7 +127,7 @@ export default function BlogEditor({ initialData, postId }: Props) {
           value={data.title}
           onChange={set('title')}
           placeholder="Post title…"
-          className="w-full border-0 border-b-2 border-gray-200 focus:border-[#01255f] px-0 py-3 text-xl font-bold text-[#01255f] focus:outline-none transition-colors bg-transparent"
+          className="w-full border-0 border-b-2 border-gray-200 focus:border-[#026632] px-0 py-3 text-xl font-bold text-[#026632] focus:outline-none transition-colors bg-transparent"
           style={{ fontFamily: 'var(--font-heading)' }}
         />
       </div>
@@ -139,8 +139,8 @@ export default function BlogEditor({ initialData, postId }: Props) {
             onClick={() => setActiveTab(tab)}
             className={`px-5 py-3 text-xs font-bold uppercase tracking-widest border-b-2 -mb-px transition-all ${
               activeTab === tab
-                ? 'border-[#fee11b] text-[#01255f]'
-                : 'border-transparent text-[#5a6478] hover:text-[#01255f]'
+                ? 'border-[#74f3be] text-[#026632]'
+                : 'border-transparent text-[#5a6478] hover:text-[#026632]'
             }`}
           >
             {tab === 'content' ? 'Content' : 'SEO & Meta'}

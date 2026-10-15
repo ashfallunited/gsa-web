@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description,
     path: `/blog/${slug}`,
     openGraphType: 'article',
-    openGraphTitle: `${title} | Ashfall United`,
+    openGraphTitle: `${title} | Graceland Football Club`,
     image: post.featuredImage
       ? { url: post.featuredImage, alt: post.title }
       : { url: SITE_OG_IMAGE, alt: post.title },
@@ -49,25 +49,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <main className="pt-16 lg:pt-[70px]">
         <article>
           {post.featuredImage && (
-            <div className="relative h-56 sm:h-72 lg:h-96 bg-[#01255f]">
+            <div className="relative h-56 sm:h-72 lg:h-96 bg-[#026632]">
               <Image src={post.featuredImage} alt={post.title} fill className="object-cover opacity-90" priority />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#01255f] to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#026632] to-transparent" />
             </div>
           )}
 
           <div className="max-w-3xl mx-auto px-5 sm:px-6 py-12 sm:py-16">
-            <Link href="/blog" className="text-xs font-bold text-[#5a6478] uppercase tracking-widest hover:text-[#01255f]">
+            <Link href="/blog" className="text-xs font-bold text-[#5a6478] uppercase tracking-widest hover:text-[#026632]">
               ← All posts
             </Link>
 
             {post.tags?.[0] && (
-              <span className="block mt-6 text-[9px] uppercase tracking-widest font-bold text-[#fee11b] bg-[#01255f] px-2 py-0.5 w-fit">
+              <span className="block mt-6 text-[9px] uppercase tracking-widest font-bold text-[#74f3be] bg-[#026632] px-2 py-0.5 w-fit">
                 {post.tags[0]}
               </span>
             )}
 
             <h1
-              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#01255f] mt-4 mb-3 leading-tight"
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#026632] mt-4 mb-3 leading-tight"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               {post.title}

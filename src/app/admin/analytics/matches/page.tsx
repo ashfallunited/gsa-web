@@ -59,14 +59,14 @@ export default function MatchesListPage() {
     <div className="p-5 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
             Matches
           </h1>
           <p className="text-sm text-[#5a6478] mt-1">Create, edit, and finalize match records.</p>
         </div>
         <Link
           href="/admin/analytics/matches/new"
-          className="inline-flex items-center justify-center gap-2 bg-[#01255f] hover:bg-[#011840] text-white px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
+          className="inline-flex items-center justify-center gap-2 bg-[#026632] hover:bg-[#014a24] text-white px-5 py-2.5 text-sm font-bold tracking-wide transition-colors"
         >
           <Plus size={16} />
           New Match
@@ -80,7 +80,7 @@ export default function MatchesListPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full sm:w-48 border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-[#01255f]"
+            className="w-full sm:w-48 border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-[#026632]"
           >
             <option value="">All</option>
             <option value="draft">Draft</option>
@@ -116,7 +116,7 @@ export default function MatchesListPage() {
                   </span>
                   {result && <span className={`text-[10px] font-bold px-1.5 py-0.5 ${RESULT_COLORS[result]}`}>{result}</span>}
                 </div>
-                <h2 className="font-bold text-[#01255f] text-lg truncate">
+                <h2 className="font-bold text-[#026632] text-lg truncate">
                   vs {m.opponent}
                   <span className="text-[#5a6478] font-normal text-sm ml-2">{displayTeamLabel(m.team)}</span>
                 </h2>
@@ -128,7 +128,7 @@ export default function MatchesListPage() {
                 <button
                   type="button"
                   onClick={() => duplicate(m.id)}
-                  className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-2 text-xs font-bold text-[#01255f] hover:bg-gray-50"
+                  className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-2 text-xs font-bold text-[#026632] hover:bg-gray-50"
                   title="Duplicate as template"
                 >
                   <Copy size={14} />
@@ -136,7 +136,7 @@ export default function MatchesListPage() {
                 </button>
                 <Link
                   href={`/admin/analytics/matches/${m.id}`}
-                  className="inline-flex items-center gap-1.5 bg-[#01255f] text-white px-3 py-2 text-xs font-bold hover:bg-[#011840]"
+                  className="inline-flex items-center gap-1.5 bg-[#026632] text-white px-3 py-2 text-xs font-bold hover:bg-[#014a24]"
                 >
                   <Pencil size={14} />
                   Edit

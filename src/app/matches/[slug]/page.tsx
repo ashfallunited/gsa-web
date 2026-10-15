@@ -82,15 +82,15 @@ function extractYouTubeId(url: string): string | null {
 function PlayerRow({ stat, showMinutes = true }: { stat: MatchReviewStat; showMinutes?: boolean }) {
   return (
     <div className="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0">
-      <div className="w-7 h-7 rounded-full bg-[#01255f]/10 overflow-hidden shrink-0 flex items-center justify-center">
+      <div className="w-7 h-7 rounded-full bg-[#026632]/10 overflow-hidden shrink-0 flex items-center justify-center">
         {stat.playerImage ? (
           <Image src={stat.playerImage} alt={stat.playerName} width={28} height={28} className="w-full h-full object-cover object-top" />
         ) : (
-          <span className="text-[9px] font-black text-[#01255f]">{stat.playerNumber || '?'}</span>
+          <span className="text-[9px] font-black text-[#026632]">{stat.playerNumber || '?'}</span>
         )}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-[#01255f] truncate">{stat.playerName}</p>
+        <p className="text-sm font-bold text-[#026632] truncate">{stat.playerName}</p>
         <p className="text-[10px] text-[#5a6478] capitalize">{stat.playerPosition}{showMinutes ? ` · ${stat.minutes}'` : ''}</p>
       </div>
       <div className="flex items-center gap-1.5 shrink-0">
@@ -120,15 +120,15 @@ function GoalEvent({ stat, type }: { stat: MatchReviewStat; type: 'goal' | 'assi
         const min = minutes[i]
         return (
           <div key={i} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
-            <div className="w-7 h-7 rounded-full bg-[#01255f]/10 overflow-hidden shrink-0 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-full bg-[#026632]/10 overflow-hidden shrink-0 flex items-center justify-center">
               {stat.playerImage ? (
                 <Image src={stat.playerImage} alt={stat.playerName} width={28} height={28} className="w-full h-full object-cover object-top" />
               ) : (
-                <span className="text-[9px] font-black text-[#01255f]">{stat.playerNumber || '?'}</span>
+                <span className="text-[9px] font-black text-[#026632]">{stat.playerNumber || '?'}</span>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-[#01255f] truncate">{stat.playerName}</p>
+              <p className="text-sm font-bold text-[#026632] truncate">{stat.playerName}</p>
               <p className="text-[10px] text-[#5a6478]">
                 {type === 'goal' ? '⚽ Goal' : '🎯 Assist'}
                 {min != null && min > 0 ? ` · ${min}'` : ''}
@@ -188,7 +188,7 @@ export default async function MatchReviewPage({ params }: Props) {
       <main className="pt-16 lg:pt-[70px]">
 
         {/* Score hero */}
-        <div className="bg-[#01255f] py-10 sm:py-14 lg:py-20">
+        <div className="bg-[#026632] py-10 sm:py-14 lg:py-20">
           <div className="max-w-4xl mx-auto px-5 sm:px-6 lg:px-10">
             <Link href="/matches" className="inline-flex items-center gap-1 text-white/50 hover:text-white text-xs font-bold mb-6 transition-colors">
               ← All Matches
@@ -201,7 +201,7 @@ export default async function MatchReviewPage({ params }: Props) {
                   <p className="text-white font-bold text-base sm:text-lg">{ORG_NAME}</p>
                   <p className="text-white/50 text-xs">{match.homeAway === 'home' ? 'Home' : match.homeAway === 'away' ? 'Away' : 'Neutral'}</p>
                 </div>
-                <Image src="/Logo.png" alt={ORG_NAME} width={56} height={56} className="object-contain shrink-0" />
+                <Image src="/gl-crest.png" alt={ORG_NAME} width={56} height={56} className="object-contain shrink-0" />
               </div>
 
               {/* Score */}
@@ -256,7 +256,7 @@ export default async function MatchReviewPage({ params }: Props) {
               {match.team !== 'first-team' && (
                 <>
                   <span aria-hidden>·</span>
-                  <span className="text-[#fee11b] font-bold">{displayTeamLabel(match.team)}</span>
+                  <span className="text-[#74f3be] font-bold">{displayTeamLabel(match.team)}</span>
                 </>
               )}
             </div>
@@ -264,13 +264,13 @@ export default async function MatchReviewPage({ params }: Props) {
         </div>
 
         {/* Content */}
-        <div className="bg-[#f5f7fc] py-10 sm:py-14 lg:py-20">
+        <div className="bg-[#f3f9f5] py-10 sm:py-14 lg:py-20">
           <div className="max-w-4xl mx-auto px-5 sm:px-6 lg:px-10 space-y-8">
 
             {/* Highlight video */}
             {highlightId && (
               <section>
-                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#01255f] mb-4">Highlights</h2>
+                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#026632] mb-4">Highlights</h2>
                 <div className="aspect-video bg-black w-full">
                   <iframe
                     src={`https://www.youtube.com/embed/${highlightId}`}
@@ -286,7 +286,7 @@ export default async function MatchReviewPage({ params }: Props) {
             {/* Match report */}
             {match.report && (
               <section>
-                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#01255f] mb-4">Match Report</h2>
+                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#026632] mb-4">Match Report</h2>
                 <div className="bg-white border border-gray-100 p-6 sm:p-8">
                   <div
                     className="blog-content text-sm sm:text-base max-w-none"
@@ -299,7 +299,7 @@ export default async function MatchReviewPage({ params }: Props) {
             {/* Goal scorers */}
             {scorers.length > 0 && (
               <section>
-                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#01255f] mb-4">⚽ Goalscorers</h2>
+                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#026632] mb-4">⚽ Goalscorers</h2>
                 <div className="bg-white border border-gray-100 px-4 sm:px-6 divide-y divide-gray-50">
                   {scorers.map((s) => <GoalEvent key={s.playerId} stat={s} type="goal" />)}
                 </div>
@@ -309,7 +309,7 @@ export default async function MatchReviewPage({ params }: Props) {
             {/* Assists */}
             {assisters.length > 0 && (
               <section>
-                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#01255f] mb-4">🎯 Assists</h2>
+                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#026632] mb-4">🎯 Assists</h2>
                 <div className="bg-white border border-gray-100 px-4 sm:px-6 divide-y divide-gray-50">
                   {assisters.map((s) => <GoalEvent key={s.playerId} stat={s} type="assist" />)}
                 </div>
@@ -319,10 +319,10 @@ export default async function MatchReviewPage({ params }: Props) {
             {/* Squad — starters + subs side by side on desktop */}
             {starters.length > 0 && (
               <section>
-                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#01255f] mb-4">Squad</h2>
+                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#026632] mb-4">Squad</h2>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="bg-white border border-gray-100 p-4 sm:p-6">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#fee11b] bg-[#01255f] px-2 py-1 inline-block mb-4">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#74f3be] bg-[#026632] px-2 py-1 inline-block mb-4">
                       Starting XI
                     </p>
                     {starters.map((s) => <PlayerRow key={s.playerId} stat={s} />)}
@@ -342,7 +342,7 @@ export default async function MatchReviewPage({ params }: Props) {
             {/* Discipline */}
             {booked.length > 0 && (
               <section>
-                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#01255f] mb-4">Discipline</h2>
+                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#026632] mb-4">Discipline</h2>
                 <div className="bg-white border border-gray-100 px-4 sm:px-6">
                   {booked.map((s) => <PlayerRow key={s.playerId} stat={s} showMinutes={false} />)}
                 </div>
@@ -357,7 +357,7 @@ export default async function MatchReviewPage({ params }: Props) {
             )}
 
             <div className="pt-4">
-              <Link href="/matches" className="inline-flex items-center gap-1.5 text-[#01255f] text-sm font-bold hover:text-[#fee11b] transition-colors">
+              <Link href="/matches" className="inline-flex items-center gap-1.5 text-[#026632] text-sm font-bold hover:text-[#74f3be] transition-colors">
                 ← Back to all matches
               </Link>
             </div>

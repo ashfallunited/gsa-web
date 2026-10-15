@@ -187,7 +187,7 @@ export default function PlayerStatsPage() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
           Player Stats
         </h1>
         <p className="text-sm text-[#5a6478] mt-1">Season totals and per-match logs.</p>
@@ -203,8 +203,8 @@ export default function PlayerStatsPage() {
               onClick={() => setStatusFilter(item)}
               className={`px-3 py-1.5 text-xs font-bold uppercase tracking-widest ${
                 statusFilter === item
-                  ? 'bg-[#01255f] text-white'
-                  : 'border border-gray-200 text-[#5a6478] hover:border-[#01255f]'
+                  ? 'bg-[#026632] text-white'
+                  : 'border border-gray-200 text-[#5a6478] hover:border-[#026632]'
               }`}
             >
               {item}
@@ -237,13 +237,13 @@ export default function PlayerStatsPage() {
                 <tr
                   key={t.playerId}
                   onClick={() => setSelectedId(t.playerId)}
-                  className={`border-b border-gray-50 cursor-pointer hover:bg-gray-50 ${selectedId === t.playerId ? 'bg-[#fee11b]/20' : ''}`}
+                  className={`border-b border-gray-50 cursor-pointer hover:bg-gray-50 ${selectedId === t.playerId ? 'bg-[#74f3be]/20' : ''}`}
                 >
                   <td className="p-3">
                     <div className="flex items-center gap-2">
                       <PlayerAvatar image={playerLookup[t.playerId]?.image ?? t.playerImage} name={t.playerName} size={28} />
                       <div className="min-w-0">
-                        <span className="font-medium text-[#01255f]">{t.playerName}</span>
+                        <span className="font-medium text-[#026632]">{t.playerName}</span>
                         <span className="text-[#5a6478] text-xs ml-1">#{t.playerNumber}</span>
                         <span className={`ml-2 text-[10px] uppercase font-bold px-1.5 py-0.5 ${playerLookup[t.playerId]?.source === 'trial' || playerLookup[t.playerId]?.showOnSite === false ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
                           {playerLookup[t.playerId]?.source === 'trial' || playerLookup[t.playerId]?.showOnSite === false ? 'Trial' : 'Official'}
@@ -267,20 +267,20 @@ export default function PlayerStatsPage() {
             <button
               type="button"
               onClick={() => setSelectedId(null)}
-              className="lg:hidden flex items-center gap-1 text-xs font-bold text-[#5a6478] hover:text-[#01255f] transition-colors"
+              className="lg:hidden flex items-center gap-1 text-xs font-bold text-[#5a6478] hover:text-[#026632] transition-colors"
             >
               ← Back to all players
             </button>
           )}
           <div className="bg-white border border-gray-200 p-4 sm:p-5">
-            <h2 className="font-bold text-[#01255f] mb-4">Player Profile</h2>
+            <h2 className="font-bold text-[#026632] mb-4">Player Profile</h2>
             {!selectedId && <p className="text-sm text-[#5a6478]">Select a player to view individual analytics.</p>}
             {selectedId && selectedMeta && (
               <div className="space-y-3">
                 <div className="flex items-center gap-4">
                   <PlayerAvatar image={selectedMeta.image} name={selectedMeta.name} size={64} />
                   <div className="min-w-0">
-                    <p className="text-xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <p className="text-xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
                       {selectedMeta.name}
                     </p>
                     <p className="text-xs text-[#5a6478]">
@@ -303,19 +303,19 @@ export default function PlayerStatsPage() {
                     {selectedMeta.height && (
                       <div>
                         <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">Height</p>
-                        <p className="text-sm font-bold text-[#01255f]">{selectedMeta.height} cm</p>
+                        <p className="text-sm font-bold text-[#026632]">{selectedMeta.height} cm</p>
                       </div>
                     )}
                     {selectedMeta.weight && (
                       <div>
                         <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">Weight</p>
-                        <p className="text-sm font-bold text-[#01255f]">{selectedMeta.weight} kg</p>
+                        <p className="text-sm font-bold text-[#026632]">{selectedMeta.weight} kg</p>
                       </div>
                     )}
                     {selectedMeta.preferredFoot && (
                       <div>
                         <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">Pref. Foot</p>
-                        <p className="text-sm font-bold text-[#01255f] capitalize">{selectedMeta.preferredFoot}</p>
+                        <p className="text-sm font-bold text-[#026632] capitalize">{selectedMeta.preferredFoot}</p>
                       </div>
                     )}
                   </div>
@@ -412,7 +412,7 @@ export default function PlayerStatsPage() {
                   ] as const).map(({ label, value }) => (
                     <div key={label} className="border border-gray-200 p-2">
                       <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">{label}</p>
-                      <p className="font-bold text-[#01255f]">{value}</p>
+                      <p className="font-bold text-[#026632]">{value}</p>
                     </div>
                   ))}
                 </div>
@@ -433,7 +433,7 @@ export default function PlayerStatsPage() {
                       ] as const).map(({ label, value }) => (
                         <div key={label} className="border border-gray-200 p-2">
                           <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">{label}</p>
-                          <p className="font-bold text-[#01255f]">{value}</p>
+                          <p className="font-bold text-[#026632]">{value}</p>
                         </div>
                       ))}
                     </div>
@@ -452,7 +452,7 @@ export default function PlayerStatsPage() {
                       ] as const).map(({ label, value }) => (
                         <div key={label} className="border border-gray-200 p-2">
                           <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">{label}</p>
-                          <p className="font-bold text-[#01255f]">{value}</p>
+                          <p className="font-bold text-[#026632]">{value}</p>
                         </div>
                       ))}
                     </div>
@@ -471,7 +471,7 @@ export default function PlayerStatsPage() {
                       ] as const).map(({ label, value }) => (
                         <div key={label} className="border border-gray-200 p-2">
                           <p className="text-[10px] uppercase tracking-widest text-[#5a6478]">{label}</p>
-                          <p className="font-bold text-[#01255f]">
+                          <p className="font-bold text-[#026632]">
                             {value}
                             {label === 'Scored' && selectedTotal.penaltiesTaken > 0 && (
                               <span className="text-xs font-normal text-[#5a6478] ml-1">
@@ -520,9 +520,9 @@ export default function PlayerStatsPage() {
                           <tbody>
                             {rows.map(([season, s]) => (
                               <tr key={season} className="border-b border-gray-50 last:border-0">
-                                <td className="py-1.5 pr-3 font-medium text-[#01255f]">{season}</td>
+                                <td className="py-1.5 pr-3 font-medium text-[#026632]">{season}</td>
                                 <td className="py-1.5 pr-2 text-center text-[#5a6478]">{s.apps}</td>
-                                <td className="py-1.5 pr-2 text-center font-bold text-[#01255f]">{s.goals}</td>
+                                <td className="py-1.5 pr-2 text-center font-bold text-[#026632]">{s.goals}</td>
                                 <td className="py-1.5 pr-2 text-center text-[#5a6478]">{s.assists}</td>
                                 <td className="py-1.5 text-center text-[#5a6478]">{s.minutes}&apos;</td>
                               </tr>
@@ -541,7 +541,7 @@ export default function PlayerStatsPage() {
                     <select
                       value={gradesheetSeason}
                       onChange={(e) => setGradesheetSeason(e.target.value)}
-                      className="flex-1 border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-[#01255f]"
+                      className="flex-1 border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:border-[#026632]"
                     >
                       <option value="">All Time</option>
                       {seasons.map((s) => (
@@ -552,7 +552,7 @@ export default function PlayerStatsPage() {
                       href={`/api/admin/analytics/players/${selectedId}/gradesheet?team=${filters.team}${gradesheetSeason ? `&season=${gradesheetSeason}` : ''}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 bg-[#01255f] hover:bg-[#011840] text-white px-4 py-2 text-sm font-bold whitespace-nowrap"
+                      className="inline-flex items-center gap-1.5 bg-[#026632] hover:bg-[#014a24] text-white px-4 py-2 text-sm font-bold whitespace-nowrap"
                     >
                       <Download size={14} />
                       PDF
@@ -564,14 +564,14 @@ export default function PlayerStatsPage() {
           </div>
 
           <div className="bg-white border border-gray-200 p-4 sm:p-5">
-            <h2 className="font-bold text-[#01255f] mb-4">Match Log</h2>
+            <h2 className="font-bold text-[#026632] mb-4">Match Log</h2>
             {!selectedId && <p className="text-sm text-[#5a6478]">Select a player to view their match-by-match stats.</p>}
             {selectedId && loadingLog && <p className="text-sm text-[#5a6478]">Loading player log…</p>}
             {selectedId && !loadingLog && log.length === 0 && <p className="text-sm text-[#5a6478]">No match entries for this player.</p>}
           <ul className="space-y-3">
             {log.map((entry, i) => (
               <li key={`${entry.matchDate}-${i}`} className="border-b border-gray-100 pb-3 text-sm">
-                <div className="flex justify-between font-medium text-[#01255f]">
+                <div className="flex justify-between font-medium text-[#026632]">
                   <span>{entry.matchDate} vs {entry.opponent}</span>
                   <span className={`text-xs px-1.5 py-0.5 ${entry.result === 'W' ? 'bg-green-100 text-green-800' : entry.result === 'L' ? 'bg-red-100 text-red-800' : 'bg-gray-100'}`}>
                     {entry.result}

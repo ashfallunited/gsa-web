@@ -3,7 +3,7 @@ import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
 export const metadata = buildPageMetadata({
   title: 'Get Involved',
   description:
-    'Volunteer or partner with Asfall United. Submit an inquiry to support youth football, education, and community programmes in Monrovia, Liberia.',
+    'Volunteer or partner with Graceland Football Club. Submit an inquiry to support youth football, education, and community programmes in Monrovia, Liberia.',
   path: '/get-involved',
   keywords: SEO_KEYWORDS.involved,
 })

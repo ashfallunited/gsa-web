@@ -14,15 +14,15 @@ type StatCardProps = {
 }
 
 const ACCENT = {
-  navy: 'border-l-[#01255f] bg-white',
-  gold: 'border-l-[#fee11b] bg-white',
+  navy: 'border-l-[#026632] bg-white',
+  gold: 'border-l-[#74f3be] bg-white',
   green: 'border-l-emerald-500 bg-white',
   red: 'border-l-red-500 bg-white',
 }
 
 const ICON_BG = {
-  navy: 'bg-[#01255f]/10 text-[#01255f]',
-  gold: 'bg-[#fee11b]/30 text-[#01255f]',
+  navy: 'bg-[#026632]/10 text-[#026632]',
+  gold: 'bg-[#74f3be]/30 text-[#026632]',
   green: 'bg-emerald-50 text-emerald-700',
   red: 'bg-red-50 text-red-700',
 }
@@ -44,7 +44,7 @@ export default function StatCard({ label, value, sub, icon: Icon, accent = 'navy
       </div>
       <div>
         <p
-          className="text-xl sm:text-2xl lg:text-3xl font-black text-[#01255f] leading-none break-words"
+          className="text-xl sm:text-2xl lg:text-3xl font-black text-[#026632] leading-none break-words"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           {value}

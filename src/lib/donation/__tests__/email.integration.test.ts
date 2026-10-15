@@ -15,7 +15,7 @@ interface MockDonation {
 }
 
 function generateThankYouTemplate(donation: MockDonation): string {
-  const orgName = 'Ashfall United'
+  const orgName = 'Graceland Football Club'
   const orgEmail = 'ashfall@gayduosa.org'
   const mission = 'Your gift helps young people in Monrovia access football, education, and community programmes.'
 
@@ -133,7 +133,7 @@ function testThankYouEmailTemplateGeneration(): void {
   assert(html.includes('Thank You, John!'), 'Template should include personalized greeting')
   assert(html.includes('$100.50'), 'Template should include formatted amount')
   assert(html.includes('REF-12345'), 'Template should include reference ID')
-  assert(html.includes('Ashfall United'), 'Template should include org name')
+  assert(html.includes('Graceland Football Club'), 'Template should include org name')
   assert(
     html.includes('Your gift helps young people in Monrovia'),
     'Template should include mission statement'
@@ -217,11 +217,11 @@ function testCustomEmailBodyConversion(): void {
 
 // Test: Email subject generation
 function testEmailSubjectGeneration(): void {
-  const orgName = 'Ashfall United'
+  const orgName = 'Graceland Football Club'
   const subjects = [
     {
       org: orgName,
-      expected: 'Thank You for Your Donation to Ashfall United',
+      expected: 'Thank You for Your Donation to Graceland Football Club',
     },
   ]
 

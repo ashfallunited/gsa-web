@@ -28,7 +28,7 @@ type FormState = {
 }
 
 const inputClass =
-  'w-full border border-gray-200 bg-white px-4 py-3 text-sm text-[#0d0d0d] placeholder-gray-400 focus:outline-none focus:border-[#01255f] transition-colors'
+  'w-full border border-gray-200 bg-white px-4 py-3 text-sm text-[#0d0d0d] placeholder-gray-400 focus:outline-none focus:border-[#026632] transition-colors'
 
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
@@ -91,7 +91,7 @@ export default function GetInvolvedPage() {
     <>
       <Navbar />
       <main className="pt-16 lg:pt-[70px]">
-        <div className="bg-[#01255f] py-16 sm:py-20">
+        <div className="bg-[#026632] py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
             <span className="label-light">Join Us</span>
             <h1
@@ -101,22 +101,22 @@ export default function GetInvolvedPage() {
               Get Involved
             </h1>
             <p className="text-white/60 text-sm sm:text-base max-w-2xl">
-              Volunteer your time or explore a partnership with Asfall United. Tell us how you would like to
+              Volunteer your time or explore a partnership with Graceland Football Club. Tell us how you would like to
               contribute — we review every submission personally.
             </p>
           </div>
         </div>
 
-        <div className="bg-[#f5f7fc] py-14 sm:py-20">
+        <div className="bg-[#f3f9f5] py-14 sm:py-20">
           <div className="max-w-2xl mx-auto px-5 sm:px-6">
             {status === 'success' ? (
               <div className="bg-white border border-gray-100 p-10 text-center">
-                <div className="w-12 h-12 bg-[#01255f] flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-5 h-5 text-[#fee11b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#026632] flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-5 h-5 text-[#74f3be]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <p className="font-bold text-[#01255f] mb-2">Thank you</p>
+                <p className="font-bold text-[#026632] mb-2">Thank you</p>
                 <p className="text-sm text-[#5a6478]">We have received your inquiry and will respond shortly.</p>
                 <button
                   type="button"
@@ -205,7 +205,7 @@ export default function GetInvolvedPage() {
                         value={form.proposedCollaboration}
                         onChange={set('proposedCollaboration')}
                         className={`${inputClass} resize-none`}
-                        placeholder="How would you like to work with Asfall United?"
+                        placeholder="How would you like to work with Graceland Football Club?"
                       />
                     </div>
                   </>
@@ -251,7 +251,7 @@ export default function GetInvolvedPage() {
                         ))}
                       </select>
                       {form.skills.length > 0 && (
-                        <p className="text-xs text-[#01255f] mt-2 font-medium">
+                        <p className="text-xs text-[#026632] mt-2 font-medium">
                           Selected: {form.skills.join(' · ')}
                         </p>
                       )}
@@ -278,7 +278,7 @@ export default function GetInvolvedPage() {
                     className={`${inputClass} resize-none`}
                     placeholder={
                       isVolunteer
-                        ? 'Why do you want to volunteer with Asfall United?'
+                        ? 'Why do you want to volunteer with Graceland Football Club?'
                         : 'Tell us about your organisation and goals'
                     }
                   />
@@ -289,14 +289,14 @@ export default function GetInvolvedPage() {
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full bg-[#01255f] hover:bg-[#011840] disabled:opacity-60 text-white py-3.5 text-sm font-bold tracking-wide"
+                  className="w-full bg-[#026632] hover:bg-[#014a24] disabled:opacity-60 text-white py-3.5 text-sm font-bold tracking-wide"
                 >
                   {status === 'loading' ? 'Submitting…' : 'Submit inquiry'}
                 </button>
 
                 <p className="text-xs text-[#5a6478] text-center">
                   For general questions, use our{' '}
-                  <a href="/#contact" className="text-[#01255f] font-bold hover:underline">
+                  <a href="/#contact" className="text-[#026632] font-bold hover:underline">
                     contact form
                   </a>
                   .

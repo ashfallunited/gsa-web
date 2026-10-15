@@ -34,7 +34,7 @@ export default function AdminAmbassadors() {
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
             Ambassadors
           </h1>
           <p className="text-[#5a6478] text-sm mt-1">{ambassadors.length} ambassadors</p>
@@ -42,7 +42,7 @@ export default function AdminAmbassadors() {
         {!adding && !editing && (
           <button
             onClick={() => setAdding(true)}
-            className="inline-flex items-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold transition-colors"
+            className="inline-flex items-center gap-2 bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632] px-5 py-2.5 text-sm font-bold transition-colors"
           >
             <Plus size={16} />
             Add Ambassador
@@ -52,7 +52,7 @@ export default function AdminAmbassadors() {
 
       {(adding || editing) && (
         <div className="mb-8 max-w-2xl">
-          <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest mb-4">
+          <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest mb-4">
             {editing ? 'Edit Ambassador' : 'New Ambassador'}
           </h2>
           <MemberEditor
@@ -81,8 +81,8 @@ export default function AdminAmbassadors() {
 
       {!loading && ambassadors.length === 0 && !adding && (
         <div className="bg-white border border-dashed border-gray-300 p-12 text-center">
-          <p className="text-[#01255f] font-bold mb-2">No ambassadors yet</p>
-          <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-[#fee11b] text-[#01255f] px-5 py-2 text-sm font-bold">
+          <p className="text-[#026632] font-bold mb-2">No ambassadors yet</p>
+          <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-[#74f3be] text-[#026632] px-5 py-2 text-sm font-bold">
             <Plus size={14} />
             Add first ambassador
           </button>
@@ -94,7 +94,7 @@ export default function AdminAmbassadors() {
           {ambassadors.map((a) => (
             <div key={a.id} className="group bg-white border border-gray-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
               {/* Photo */}
-              <div className="relative h-44 sm:h-52 bg-[#f5f7fc] overflow-hidden shrink-0">
+              <div className="relative h-44 sm:h-52 bg-[#f3f9f5] overflow-hidden shrink-0">
                 {a.image ? (
                   <img
                     src={a.image}
@@ -104,22 +104,22 @@ export default function AdminAmbassadors() {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-6xl font-black text-[#01255f]/10" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <span className="text-6xl font-black text-[#026632]/10" style={{ fontFamily: 'var(--font-heading)' }}>
                       {a.name.charAt(0)}
                     </span>
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#01255f]/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#026632]/60 via-transparent to-transparent" />
               </div>
 
               {/* Info */}
               <div className="p-3 sm:p-4 flex-1">
-                <p className="font-black text-[#01255f] text-sm leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                <p className="font-black text-[#026632] text-sm leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
                   {a.name}
                 </p>
                 <p className="text-[#5a6478] text-xs mt-0.5 line-clamp-1">{a.title}</p>
                 {a.sport && (
-                  <span className="mt-1.5 inline-block text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 bg-[#fee11b] text-[#01255f]">
+                  <span className="mt-1.5 inline-block text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 bg-[#74f3be] text-[#026632]">
                     {a.sport}
                   </span>
                 )}
@@ -129,7 +129,7 @@ export default function AdminAmbassadors() {
               <div className="flex border-t border-gray-100">
                 <button
                   onClick={() => { setEditing(a); setAdding(false) }}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#01255f] hover:bg-[#01255f] hover:text-white transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#026632] hover:bg-[#026632] hover:text-white transition-colors"
                 >
                   <Pencil size={12} />
                   Edit

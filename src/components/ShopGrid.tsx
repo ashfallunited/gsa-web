@@ -41,9 +41,9 @@ function ProductCard({ product, priority = false }: { product: Product; priority
   }
 
   return (
-    <div className="group bg-white border border-gray-100 hover:border-[#01255f]/20 hover:shadow-lg transition-all duration-200 flex flex-col">
+    <div className="group bg-white border border-gray-100 hover:border-[#026632]/20 hover:shadow-lg transition-all duration-200 flex flex-col">
       {/* Image */}
-      <div className="relative aspect-square overflow-hidden bg-[#f5f7fc]">
+      <div className="relative aspect-square overflow-hidden bg-[#f3f9f5]">
         <Image
           src={product.image || PLACEHOLDER}
           alt={product.name}
@@ -54,13 +54,13 @@ function ProductCard({ product, priority = false }: { product: Product; priority
         />
         {!product.available && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="bg-[#01255f] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5">
+            <span className="bg-[#026632] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5">
               Sold Out
             </span>
           </div>
         )}
         <div className="absolute top-2 left-2">
-          <span className="bg-[#01255f] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5">
+          <span className="bg-[#026632] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5">
             {product.category}
           </span>
         </div>
@@ -69,7 +69,7 @@ function ProductCard({ product, priority = false }: { product: Product; priority
       {/* Details */}
       <div className="p-3 sm:p-4 flex flex-col flex-1">
         <h3
-          className="font-bold text-[#01255f] text-xs sm:text-sm leading-tight mb-1 line-clamp-2"
+          className="font-bold text-[#026632] text-xs sm:text-sm leading-tight mb-1 line-clamp-2"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           {product.name}
@@ -79,7 +79,7 @@ function ProductCard({ product, priority = false }: { product: Product; priority
         )}
 
         <span
-          className="text-[#01255f] font-black text-sm sm:text-base mt-auto mb-3"
+          className="text-[#026632] font-black text-sm sm:text-base mt-auto mb-3"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           ${product.price.toFixed(2)}
@@ -92,7 +92,7 @@ function ProductCard({ product, priority = false }: { product: Product; priority
             added
               ? 'bg-green-500 text-white'
               : canAdd
-              ? 'bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f]'
+              ? 'bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632]'
               : 'bg-gray-100 text-gray-400 cursor-not-allowed'
           }`}
         >
@@ -120,8 +120,8 @@ export default function ShopGrid({ products }: { products: Product[] }) {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all ${
                 activeCategory === cat
-                  ? 'bg-[#fee11b] text-[#01255f]'
-                  : 'bg-white border border-gray-200 text-[#5a6478] hover:border-[#01255f] hover:text-[#01255f]'
+                  ? 'bg-[#74f3be] text-[#026632]'
+                  : 'bg-white border border-gray-200 text-[#5a6478] hover:border-[#026632] hover:text-[#026632]'
               }`}
             >
               {cat}

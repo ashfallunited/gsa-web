@@ -7,7 +7,7 @@ type FormState = { firstName: string; lastName: string; phone: string; email: st
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
 const inputClass =
-  'w-full border border-gray-200 bg-white px-4 py-3 text-sm text-[#0d0d0d] placeholder-gray-400 focus:outline-none focus:border-[#01255f] transition-colors'
+  'w-full border border-gray-200 bg-white px-4 py-3 text-sm text-[#0d0d0d] placeholder-gray-400 focus:outline-none focus:border-[#026632] transition-colors'
 
 export default function Contact() {
   const [form, setForm] = useState<FormState>({ firstName: '', lastName: '', phone: '', email: '', message: '' })
@@ -47,20 +47,20 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-12 sm:py-16 lg:py-20 bg-[#f5f7fc]">
+    <section id="contact" className="py-12 sm:py-16 lg:py-20 bg-[#f3f9f5]">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
 
         <div className="mb-7 sm:mb-10">
           <span className="label">Get In Touch</span>
           <h2
-            className="heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#01255f] leading-tight"
+            className="heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#026632] leading-tight"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Contact Us
           </h2>
           <p className="mt-5 text-[#5a6478] text-sm sm:text-base max-w-xl">
             For general enquiries use this form. To volunteer or explore a partnership, visit our{' '}
-            <a href="/get-involved" className="text-[#01255f] font-semibold hover:underline">
+            <a href="/get-involved" className="text-[#026632] font-semibold hover:underline">
               Get Involved
             </a>{' '}
             page.
@@ -71,19 +71,19 @@ export default function Contact() {
 
           <div className="bg-white border border-gray-100 p-6 sm:p-8 lg:p-10">
             <h3
-              className="font-bold text-[#01255f] text-base sm:text-lg mb-5 sm:mb-6"
+              className="font-bold text-[#026632] text-base sm:text-lg mb-5 sm:mb-6"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               Send a Message
             </h3>
             {formStatus === 'success' ? (
               <div className="py-10 sm:py-12 text-center">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#01255f] flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#fee11b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#026632] flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#74f3be]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <p className="font-bold text-[#01255f] mb-1 text-sm sm:text-base">Message received</p>
+                <p className="font-bold text-[#026632] mb-1 text-sm sm:text-base">Message received</p>
                 <p className="text-xs sm:text-sm text-[#5a6478]">We will be in touch shortly.</p>
                 <button onClick={() => setFormStatus('idle')} className="mt-4 text-xs text-[#5a6478] underline">
                   Send another message
@@ -119,7 +119,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={formStatus === 'loading'}
-                  className="w-full bg-[#01255f] hover:bg-[#011840] active:scale-95 disabled:opacity-60 text-white py-3.5 text-sm font-bold tracking-wide transition-all"
+                  className="w-full bg-[#026632] hover:bg-[#014a24] active:scale-95 disabled:opacity-60 text-white py-3.5 text-sm font-bold tracking-wide transition-all"
                 >
                   {formStatus === 'loading' ? 'Sending...' : 'Send Message'}
                 </button>
@@ -128,7 +128,7 @@ export default function Contact() {
           </div>
 
           <div className="space-y-4 sm:space-y-6">
-            <div className="bg-[#01255f] p-6 sm:p-8 text-white">
+            <div className="bg-[#026632] p-6 sm:p-8 text-white">
               <h3
                 className="font-bold text-sm sm:text-base mb-5 sm:mb-6"
                 style={{ fontFamily: 'var(--font-heading)' }}
@@ -145,7 +145,7 @@ export default function Contact() {
                     key={item.label}
                     className="grid grid-cols-[minmax(5.75rem,auto)_1fr] gap-x-4 gap-y-1 items-baseline"
                   >
-                    <dt className="text-[10px] uppercase tracking-[0.12em] font-bold text-[#fee11b] whitespace-nowrap">
+                    <dt className="text-[10px] uppercase tracking-[0.12em] font-bold text-[#74f3be] whitespace-nowrap">
                       {item.label}
                     </dt>
                     <dd className="min-w-0 m-0">
@@ -169,7 +169,7 @@ export default function Contact() {
 
             <div className="bg-white border border-gray-100 p-6 sm:p-8">
               <h3
-                className="font-bold text-[#01255f] text-sm sm:text-base mb-2"
+                className="font-bold text-[#026632] text-sm sm:text-base mb-2"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Stay Updated
@@ -178,7 +178,7 @@ export default function Contact() {
                 Subscribe for programme updates, stories from Monrovia, and impact reports.
               </p>
               {nlStatus === 'success' ? (
-                <p className="text-sm font-semibold text-[#01255f]">Subscribed. Thank you.</p>
+                <p className="text-sm font-semibold text-[#026632]">Subscribed. Thank you.</p>
               ) : (
                 <form onSubmit={submitNl} className="flex gap-0">
                   <input
@@ -192,7 +192,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={nlStatus === 'loading'}
-                    className="bg-[#fee11b] hover:bg-[#e5ca10] active:scale-95 disabled:opacity-60 text-[#01255f] px-4 sm:px-5 text-xs sm:text-sm font-bold tracking-wide transition-all flex-shrink-0"
+                    className="bg-[#74f3be] hover:bg-[#4fdca3] active:scale-95 disabled:opacity-60 text-[#026632] px-4 sm:px-5 text-xs sm:text-sm font-bold tracking-wide transition-all flex-shrink-0"
                   >
                     {nlStatus === 'loading' ? '...' : 'Join'}
                   </button>
@@ -204,13 +204,13 @@ export default function Contact() {
                 <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
                   <a
                     href="/donate"
-                    className="inline-flex items-center justify-center min-h-11 px-6 py-2.5 text-xs sm:text-sm font-bold tracking-wide bg-[#01255f] hover:bg-[#011840] text-white transition-colors"
+                    className="inline-flex items-center justify-center min-h-11 px-6 py-2.5 text-xs sm:text-sm font-bold tracking-wide bg-[#026632] hover:bg-[#014a24] text-white transition-colors"
                   >
                     Donate
                   </a>
                   <a
                     href="/get-involved"
-                    className="inline-flex items-center justify-center min-h-11 px-6 py-2.5 text-xs sm:text-sm font-bold tracking-wide border-2 border-[#01255f] text-[#01255f] hover:bg-[#01255f] hover:text-white transition-colors whitespace-nowrap"
+                    className="inline-flex items-center justify-center min-h-11 px-6 py-2.5 text-xs sm:text-sm font-bold tracking-wide border-2 border-[#026632] text-[#026632] hover:bg-[#026632] hover:text-white transition-colors whitespace-nowrap"
                   >
                     Volunteer or partner
                   </a>

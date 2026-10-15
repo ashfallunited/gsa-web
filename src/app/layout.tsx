@@ -34,10 +34,10 @@ export const metadata: Metadata = {
   },
   description: ORG_DESCRIPTION,
   keywords: [
-    'Ashfall United',
-    'Ashfall United Football Club',
-    'Ashfall United Youth Development',
-    'Ashfall United Football Academy',
+    'Graceland Football Club',
+    'Graceland FC',
+    'Graceland FC Youth Development',
+    'Graceland FC Football Academy',
     'football club Liberia',
     'youth sport Monrovia',
     'Liberia football',
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [{ url: '/favicon.png', type: 'image/png' }],
-    apple: [{ url: '/favicon.png', type: 'image/png' }],
+    apple: [{ url: '/apple-touch-icon.png', type: 'image/png' }],
     shortcut: '/favicon.png',
   },
   verification: {},
@@ -91,7 +91,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="shortcut icon" href="/favicon.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         {/* Preconnect to image CDN (Supabase storage) — eliminates TCP handshake latency for all images */}
         <link rel="preconnect" href="https://fckzyvkbthqvmmjpvfxr.supabase.co" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://fckzyvkbthqvmmjpvfxr.supabase.co" />

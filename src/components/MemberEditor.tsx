@@ -37,7 +37,7 @@ type Props = (TeamProps | AmbassadorProps) & { onSaved: () => void; onCancel: ()
 const emptyTeam: MemberData = { name: '', role: '', image: '', order: 99, section: 'staff' }
 const emptyAmbassador: AmbassadorData = { name: '', title: '', sport: '', bio: '', image: '', order: 99 }
 
-const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f] transition-colors'
+const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#026632] transition-colors'
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
 export default function MemberEditor(props: Props) {
@@ -163,14 +163,14 @@ export default function MemberEditor(props: Props) {
         <button
           onClick={save}
           disabled={saving}
-          className="bg-[#01255f] hover:bg-[#011840] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50"
+          className="bg-[#026632] hover:bg-[#014a24] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50"
         >
           {saving ? 'Saving…' : props.memberId ? 'Update' : 'Add'}
         </button>
         <button
           onClick={props.onCancel}
           disabled={saving}
-          className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#01255f] hover:text-[#01255f] transition-colors disabled:opacity-50"
+          className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#026632] hover:text-[#026632] transition-colors disabled:opacity-50"
         >
           Cancel
         </button>

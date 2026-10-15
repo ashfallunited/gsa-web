@@ -67,13 +67,13 @@ export default function Navbar() {
   const mobileLinkClass = 'flex w-full items-center text-left text-white/70 hover:text-white px-2 py-3 text-sm font-medium tracking-wide border-b border-white/5 last:border-0'
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#01255f] shadow-xl' : 'bg-[#01255f]'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#026632] shadow-xl' : 'bg-[#026632]'}`}>
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
         <div className="flex items-center justify-between h-16 lg:h-[70px]">
 
           <Link href="/" className="flex items-center" aria-label={`${ORG_NAME} home`}>
             <div className="relative h-9 w-36 sm:h-10 sm:w-44">
-              <Image src="/Logo.png" alt={ORG_NAME} fill className="object-contain object-left" priority sizes="(max-width: 640px) 144px, 176px" />
+              <Image src="/gl-crest.png" alt={ORG_NAME} fill className="object-contain object-left" priority sizes="(max-width: 640px) 144px, 176px" />
             </div>
           </Link>
 
@@ -109,7 +109,7 @@ export default function Navbar() {
                       key={item.href}
                       href={item.href}
                       onClick={(e) => handleAboutSectionClick(e, item.href)}
-                      className="block w-full text-left px-5 py-2.5 text-[13px] font-medium text-[#01255f] hover:bg-[#fee11b] transition-colors"
+                      className="block w-full text-left px-5 py-2.5 text-[13px] font-medium text-[#026632] hover:bg-[#74f3be] transition-colors"
                     >
                       {item.label}
                     </Link>
@@ -141,7 +141,7 @@ export default function Navbar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setTeamOpen(false)}
-                      className="block px-5 py-2.5 text-[13px] font-medium text-[#01255f] hover:bg-[#fee11b] transition-colors"
+                      className="block px-5 py-2.5 text-[13px] font-medium text-[#026632] hover:bg-[#74f3be] transition-colors"
                     >
                       {item.label}
                     </Link>
@@ -157,7 +157,7 @@ export default function Navbar() {
 
             <Link
               href="/donate"
-              className="ml-5 bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-7 py-3 text-[15px] font-black tracking-wide transition-colors uppercase"
+              className="ml-5 bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632] px-7 py-3 text-[15px] font-black tracking-wide transition-colors uppercase"
             >
               Donate
             </Link>
@@ -245,7 +245,7 @@ export default function Navbar() {
             <Link
               href="/donate"
               onClick={() => setMenuOpen(false)}
-              className="mt-4 block text-center bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-6 py-4 text-base font-black tracking-wide uppercase"
+              className="mt-4 block text-center bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632] px-6 py-4 text-base font-black tracking-wide uppercase"
             >
               Donate
             </Link>

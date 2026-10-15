@@ -13,7 +13,7 @@ import { buildPageMetadata, SEO_KEYWORDS } from '@/lib/seo'
 export const metadata = buildPageMetadata({
   title: 'Management',
   description:
-    'Meet the board, management, and coaching staff leading Asfall United programmes in Monrovia, Liberia.',
+    'Meet the board, management, and coaching staff leading Graceland Football Club programmes in Monrovia, Liberia.',
   path: '/team/management',
   keywords: SEO_KEYWORDS.team,
 })
@@ -36,7 +36,7 @@ function MemberCard({
       </div>
       <div className="p-5">
         <h3
-          className="font-bold text-[#01255f] text-base"
+          className="font-bold text-[#026632] text-base"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           {person.name}
@@ -64,7 +64,7 @@ export default async function ManagementPage() {
     <>
       <Navbar />
       <main className="pt-16 lg:pt-[70px]">
-        <div className="bg-[#01255f] py-16 sm:py-20">
+        <div className="bg-[#026632] py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
             <span className="label-light">Our Club</span>
             <h1
@@ -74,12 +74,12 @@ export default async function ManagementPage() {
               Management
             </h1>
             <p className="text-white/60 text-sm sm:text-base max-w-lg">
-              The leadership team guiding Asfall United on and off the pitch.
+              The leadership team guiding Graceland Football Club on and off the pitch.
             </p>
           </div>
         </div>
 
-        <div className="bg-[#f5f7fc] py-14 sm:py-20">
+        <div className="bg-[#f3f9f5] py-14 sm:py-20">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 space-y-16 sm:space-y-20">
             {!hasStaff && !hasBoard ? (
               <p className="text-center text-[#5a6478] text-sm py-12">Staff profiles coming soon.</p>
@@ -88,7 +88,7 @@ export default async function ManagementPage() {
                 {hasStaff && (
                   <section>
                     <h2
-                      className="text-xl sm:text-2xl font-bold text-[#01255f] mb-8"
+                      className="text-xl sm:text-2xl font-bold text-[#026632] mb-8"
                       style={{ fontFamily: 'var(--font-heading)' }}
                     >
                       Coaching &amp; staff
@@ -104,7 +104,7 @@ export default async function ManagementPage() {
                 {hasBoard && (
                   <section>
                     <h2
-                      className="text-xl sm:text-2xl font-bold text-[#01255f] mb-8"
+                      className="text-xl sm:text-2xl font-bold text-[#026632] mb-8"
                       style={{ fontFamily: 'var(--font-heading)' }}
                     >
                       Board of directors

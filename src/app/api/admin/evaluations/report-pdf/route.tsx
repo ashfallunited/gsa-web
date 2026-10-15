@@ -11,34 +11,34 @@ import { computeMonthReport, computeWeekReport, computeYearReport } from '@/lib/
 import { isoWeekKeyToMonday, monthRange, sundayOf, yearRange } from '@/lib/evaluations/date-utils'
 import { normalizeTeamSlug } from '@/lib/teams'
 
-const NAVY = '#01255f'
-const YELLOW = '#fee11b'
+const GREEN = '#026632'
+const MINT = '#74f3be'
 const GREY = '#5a6478'
-const LIGHT = '#f5f7fc'
+const LIGHT = '#f3f9f5'
 
 const styles = StyleSheet.create({
   page: { fontFamily: 'Helvetica', backgroundColor: '#ffffff', padding: 0 },
-  header: { backgroundColor: NAVY, padding: 28, flexDirection: 'row', alignItems: 'center', gap: 20 },
+  header: { backgroundColor: GREEN, padding: 28, flexDirection: 'row', alignItems: 'center', gap: 20 },
   headerText: { flex: 1 },
   playerName: { fontSize: 22, fontFamily: 'Helvetica-Bold', color: '#ffffff', letterSpacing: 0.5 },
   playerSub: { fontSize: 10, color: 'rgba(255,255,255,0.7)', marginTop: 4 },
   avatar: { width: 72, height: 72, borderRadius: 36, backgroundColor: 'rgba(255,255,255,0.15)' },
   avatarInitials: { width: 72, height: 72, backgroundColor: 'rgba(255,255,255,0.15)', alignItems: 'center', justifyContent: 'center' },
-  avatarInitialsText: { fontSize: 22, fontFamily: 'Helvetica-Bold', color: YELLOW },
-  jerseyBadge: { backgroundColor: YELLOW, paddingHorizontal: 10, paddingVertical: 4, marginTop: 8, alignSelf: 'flex-start' },
-  jerseyBadgeText: { fontSize: 11, fontFamily: 'Helvetica-Bold', color: NAVY },
+  avatarInitialsText: { fontSize: 22, fontFamily: 'Helvetica-Bold', color: MINT },
+  jerseyBadge: { backgroundColor: MINT, paddingHorizontal: 10, paddingVertical: 4, marginTop: 8, alignSelf: 'flex-start' },
+  jerseyBadgeText: { fontSize: 11, fontFamily: 'Helvetica-Bold', color: GREEN },
   body: { padding: 24 },
   sectionTitle: { fontSize: 9, fontFamily: 'Helvetica-Bold', color: GREY, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 10, marginTop: 20 },
   statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  statBox: { width: '22%', backgroundColor: LIGHT, padding: 10, borderLeft: `3px solid ${YELLOW}` },
+  statBox: { width: '22%', backgroundColor: LIGHT, padding: 10, borderLeft: `3px solid ${MINT}` },
   statLabel: { fontSize: 8, color: GREY, textTransform: 'uppercase', letterSpacing: 1 },
-  statValue: { fontSize: 18, fontFamily: 'Helvetica-Bold', color: NAVY, marginTop: 2 },
+  statValue: { fontSize: 18, fontFamily: 'Helvetica-Bold', color: GREEN, marginTop: 2 },
   table: { marginTop: 8 },
-  tableHeader: { flexDirection: 'row', backgroundColor: NAVY, paddingVertical: 6, paddingHorizontal: 8 },
+  tableHeader: { flexDirection: 'row', backgroundColor: GREEN, paddingVertical: 6, paddingHorizontal: 8 },
   tableHeaderCell: { fontSize: 8, fontFamily: 'Helvetica-Bold', color: '#ffffff', letterSpacing: 0.8, textTransform: 'uppercase' },
   tableRow: { flexDirection: 'row', paddingVertical: 5, paddingHorizontal: 8, borderBottom: '1px solid #e5e7eb' },
   tableRowAlt: { flexDirection: 'row', paddingVertical: 5, paddingHorizontal: 8, backgroundColor: LIGHT, borderBottom: '1px solid #e5e7eb' },
-  tableCell: { fontSize: 8, color: NAVY },
+  tableCell: { fontSize: 8, color: GREEN },
   tableCellGrey: { fontSize: 8, color: GREY },
   footer: { position: 'absolute', bottom: 16, left: 24, right: 24, flexDirection: 'row', justifyContent: 'space-between', borderTop: '1px solid #e5e7eb', paddingTop: 8 },
   footerText: { fontSize: 8, color: GREY },
@@ -63,7 +63,7 @@ function EvaluationReportDocument({
   const meta = categoryMetaFor(player.role)
 
   return (
-    <Document title={`${player.name} — Evaluation Report`} author="Ashfall United">
+    <Document title={`${player.name} — Evaluation Report`} author="Graceland Football Club">
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           {player.image ? (
@@ -157,9 +157,9 @@ function EvaluationReportDocument({
             <>
               <Text style={styles.sectionTitle}>Coach Comments</Text>
               {report.comments.map((c) => (
-                <View key={c.evaluationId} style={{ marginBottom: 8, borderLeft: `2px solid ${YELLOW}`, paddingLeft: 8 }}>
+                <View key={c.evaluationId} style={{ marginBottom: 8, borderLeft: `2px solid ${MINT}`, paddingLeft: 8 }}>
                   <Text style={{ fontSize: 8, color: GREY, marginBottom: 2 }}>{c.date} · {c.coachName}</Text>
-                  <Text style={{ fontSize: 9, color: NAVY }}>{c.comment}</Text>
+                  <Text style={{ fontSize: 9, color: GREEN }}>{c.comment}</Text>
                 </View>
               ))}
             </>
@@ -167,7 +167,7 @@ function EvaluationReportDocument({
         </View>
 
         <View style={styles.footer} fixed>
-          <Text style={styles.footerText}>Ashfall United — Player Evaluation Report</Text>
+          <Text style={styles.footerText}>Graceland Football Club — Player Evaluation Report</Text>
           <Text style={styles.footerText}>{new Date().toLocaleDateString('en-GB')}</Text>
         </View>
       </Page>

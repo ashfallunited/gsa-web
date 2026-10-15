@@ -4,7 +4,7 @@ export default function SimpleBarChart({
   data,
   labelKey,
   valueKey,
-  color = '#01255f',
+  color = '#026632',
 }: {
   data: Record<string, string | number>[]
   labelKey: string
@@ -25,7 +25,7 @@ export default function SimpleBarChart({
         return (
           <div key={String(item[labelKey])}>
             <div className="flex justify-between text-xs mb-1">
-              <span className="font-medium text-[#01255f]">{String(item[labelKey])}</span>
+              <span className="font-medium text-[#026632]">{String(item[labelKey])}</span>
               <span className="text-[#5a6478]">{value}</span>
             </div>
             <div className="h-2 bg-gray-100 rounded-sm overflow-hidden">

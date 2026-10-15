@@ -62,13 +62,13 @@ export default function DonationsAdminPage() {
   return (
     <div className="space-y-8 p-6 sm:p-10">
       <div>
-        <h1 className="text-3xl font-bold text-[#01255f] mb-2">Donations</h1>
+        <h1 className="text-3xl font-bold text-[#026632] mb-2">Donations</h1>
         <p className="text-[#5a6478]">Manage donor records and donations</p>
       </div>
 
       {/* Filters */}
       <div className="bg-white border border-gray-200 p-6 space-y-4">
-        <h2 className="font-bold text-[#01255f]">Filters</h2>
+        <h2 className="font-bold text-[#026632]">Filters</h2>
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-bold text-[#5a6478] mb-2">Status</label>
@@ -99,7 +99,7 @@ export default function DonationsAdminPage() {
         </div>
         <button
           onClick={handleExport}
-          className="bg-[#01255f] text-white px-4 py-2 text-sm font-bold rounded hover:bg-[#011840]"
+          className="bg-[#026632] text-white px-4 py-2 text-sm font-bold rounded hover:bg-[#014a24]"
         >
           Export to CSV
         </button>
@@ -110,7 +110,7 @@ export default function DonationsAdminPage() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-[#f5f7fc] border-b border-gray-200">
+              <tr className="bg-[#f3f9f5] border-b border-gray-200">
                 <th className="px-6 py-3 text-left text-xs font-bold text-[#5a6478] uppercase">Donor</th>
                 <th className="px-6 py-3 text-left text-xs font-bold text-[#5a6478] uppercase">Email</th>
                 <th className="px-6 py-3 text-left text-xs font-bold text-[#5a6478] uppercase">Country</th>
@@ -136,13 +136,13 @@ export default function DonationsAdminPage() {
                 </tr>
               ) : (
                 donations.map((donation) => (
-                  <tr key={donation.id} className="hover:bg-[#f5f7fc]">
-                    <td className="px-6 py-4 text-sm text-[#01255f] font-medium">
+                  <tr key={donation.id} className="hover:bg-[#f3f9f5]">
+                    <td className="px-6 py-4 text-sm text-[#026632] font-medium">
                       {donation.firstName} {donation.lastName}
                     </td>
                     <td className="px-6 py-4 text-sm text-[#5a6478]">{donation.email}</td>
                     <td className="px-6 py-4 text-sm text-[#5a6478]">{donation.country}</td>
-                    <td className="px-6 py-4 text-sm text-[#01255f] font-bold">
+                    <td className="px-6 py-4 text-sm text-[#026632] font-bold">
                       ${donation.amountUsd.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 text-sm text-[#5a6478] capitalize">{donation.paymentMethod}</td>
@@ -167,7 +167,7 @@ export default function DonationsAdminPage() {
                     <td className="px-6 py-4 text-sm">
                       <Link
                         href={`/admin/donations/${donation.id}`}
-                        className="text-[#01255f] hover:underline font-bold"
+                        className="text-[#026632] hover:underline font-bold"
                       >
                         View
                       </Link>

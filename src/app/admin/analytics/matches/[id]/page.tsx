@@ -279,12 +279,12 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
   return (
     <div className="p-4 sm:p-8 lg:p-10 max-w-6xl mx-auto">
       <div className="mb-6">
-        <Link href="/admin/analytics/matches" className="text-xs text-[#5a6478] hover:text-[#01255f] mb-2 inline-block">
+        <Link href="/admin/analytics/matches" className="text-xs text-[#5a6478] hover:text-[#026632] mb-2 inline-block">
           ← Back to matches
         </Link>
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+            <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
               vs {match.opponent}
             </h1>
             <p className="text-sm text-[#5a6478] mt-1">{match.date} · {match.competition} · {match.season}</p>
@@ -295,10 +295,10 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            <a href={`/api/admin/analytics/export?type=match-report&matchId=${id}`} className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-2 text-xs font-bold text-[#01255f] hover:bg-gray-50">
+            <a href={`/api/admin/analytics/export?type=match-report&matchId=${id}`} className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-2 text-xs font-bold text-[#026632] hover:bg-gray-50">
               <Download size={14} /> Export
             </a>
-            <button type="button" onClick={duplicate} className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-2 text-xs font-bold text-[#01255f] hover:bg-gray-50">
+            <button type="button" onClick={duplicate} className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-2 text-xs font-bold text-[#026632] hover:bg-gray-50">
               <Copy size={14} /> Duplicate
             </button>
             {!isLocked && (
@@ -314,7 +314,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
       {message && <div className="bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-3 mb-4">{message}</div>}
 
       <div className="bg-white border border-gray-200 p-4 sm:p-6 space-y-4 mb-6">
-        <h2 className="font-bold text-[#01255f]">Match Details</h2>
+        <h2 className="font-bold text-[#026632]">Match Details</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Team</label>
@@ -396,21 +396,21 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
             placeholder="Write a match report — key moments, standout performances, tactical notes, images…"
           />
         </div>
-        <button type="button" onClick={saveMatch} disabled={saving} className="inline-flex items-center gap-2 bg-[#01255f] text-white px-5 py-2 text-sm font-bold disabled:opacity-50">
+        <button type="button" onClick={saveMatch} disabled={saving} className="inline-flex items-center gap-2 bg-[#026632] text-white px-5 py-2 text-sm font-bold disabled:opacity-50">
           <Save size={14} /> Save Match
         </button>
       </div>
 
       <div className="bg-white border border-gray-200 p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-          <h2 className="font-bold text-[#01255f]">Player Stats</h2>
+          <h2 className="font-bold text-[#026632]">Player Stats</h2>
           <div className="flex flex-wrap gap-2">
             {!isLocked && (
               <>
-                <button type="button" onClick={() => setShowAddPlayer((v) => !v)} className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-2 text-xs font-bold text-[#01255f]">
+                <button type="button" onClick={() => setShowAddPlayer((v) => !v)} className="inline-flex items-center gap-1.5 border border-gray-200 px-3 py-2 text-xs font-bold text-[#026632]">
                   <UserPlus size={14} /> Add Player
                 </button>
-                <button type="button" onClick={saveStats} disabled={saving} className="inline-flex items-center gap-2 bg-[#fee11b] text-[#01255f] px-4 py-2 text-sm font-bold disabled:opacity-50">
+                <button type="button" onClick={saveStats} disabled={saving} className="inline-flex items-center gap-2 bg-[#74f3be] text-[#026632] px-4 py-2 text-sm font-bold disabled:opacity-50">
                   <Save size={14} /> Save Stats
                 </button>
               </>
@@ -419,8 +419,8 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
         </div>
 
         {showAddPlayer && !isLocked && (
-          <div className="border border-dashed border-[#01255f]/30 p-4 mb-4 space-y-3 bg-[#01255f]/5">
-            <p className="text-sm font-bold text-[#01255f]">Quick add player to this squad</p>
+          <div className="border border-dashed border-[#026632]/30 p-4 mb-4 space-y-3 bg-[#026632]/5">
+            <p className="text-sm font-bold text-[#026632]">Quick add player to this squad</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <input type="text" placeholder="Name" value={newPlayer.name} onChange={(e) => setNewPlayer((p) => ({ ...p, name: e.target.value }))} className={inputClass} />
               <input type="number" placeholder="#" min={0} max={99} value={newPlayer.number} onChange={(e) => setNewPlayer((p) => ({ ...p, number: Number(e.target.value) }))} className={inputClass} />
@@ -431,7 +431,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
                 <option value="forward">Forward</option>
               </select>
             </div>
-            <button type="button" onClick={addPlayer} disabled={saving} className="inline-flex items-center gap-1.5 bg-[#01255f] text-white px-4 py-2 text-xs font-bold">
+            <button type="button" onClick={addPlayer} disabled={saving} className="inline-flex items-center gap-1.5 bg-[#026632] text-white px-4 py-2 text-xs font-bold">
               <Plus size={14} /> Save Player
             </button>
           </div>
@@ -439,12 +439,12 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
 
         {players.length === 0 && (
           <div className="text-center py-10 border border-dashed border-gray-300">
-            <p className="font-bold text-[#01255f] mb-2">No players in this squad</p>
+            <p className="font-bold text-[#026632] mb-2">No players in this squad</p>
             <p className="text-sm text-[#5a6478] mb-4">Add players before entering match stats.</p>
-            <Link href="/admin/analytics/squad" className="inline-flex items-center gap-2 bg-[#fee11b] text-[#01255f] px-4 py-2 text-sm font-bold mr-2">
+            <Link href="/admin/analytics/squad" className="inline-flex items-center gap-2 bg-[#74f3be] text-[#026632] px-4 py-2 text-sm font-bold mr-2">
               Manage Squad
             </Link>
-            <button type="button" onClick={() => setShowAddPlayer(true)} className="inline-flex items-center gap-2 border border-[#01255f] text-[#01255f] px-4 py-2 text-sm font-bold">
+            <button type="button" onClick={() => setShowAddPlayer(true)} className="inline-flex items-center gap-2 border border-[#026632] text-[#026632] px-4 py-2 text-sm font-bold">
               Quick Add
             </button>
           </div>
@@ -482,7 +482,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
             type="button"
             onClick={saveStats}
             disabled={saving}
-            className="flex-1 flex items-center justify-center gap-2 bg-[#fee11b] text-[#01255f] py-3 text-sm font-black disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-2 bg-[#74f3be] text-[#026632] py-3 text-sm font-black disabled:opacity-50"
           >
             <Save size={15} /> {saving ? 'Saving…' : 'Save Stats'}
           </button>
@@ -490,7 +490,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
             type="button"
             onClick={saveMatch}
             disabled={saving}
-            className="flex items-center justify-center gap-2 bg-[#01255f] text-white px-4 py-3 text-sm font-bold disabled:opacity-50"
+            className="flex items-center justify-center gap-2 bg-[#026632] text-white px-4 py-3 text-sm font-bold disabled:opacity-50"
           >
             <Save size={15} />
           </button>

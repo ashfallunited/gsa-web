@@ -32,18 +32,18 @@ export default function TeamLeaderboard({
               disabled={!onSelect}
               className={`w-full flex items-center gap-2.5 px-2 py-1.5 text-left transition-colors ${
                 onSelect ? 'hover:bg-gray-50 cursor-pointer' : ''
-              } ${selectedPlayerId === e.playerId ? 'bg-[#fee11b]/15' : ''}`}
+              } ${selectedPlayerId === e.playerId ? 'bg-[#74f3be]/15' : ''}`}
             >
               <span className="text-[#5a6478] text-xs w-5 shrink-0 text-center font-medium">{i + 1}</span>
               <PlayerAvatar image={e.playerImage} name={e.playerName} size={26} />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[#01255f] truncate">#{e.playerNumber} {e.playerName}</p>
+                <p className="text-sm font-semibold text-[#026632] truncate">#{e.playerNumber} {e.playerName}</p>
                 <div className="h-1.5 bg-gray-100 rounded-sm overflow-hidden mt-1">
-                  <div className="h-full bg-[#01255f] transition-all duration-500" style={{ width: `${width}%` }} />
+                  <div className="h-full bg-[#026632] transition-all duration-500" style={{ width: `${width}%` }} />
                 </div>
               </div>
               <div className="text-right shrink-0">
-                <p className="text-sm font-bold text-[#01255f]">
+                <p className="text-sm font-bold text-[#026632]">
                   {e.averageTotal}<span className="text-[10px] font-normal text-[#5a6478]">/{maxTotal}</span>
                 </p>
                 <p className="text-[9px] text-[#5a6478]">{e.sessionCount} sess.</p>

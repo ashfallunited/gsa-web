@@ -67,10 +67,10 @@ export default function NewMatchPage() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 max-w-3xl mx-auto">
       <div className="mb-6 sm:mb-8">
-        <Link href="/admin/analytics/matches" className="text-xs text-[#5a6478] hover:text-[#01255f] mb-2 inline-block">
+        <Link href="/admin/analytics/matches" className="text-xs text-[#5a6478] hover:text-[#026632] mb-2 inline-block">
           ← Back to matches
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
           New Match
         </h1>
       </div>
@@ -167,7 +167,7 @@ export default function NewMatchPage() {
             type="button"
             onClick={save}
             disabled={saving}
-            className="bg-[#01255f] hover:bg-[#011840] text-white px-6 py-2.5 text-sm font-bold disabled:opacity-50"
+            className="bg-[#026632] hover:bg-[#014a24] text-white px-6 py-2.5 text-sm font-bold disabled:opacity-50"
           >
             {saving ? 'Creating…' : 'Create Match'}
           </button>

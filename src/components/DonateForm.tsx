@@ -52,7 +52,7 @@ const STEPS: { id: Step; label: string }[] = [
 ]
 
 const inputClass =
-  'w-full border border-gray-200 bg-white px-4 py-3 text-sm text-[#0d0d0d] placeholder-gray-400 focus:outline-none focus:border-[#01255f] transition-colors'
+  'w-full border border-gray-200 bg-white px-4 py-3 text-sm text-[#0d0d0d] placeholder-gray-400 focus:outline-none focus:border-[#026632] transition-colors'
 
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
@@ -293,14 +293,14 @@ export default function DonateForm() {
             <>
               <div className="flex justify-center mb-6">
                 <div className="relative w-14 h-14">
-                  <div className="absolute inset-0 bg-[#01255f] rounded-lg animate-pulse"></div>
+                  <div className="absolute inset-0 bg-[#026632] rounded-lg animate-pulse"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-10 h-10 border-3 border-[#fee11b] border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-10 h-10 border-3 border-[#74f3be] border-t-transparent rounded-full animate-spin"></div>
                   </div>
                 </div>
               </div>
               <h2
-                className="text-2xl font-bold text-[#01255f] mb-2"
+                className="text-2xl font-bold text-[#026632] mb-2"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Processing Payment
@@ -311,17 +311,17 @@ export default function DonateForm() {
             </>
           ) : (
             <>
-              <div className="w-14 h-14 bg-[#01255f] flex items-center justify-center mx-auto mb-6">
-                <Check className="w-7 h-7 text-[#fee11b]" strokeWidth={2.5} />
+              <div className="w-14 h-14 bg-[#026632] flex items-center justify-center mx-auto mb-6">
+                <Check className="w-7 h-7 text-[#74f3be]" strokeWidth={2.5} />
               </div>
               <h2
-                className="text-2xl font-bold text-[#01255f] mb-2"
+                className="text-2xl font-bold text-[#026632] mb-2"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Thank you, {form.firstName}
               </h2>
               <p className="text-sm text-[#5a6478] leading-relaxed mb-6">
-                Your donation of <strong className="text-[#01255f]">{formatUsd(totalUsd)}</strong> has been{' '}
+                Your donation of <strong className="text-[#026632]">{formatUsd(totalUsd)}</strong> has been{' '}
                 {form.paymentMethod === 'mobile' ? 'completed' : 'initiated'}.
                 {form.paymentMethod === 'card' && (
                   <> You'll be redirected to complete your card payment securely.</>
@@ -331,11 +331,11 @@ export default function DonateForm() {
                 )}
               </p>
               <p className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1">Reference</p>
-              <p className="text-lg font-mono font-bold text-[#01255f] mb-8">{referenceId}</p>
+              <p className="text-lg font-mono font-bold text-[#026632] mb-8">{referenceId}</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center w-full max-w-sm mx-auto sm:max-w-none">
                 <Link
                   href="/"
-                  className="bg-[#01255f] hover:bg-[#011840] text-white px-6 py-3 text-sm font-bold tracking-wide"
+                  className="bg-[#026632] hover:bg-[#014a24] text-white px-6 py-3 text-sm font-bold tracking-wide"
                 >
                   Back to home
                 </Link>
@@ -362,7 +362,7 @@ export default function DonateForm() {
                       mobilePhone: '',
                     })
                   }}
-                  className="border border-[#01255f] text-[#01255f] px-6 py-3 text-sm font-bold tracking-wide hover:bg-[#f5f7fc]"
+                  className="border border-[#026632] text-[#026632] px-6 py-3 text-sm font-bold tracking-wide hover:bg-[#f3f9f5]"
                 >
                   Make another gift
                 </button>
@@ -393,9 +393,9 @@ export default function DonateForm() {
                   <div
                     className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
                       i < stepIndex
-                        ? 'bg-[#01255f] text-[#fee11b]'
+                        ? 'bg-[#026632] text-[#74f3be]'
                         : i === stepIndex
-                          ? 'bg-[#fee11b] text-[#01255f]'
+                          ? 'bg-[#74f3be] text-[#026632]'
                           : 'bg-gray-100 text-[#5a6478]'
                     }`}
                   >
@@ -403,7 +403,7 @@ export default function DonateForm() {
                   </div>
                   <span
                     className={`text-[8px] sm:text-[9px] uppercase tracking-wide sm:tracking-wider font-bold text-center leading-tight px-0.5 max-[380px]:hidden sm:block ${
-                      i === stepIndex ? 'text-[#01255f]' : 'text-gray-400'
+                      i === stepIndex ? 'text-[#026632]' : 'text-gray-400'
                     }`}
                   >
                     {s.label}
@@ -419,7 +419,7 @@ export default function DonateForm() {
             <div className="space-y-8">
               <div>
                 <h2
-                  className="text-xl font-bold text-[#01255f] mb-1"
+                  className="text-xl font-bold text-[#026632] mb-1"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   Choose your gift
@@ -427,12 +427,12 @@ export default function DonateForm() {
                 <p className="text-sm text-[#5a6478]">All amounts in USD. Every dollar supports our youth programmes.</p>
               </div>
 
-              <div className="flex gap-2 p-1 bg-[#f5f7fc] border border-gray-100">
+              <div className="flex gap-2 p-1 bg-[#f3f9f5] border border-gray-100">
                 <button
                   type="button"
                   onClick={() => set('frequency', 'once')}
                   className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors ${
-                    form.frequency === 'once' ? 'bg-[#01255f] text-white' : 'text-[#5a6478] hover:text-[#01255f]'
+                    form.frequency === 'once' ? 'bg-[#026632] text-white' : 'text-[#5a6478] hover:text-[#026632]'
                   }`}
                 >
                   One-time
@@ -461,8 +461,8 @@ export default function DonateForm() {
                     }}
                     className={`py-4 text-sm font-bold transition-all border ${
                       form.amountPreset === amt
-                        ? 'bg-[#01255f] text-white border-[#01255f]'
-                        : 'bg-white text-[#01255f] border-gray-200 hover:border-[#01255f]'
+                        ? 'bg-[#026632] text-white border-[#026632]'
+                        : 'bg-white text-[#026632] border-gray-200 hover:border-[#026632]'
                     }`}
                   >
                     ${amt}
@@ -498,9 +498,9 @@ export default function DonateForm() {
                   type="checkbox"
                   checked={form.coverFees}
                   onChange={(e) => set('coverFees', e.target.checked)}
-                  className="mt-1 accent-[#01255f]"
+                  className="mt-1 accent-[#026632]"
                 />
-                <span className="text-sm text-[#5a6478] group-hover:text-[#01255f] transition-colors">
+                <span className="text-sm text-[#5a6478] group-hover:text-[#026632] transition-colors">
                   Add {formatUsd(feeEstimate || amountUsd * 0.029)} to cover processing fees (optional)
                 </span>
               </label>
@@ -509,7 +509,7 @@ export default function DonateForm() {
                 type="button"
                 disabled={!canContinueAmount}
                 onClick={goNext}
-                className="w-full bg-[#fee11b] hover:bg-[#e5ca10] disabled:opacity-40 disabled:cursor-not-allowed text-[#01255f] py-4 text-sm font-bold tracking-wide transition-colors"
+                className="w-full bg-[#74f3be] hover:bg-[#4fdca3] disabled:opacity-40 disabled:cursor-not-allowed text-[#026632] py-4 text-sm font-bold tracking-wide transition-colors"
               >
                 Continue · {amountUsd > 0 ? formatUsd(totalUsd) : 'Select amount'}
               </button>
@@ -521,7 +521,7 @@ export default function DonateForm() {
             <div className="space-y-6">
               <div>
                 <h2
-                  className="text-xl font-bold text-[#01255f] mb-1"
+                  className="text-xl font-bold text-[#026632] mb-1"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   Your details
@@ -600,10 +600,10 @@ export default function DonateForm() {
                           setCountrySearchOpen(false)
                           setCountrySearch('')
                         }}
-                        className="w-full text-left px-4 py-2.5 hover:bg-[#01255f]/5 border-b border-gray-100 last:border-b-0 text-sm transition-colors"
+                        className="w-full text-left px-4 py-2.5 hover:bg-[#026632]/5 border-b border-gray-100 last:border-b-0 text-sm transition-colors"
                       >
                         <span className="mr-2">{country.flag}</span>
-                        <span className="text-[#01255f]">{country.name}</span>
+                        <span className="text-[#026632]">{country.name}</span>
                         <span className="text-[#5a6478] text-xs ml-2">({country.code})</span>
                       </button>
                     ))}
@@ -626,7 +626,7 @@ export default function DonateForm() {
                 <button
                   type="button"
                   onClick={goBack}
-                  className="flex items-center justify-center gap-1 px-4 py-3 text-sm font-bold text-[#5a6478] hover:text-[#01255f] sm:justify-start"
+                  className="flex items-center justify-center gap-1 px-4 py-3 text-sm font-bold text-[#5a6478] hover:text-[#026632] sm:justify-start"
                 >
                   <ChevronLeft className="w-4 h-4" /> Back
                 </button>
@@ -634,7 +634,7 @@ export default function DonateForm() {
                   type="button"
                   disabled={!canContinueDetails}
                   onClick={goNext}
-                  className="flex-1 bg-[#01255f] hover:bg-[#011840] disabled:opacity-40 text-white py-3.5 text-sm font-bold tracking-wide"
+                  className="flex-1 bg-[#026632] hover:bg-[#014a24] disabled:opacity-40 text-white py-3.5 text-sm font-bold tracking-wide"
                 >
                   Continue
                 </button>
@@ -647,7 +647,7 @@ export default function DonateForm() {
             <div className="space-y-6">
               <div>
                 <h2
-                  className="text-xl font-bold text-[#01255f] mb-1"
+                  className="text-xl font-bold text-[#026632] mb-1"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   How would you like to pay?
@@ -731,8 +731,8 @@ export default function DonateForm() {
                     />
                   </div>
                   {isDetectingProvider && (
-                    <div className="flex items-center gap-2 p-3 bg-[#f5f7fc] rounded border border-gray-200">
-                      <Loader2 className="w-4 h-4 text-[#01255f] animate-spin" />
+                    <div className="flex items-center gap-2 p-3 bg-[#f3f9f5] rounded border border-gray-200">
+                      <Loader2 className="w-4 h-4 text-[#026632] animate-spin" />
                       <p className="text-xs text-[#5a6478] font-medium">Detecting payment provider...</p>
                     </div>
                   )}
@@ -748,7 +748,7 @@ export default function DonateForm() {
                         />
                         <div>
                           <p className="text-xs text-[#5a6478] uppercase tracking-widest font-bold mb-1">Payment Provider</p>
-                          <p className="text-sm font-bold text-[#01255f]">{getProviderDisplayName(detectedProvider)}</p>
+                          <p className="text-sm font-bold text-[#026632]">{getProviderDisplayName(detectedProvider)}</p>
                         </div>
                       </div>
 
@@ -769,18 +769,18 @@ export default function DonateForm() {
                       </div>
 
                       {isLoadingPrediction && (
-                        <div className="flex items-center gap-2 p-3 bg-[#f5f7fc] rounded border border-gray-200">
-                          <Loader2 className="w-4 h-4 text-[#01255f] animate-spin" />
+                        <div className="flex items-center gap-2 p-3 bg-[#f3f9f5] rounded border border-gray-200">
+                          <Loader2 className="w-4 h-4 text-[#026632] animate-spin" />
                           <p className="text-xs text-[#5a6478] font-medium">Calculating amount...</p>
                         </div>
                       )}
 
                       {prediction && !isLoadingPrediction && (
-                        <div className="bg-[#f5f7fc] border border-[#01255f]/20 rounded p-4">
+                        <div className="bg-[#f3f9f5] border border-[#026632]/20 rounded p-4">
                           <p className="text-xs text-[#5a6478] uppercase tracking-widest font-bold mb-2">
                             You will pay
                           </p>
-                          <p className="text-lg font-bold text-[#01255f] mb-2">
+                          <p className="text-lg font-bold text-[#026632] mb-2">
                             {form.currency === 'LRD' ? '₺' : '$'}
                             {prediction.payerAmount.toLocaleString()}
                             <span className="text-sm font-normal text-[#5a6478] ml-2">{prediction.payerCurrency}</span>
@@ -802,7 +802,7 @@ export default function DonateForm() {
                 <button
                   type="button"
                   onClick={goBack}
-                  className="flex items-center justify-center gap-1 px-4 py-3 text-sm font-bold text-[#5a6478] hover:text-[#01255f] sm:justify-start"
+                  className="flex items-center justify-center gap-1 px-4 py-3 text-sm font-bold text-[#5a6478] hover:text-[#026632] sm:justify-start"
                 >
                   <ChevronLeft className="w-4 h-4" /> Back
                 </button>
@@ -810,7 +810,7 @@ export default function DonateForm() {
                   type="button"
                   onClick={goNext}
                   disabled={form.paymentMethod === 'mobile' && !detectedProvider}
-                  className="flex-1 bg-[#01255f] hover:bg-[#011840] disabled:opacity-50 disabled:cursor-not-allowed text-white py-3.5 text-sm font-bold tracking-wide"
+                  className="flex-1 bg-[#026632] hover:bg-[#014a24] disabled:opacity-50 disabled:cursor-not-allowed text-white py-3.5 text-sm font-bold tracking-wide"
                 >
                   {isDetectingProvider ? 'Detecting provider...' : 'Review donation'}
                 </button>
@@ -823,7 +823,7 @@ export default function DonateForm() {
             <div className="space-y-6">
               <div>
                 <h2
-                  className="text-xl font-bold text-[#01255f] mb-1"
+                  className="text-xl font-bold text-[#026632] mb-1"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   Review your gift
@@ -834,38 +834,38 @@ export default function DonateForm() {
               <div className="border border-gray-200 divide-y divide-gray-100">
                 <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                   <span className="text-[#5a6478]">Amount</span>
-                  <span className="font-bold text-[#01255f] tabular-nums">{formatUsd(amountUsd)}</span>
+                  <span className="font-bold text-[#026632] tabular-nums">{formatUsd(amountUsd)}</span>
                 </div>
                 {feeEstimate > 0 && (
                   <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                     <span className="text-[#5a6478]">Processing fee coverage</span>
-                    <span className="font-bold text-[#01255f] tabular-nums">{formatUsd(feeEstimate)}</span>
+                    <span className="font-bold text-[#026632] tabular-nums">{formatUsd(feeEstimate)}</span>
                   </div>
                 )}
-                <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm bg-[#f5f7fc]">
-                  <span className="font-bold text-[#01255f]">Total</span>
-                  <span className="font-bold text-[#01255f] text-lg tabular-nums">{formatUsd(totalUsd)}</span>
+                <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm bg-[#f3f9f5]">
+                  <span className="font-bold text-[#026632]">Total</span>
+                  <span className="font-bold text-[#026632] text-lg tabular-nums">{formatUsd(totalUsd)}</span>
                 </div>
                 <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                   <span className="text-[#5a6478]">Frequency</span>
-                  <span className="text-[#01255f] capitalize">{form.frequency}</span>
+                  <span className="text-[#026632] capitalize">{form.frequency}</span>
                 </div>
                 <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                   <span className="text-[#5a6478]">Payment Method</span>
-                  <span className="text-[#01255f] font-medium">
+                  <span className="text-[#026632] font-medium">
                     {form.paymentMethod === 'card' ? 'Card' : 'Mobile money'}
                   </span>
                 </div>
                 {form.paymentMethod === 'mobile' && (
                   <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                     <span className="text-[#5a6478]">Currency</span>
-                    <span className="text-[#01255f] font-medium">{form.currency}</span>
+                    <span className="text-[#026632] font-medium">{form.currency}</span>
                   </div>
                 )}
                 {form.paymentMethod === 'card' && form.cardNumber && (
                   <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                     <span className="text-[#5a6478]">Card</span>
-                    <span className="text-[#01255f] font-medium">•••• •••• •••• {form.cardNumber.slice(-4)}</span>
+                    <span className="text-[#026632] font-medium">•••• •••• •••• {form.cardNumber.slice(-4)}</span>
                   </div>
                 )}
                 {form.paymentMethod === 'mobile' && (
@@ -881,21 +881,21 @@ export default function DonateForm() {
                             height={24}
                             className="h-5 w-5 object-contain"
                           />
-                          <span className="text-[#01255f] font-medium">{getProviderDisplayName(detectedProvider)}</span>
+                          <span className="text-[#026632] font-medium">{getProviderDisplayName(detectedProvider)}</span>
                         </div>
                       </div>
                     )}
                     {form.mobilePhone && (
                       <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                         <span className="text-[#5a6478]">Phone Number</span>
-                        <span className="text-[#01255f] font-medium">{form.mobilePhone}</span>
+                        <span className="text-[#026632] font-medium">{form.mobilePhone}</span>
                       </div>
                     )}
                   </>
                 )}
                 <div className="px-4 sm:px-5 py-4 text-sm">
                   <span className="text-[#5a6478] block mb-1">Donor</span>
-                  <span className="text-[#01255f] font-medium">
+                  <span className="text-[#026632] font-medium">
                     {form.firstName} {form.lastName}
                   </span>
                   <br />
@@ -903,7 +903,7 @@ export default function DonateForm() {
                 </div>
                 <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center px-4 sm:px-5 py-4 text-sm">
                   <span className="text-[#5a6478]">Country</span>
-                  <span className="text-[#01255f] font-medium">
+                  <span className="text-[#026632] font-medium">
                     {COUNTRIES.find((c) => c.code === form.country)?.flag}{' '}
                     {COUNTRIES.find((c) => c.code === form.country)?.name || form.country}
                   </span>
@@ -911,7 +911,7 @@ export default function DonateForm() {
                 {form.message && (
                   <div className="px-4 sm:px-5 py-4 text-sm">
                     <span className="text-[#5a6478] block mb-1">Message</span>
-                    <span className="text-[#01255f]">{form.message}</span>
+                    <span className="text-[#026632]">{form.message}</span>
                   </div>
                 )}
               </div>
@@ -931,7 +931,7 @@ export default function DonateForm() {
                   type="button"
                   onClick={goBack}
                   disabled={isSubmitting}
-                  className="flex items-center justify-center gap-1 px-4 py-3 text-sm font-bold text-[#5a6478] hover:text-[#01255f] disabled:opacity-50 disabled:cursor-not-allowed sm:justify-start"
+                  className="flex items-center justify-center gap-1 px-4 py-3 text-sm font-bold text-[#5a6478] hover:text-[#026632] disabled:opacity-50 disabled:cursor-not-allowed sm:justify-start"
                 >
                   <ChevronLeft className="w-4 h-4" /> Back
                 </button>
@@ -939,7 +939,7 @@ export default function DonateForm() {
                   type="button"
                   onClick={completeDonation}
                   disabled={isSubmitting}
-                  className="flex-1 flex items-center justify-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] disabled:opacity-50 disabled:cursor-not-allowed text-[#01255f] py-4 text-sm font-bold tracking-wide transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 bg-[#74f3be] hover:bg-[#4fdca3] disabled:opacity-50 disabled:cursor-not-allowed text-[#026632] py-4 text-sm font-bold tracking-wide transition-colors"
                 >
                   {isSubmitting ? (
                     <>
@@ -961,15 +961,15 @@ export default function DonateForm() {
 
       {/* Sidebar */}
       <aside className="space-y-4 sm:space-y-6 min-w-0 lg:sticky lg:top-24">
-        <div className="bg-[#01255f] text-white p-5 sm:p-6 lg:p-8">
-          <p className="text-[10px] uppercase tracking-widest font-bold text-[#fee11b] mb-4 sm:mb-5">Your impact</p>
+        <div className="bg-[#026632] text-white p-5 sm:p-6 lg:p-8">
+          <p className="text-[10px] uppercase tracking-widest font-bold text-[#74f3be] mb-4 sm:mb-5">Your impact</p>
           <ul className="space-y-4 sm:space-y-5">
             {IMPACT_TIERS.map(({ amount, label }) => (
               <li
                 key={amount}
                 className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 items-start"
               >
-                <span className="text-[#fee11b] font-bold text-base sm:text-lg tabular-nums whitespace-nowrap leading-none pt-0.5">
+                <span className="text-[#74f3be] font-bold text-base sm:text-lg tabular-nums whitespace-nowrap leading-none pt-0.5">
                   {amount}
                 </span>
                 <span className="text-sm sm:text-base text-white/85 leading-snug">{label}</span>

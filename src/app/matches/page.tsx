@@ -16,14 +16,14 @@ export const metadata: Metadata = buildPageMetadata({
   title: 'Matches',
   openGraphTitle: `Matches & Fixtures — ${ORG_NAME}`,
   description:
-    'Follow Ashfall United — view recent match results, upcoming fixtures, and full season records for our First Team and Academy.',
+    'Follow Graceland Football Club — view recent match results, upcoming fixtures, and full season records for our First Team and Academy.',
   path: '/matches',
   keywords: [
-    'Ashfall United fixtures',
-    'Ashfall United results',
+    'Graceland Football Club fixtures',
+    'Graceland Football Club results',
     'Liberia football results',
     'Monrovia football fixtures',
-    'Ashfall United scores',
+    'Graceland Football Club scores',
     'youth football Liberia schedule',
   ],
 })
@@ -121,7 +121,7 @@ function ResultRow({ match }: { match: PublicMatch }) {
   return (
     <Link
       href={`/matches/${match.slug ?? match.id}`}
-      className="group flex items-center gap-3 sm:gap-5 bg-white border border-gray-100 px-3 sm:px-5 lg:px-6 py-3 sm:py-4 hover:border-[#01255f]/25 hover:shadow-sm transition-all"
+      className="group flex items-center gap-3 sm:gap-5 bg-white border border-gray-100 px-3 sm:px-5 lg:px-6 py-3 sm:py-4 hover:border-[#026632]/25 hover:shadow-sm transition-all"
     >
       {/* Left: competition badge + date */}
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
@@ -132,7 +132,7 @@ function ResultRow({ match }: { match: PublicMatch }) {
           <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#5a6478] leading-tight">
             {match.homeAway}
           </p>
-          <p className="text-[10px] sm:text-xs font-bold text-[#01255f] leading-tight">{day}</p>
+          <p className="text-[10px] sm:text-xs font-bold text-[#026632] leading-tight">{day}</p>
           <p className="text-[10px] sm:text-xs text-[#5a6478] leading-tight">{date}</p>
         </div>
       </div>
@@ -141,7 +141,7 @@ function ResultRow({ match }: { match: PublicMatch }) {
       <div className="flex-1 flex items-center gap-2 sm:gap-4 min-w-0">
         {/* Our logo only — no name */}
         <Image
-          src="/Logo.png"
+          src="/gl-crest.png"
           alt={ORG_NAME}
           width={32}
           height={32}
@@ -151,7 +151,7 @@ function ResultRow({ match }: { match: PublicMatch }) {
         {/* Score */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Goals scored — our goals */}
-          <div className="w-8 sm:w-10 h-8 sm:h-10 bg-[#01255f] flex items-center justify-center">
+          <div className="w-8 sm:w-10 h-8 sm:h-10 bg-[#026632] flex items-center justify-center">
             <span
               className="text-white text-base sm:text-xl font-black tabular-nums leading-none"
               style={{ fontFamily: 'var(--font-heading)' }}
@@ -187,14 +187,14 @@ function ResultRow({ match }: { match: PublicMatch }) {
             <OpponentBadge opponent={match.opponent} logo={match.opponentLogo} size={30} />
           </div>
           <div className="min-w-0">
-            <p className="text-xs sm:text-sm font-bold text-[#01255f] truncate leading-tight">
+            <p className="text-xs sm:text-sm font-bold text-[#026632] truncate leading-tight">
               {match.opponent}
             </p>
             <p className="text-[9px] sm:text-[10px] text-[#5a6478] leading-tight truncate">
               {match.competition}
             </p>
             {match.team !== 'first-team' && (
-              <span className="text-[8px] font-bold text-[#fee11b] bg-[#01255f] px-1.5 py-0.5 inline-block mt-0.5">
+              <span className="text-[8px] font-bold text-[#74f3be] bg-[#026632] px-1.5 py-0.5 inline-block mt-0.5">
                 {displayTeamLabel(match.team)}
               </span>
             )}
@@ -204,11 +204,11 @@ function ResultRow({ match }: { match: PublicMatch }) {
 
       {/* Right: Match Review button */}
       <div className="shrink-0">
-        <span className="hidden sm:inline-flex items-center border-2 border-[#01255f] text-[#01255f] text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-3 sm:px-4 py-1.5 sm:py-2 group-hover:bg-[#01255f] group-hover:text-white transition-colors whitespace-nowrap">
+        <span className="hidden sm:inline-flex items-center border-2 border-[#026632] text-[#026632] text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-3 sm:px-4 py-1.5 sm:py-2 group-hover:bg-[#026632] group-hover:text-white transition-colors whitespace-nowrap">
           Match Review
         </span>
         <svg
-          className="sm:hidden w-4 h-4 text-[#01255f] shrink-0"
+          className="sm:hidden w-4 h-4 text-[#026632] shrink-0"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -231,7 +231,7 @@ function FixtureRow({ match, now }: { match: Match; now: number }) {
   return (
     <div
       className={`flex items-center gap-3 sm:gap-5 bg-white border px-3 sm:px-5 lg:px-6 py-3 sm:py-4 transition-all ${
-        isImminent ? 'border-[#fee11b] ring-1 ring-[#fee11b]/30' : 'border-gray-100'
+        isImminent ? 'border-[#74f3be] ring-1 ring-[#74f3be]/30' : 'border-gray-100'
       }`}
     >
       {/* Left: competition badge + date */}
@@ -241,14 +241,14 @@ function FixtureRow({ match, now }: { match: Match; now: number }) {
         </div>
         <div className="min-w-[52px] sm:min-w-[68px]">
           {isImminent && (
-            <p className="text-[8px] font-black uppercase bg-[#fee11b] text-[#01255f] px-1.5 py-0.5 inline-block mb-0.5 leading-tight">
+            <p className="text-[8px] font-black uppercase bg-[#74f3be] text-[#026632] px-1.5 py-0.5 inline-block mb-0.5 leading-tight">
               {daysUntil === 0 ? 'Today' : daysUntil === 1 ? 'Tomorrow' : `${daysUntil} days`}
             </p>
           )}
           <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#5a6478] leading-tight">
             {match.homeAway}
           </p>
-          <p className="text-[10px] sm:text-xs font-bold text-[#01255f] leading-tight">{day}</p>
+          <p className="text-[10px] sm:text-xs font-bold text-[#026632] leading-tight">{day}</p>
           <p className="text-[10px] sm:text-xs text-[#5a6478] leading-tight">{date}</p>
         </div>
       </div>
@@ -257,7 +257,7 @@ function FixtureRow({ match, now }: { match: Match; now: number }) {
       <div className="flex-1 flex items-center gap-2 sm:gap-4 min-w-0">
         {/* Our logo only */}
         <Image
-          src="/Logo.png"
+          src="/gl-crest.png"
           alt={ORG_NAME}
           width={32}
           height={32}
@@ -281,7 +281,7 @@ function FixtureRow({ match, now }: { match: Match; now: number }) {
             <OpponentBadge opponent={match.opponent} logo={match.opponentLogo} size={30} />
           </div>
           <div className="min-w-0">
-            <p className="text-xs sm:text-sm font-bold text-[#01255f] truncate leading-tight">
+            <p className="text-xs sm:text-sm font-bold text-[#026632] truncate leading-tight">
               {match.opponent}
             </p>
             <p className="text-[9px] sm:text-[10px] text-[#5a6478] leading-tight truncate">
@@ -304,7 +304,7 @@ function buildSportsEventJsonLd(results: PublicMatch[], fixtures: Match[]) {
   const events = [
     ...results.slice(0, 20).map((m) => ({
       '@type': 'SportsEvent',
-      name: `Ashfall United vs ${m.opponent}`,
+      name: `Graceland Football Club vs ${m.opponent}`,
       startDate: m.date,
       location: { '@type': 'Place', name: 'Monrovia, Liberia' },
       description: `${m.competition} — ${m.season}. Result: ${m.goalsFor}–${m.goalsAgainst} (${m.result}).`,
@@ -318,7 +318,7 @@ function buildSportsEventJsonLd(results: PublicMatch[], fixtures: Match[]) {
     })),
     ...fixtures.map((m) => ({
       '@type': 'SportsEvent',
-      name: `Ashfall United vs ${m.opponent}`,
+      name: `Graceland Football Club vs ${m.opponent}`,
       startDate: m.date,
       location: { '@type': 'Place', name: 'Monrovia, Liberia' },
       description: `${m.competition} — ${m.season}. Upcoming fixture.`,
@@ -363,9 +363,9 @@ export default async function MatchesPage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navbar />
       <main className="pt-16 lg:pt-[70px]">
-        <div className="bg-[#01255f] py-10 sm:py-14 lg:py-20">
+        <div className="bg-[#026632] py-10 sm:py-14 lg:py-20">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10">
-            <span className="label-light">Ashfall United</span>
+            <span className="label-light">Graceland Football Club</span>
             <h1
               className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mt-4 mb-4"
               style={{ fontFamily: 'var(--font-heading)' }}
@@ -378,13 +378,13 @@ export default async function MatchesPage({
           </div>
         </div>
 
-        <div className="bg-[#f5f7fc] py-10 sm:py-14 lg:py-20">
+        <div className="bg-[#f3f9f5] py-10 sm:py-14 lg:py-20">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 space-y-12 sm:space-y-16">
 
             {/* Upcoming fixtures */}
             {fixtures.length > 0 && (
               <section>
-                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#01255f] mb-3">
+                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#026632] mb-3">
                   Upcoming Fixtures
                 </h2>
                 <div className="space-y-2">
@@ -398,7 +398,7 @@ export default async function MatchesPage({
             {/* Results */}
             <section>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
-                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#01255f]">
+                <h2 className="text-[10px] uppercase tracking-[0.18em] font-bold text-[#026632]">
                   Results
                 </h2>
                 {seasons.length > 1 && (
@@ -407,8 +407,8 @@ export default async function MatchesPage({
                       href="/matches"
                       className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest border transition-colors ${
                         !activeSeason
-                          ? 'bg-[#01255f] text-white border-[#01255f]'
-                          : 'bg-white text-[#5a6478] border-gray-200 hover:border-[#01255f]'
+                          ? 'bg-[#026632] text-white border-[#026632]'
+                          : 'bg-white text-[#5a6478] border-gray-200 hover:border-[#026632]'
                       }`}
                     >
                       All
@@ -419,8 +419,8 @@ export default async function MatchesPage({
                         href={`/matches?season=${encodeURIComponent(s)}`}
                         className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest border transition-colors ${
                           activeSeason === s
-                            ? 'bg-[#01255f] text-white border-[#01255f]'
-                            : 'bg-white text-[#5a6478] border-gray-200 hover:border-[#01255f]'
+                            ? 'bg-[#026632] text-white border-[#026632]'
+                            : 'bg-white text-[#5a6478] border-gray-200 hover:border-[#026632]'
                         }`}
                       >
                         {s}
@@ -435,7 +435,7 @@ export default async function MatchesPage({
                 <div className="grid grid-cols-6 gap-px bg-gray-200 mb-4">
                   <div className="bg-white py-2.5 sm:py-3 text-center">
                     <p className="text-[8px] sm:text-[9px] uppercase tracking-widest text-[#5a6478] font-bold">P</p>
-                    <p className="text-sm sm:text-lg font-black text-[#01255f] tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <p className="text-sm sm:text-lg font-black text-[#026632] tabular-nums" style={{ fontFamily: 'var(--font-heading)' }}>
                       {filteredResults.length}
                     </p>
                   </div>

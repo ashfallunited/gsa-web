@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Donation API provides a complete donation processing system for Asfall United. It handles:
+The Donation API provides a complete donation processing system for Graceland Football Club. It handles:
 
 - **Donation Creation**: Accept donations with card and mobile payment methods
 - **Payment Processing**: Integration with Hey Dollr payment gateway
@@ -638,7 +638,7 @@ npm test -- src/__tests__/donation/integration.test.ts -t "Full donation flow"
 2. Enable "Less secure app access" (if not using app-specific passwords)
 3. Check Gmail quota: https://myaccount.google.com/device-activity
 4. Verify `GMAIL_USER`, `GMAIL_PASSWORD`, `GMAIL_FROM_EMAIL` are set
-5. Test with: `vercel env pull` then `npm run test:email`
+5. Test with: `vercel env pull` then `pnpm test:email`
 
 ### "Cron job not running"
 

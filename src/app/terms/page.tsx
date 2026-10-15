@@ -43,7 +43,7 @@ const sections = [
       'Use the site in any way that violates applicable law or harms others.',
       'Attempt to gain unauthorised access to our systems, admin areas, or user data.',
       'Upload malware, scrape the site excessively, or interfere with its operation.',
-      'Misrepresent your identity or affiliation with Asfall United.',
+      'Misrepresent your identity or affiliation with Graceland Football Club.',
       'Copy, reproduce, or exploit site content for commercial purposes without our written permission.',
     ],
   },
@@ -59,7 +59,7 @@ const sections = [
     id: 'intellectual-property',
     title: '6. Intellectual property',
     paragraphs: [
-      'Text, logos, images, videos, and other materials on this site are owned by Asfall United or used with permission. You may not use our branding or content without prior written consent, except for fair sharing of links or social posts that credit the organisation.',
+      'Text, logos, images, videos, and other materials on this site are owned by Graceland Football Club or used with permission. You may not use our branding or content without prior written consent, except for fair sharing of links or social posts that credit the organisation.',
     ],
   },
   {
@@ -80,14 +80,14 @@ const sections = [
     id: 'liability',
     title: '9. Limitation of liability',
     paragraphs: [
-      'To the fullest extent permitted by law, Asfall United and its directors, staff, and volunteers shall not be liable for any indirect, incidental, or consequential damages arising from your use of the site. Our total liability for any claim related to the site shall not exceed the amount you paid us through the site in the twelve months before the claim, or zero if no payment was made.',
+      'To the fullest extent permitted by law, Graceland Football Club and its directors, staff, and volunteers shall not be liable for any indirect, incidental, or consequential damages arising from your use of the site. Our total liability for any claim related to the site shall not exceed the amount you paid us through the site in the twelve months before the claim, or zero if no payment was made.',
     ],
   },
   {
     id: 'indemnity',
     title: '10. Indemnity',
     paragraphs: [
-      'You agree to indemnify and hold harmless Asfall United from claims arising out of your misuse of the site or violation of these Terms.',
+      'You agree to indemnify and hold harmless Graceland Football Club from claims arising out of your misuse of the site or violation of these Terms.',
     ],
   },
   {

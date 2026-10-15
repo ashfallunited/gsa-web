@@ -35,7 +35,7 @@ export default function Hero() {
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             <span className="block whitespace-nowrap">Sport as a Path</span>
-            <span className="block text-[#fee11b] whitespace-nowrap">to a Better Life.</span>
+            <span className="block text-[#74f3be] whitespace-nowrap">to a Better Life.</span>
           </h1>
 
           <p className="text-white/75 text-sm sm:text-base leading-relaxed mb-8 sm:mb-10">
@@ -46,7 +46,7 @@ export default function Hero() {
           <div className="flex flex-col xs:flex-row gap-3 sm:gap-4">
             <a
               href="#about"
-              className="bg-[#fee11b] hover:bg-[#e5ca10] active:scale-95 text-[#01255f] px-6 sm:px-7 py-3.5 font-bold text-sm tracking-wide transition-all w-full xs:w-auto text-center inline-flex items-center justify-center min-h-0 min-w-0"
+              className="bg-[#74f3be] hover:bg-[#4fdca3] active:scale-95 text-[#026632] px-6 sm:px-7 py-3.5 font-bold text-sm tracking-wide transition-all w-full xs:w-auto text-center inline-flex items-center justify-center min-h-0 min-w-0"
             >
               Our Mission
             </a>
@@ -60,7 +60,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-[#fee11b]/30" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-[#74f3be]/30" />
     </section>
   )
 }

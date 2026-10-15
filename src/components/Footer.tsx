@@ -66,7 +66,7 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="bg-[#011840] text-white">
+    <footer className="bg-[#014a24] text-white">
       <div className="border-b border-white/8">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-12 sm:py-16">
           <div className="grid grid-cols-2 lg:grid-cols-[2fr_1fr_1fr] gap-8 sm:gap-10">
@@ -74,7 +74,7 @@ export default function Footer() {
             <div className="col-span-2 lg:col-span-1">
               <div className="relative h-10 w-44 mb-5">
                 <Image
-                  src="/Logo.png"
+                  src="/gl-crest.png"
                   alt={ORG_NAME}
                   fill
                   className="object-contain object-left"
@@ -90,7 +90,7 @@ export default function Footer() {
               <div className="mb-4">
                 <a
                   href={`mailto:${ORG_EMAIL}`}
-                  className="text-[#fee11b] text-xs sm:text-sm hover:text-white transition-colors"
+                  className="text-[#74f3be] text-xs sm:text-sm hover:text-white transition-colors"
                 >
                   {ORG_EMAIL}
                 </a>
@@ -104,7 +104,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.label}
-                    className="w-9 h-9 border border-white/15 hover:border-[#fee11b] hover:text-[#fee11b] text-white/60 flex items-center justify-center transition-all duration-200 min-h-0 min-w-0"
+                    className="w-9 h-9 border border-white/15 hover:border-[#74f3be] hover:text-[#74f3be] text-white/60 flex items-center justify-center transition-all duration-200 min-h-0 min-w-0"
                   >
                     {s.icon}
                   </a>
@@ -114,7 +114,7 @@ export default function Footer() {
 
             {footerSections.map((section) => (
               <div key={section.title}>
-                <h4 className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] font-bold text-[#fee11b] mb-4 sm:mb-5">
+                <h4 className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] font-bold text-[#74f3be] mb-4 sm:mb-5">
                   {section.title}
                 </h4>
                 <ul className="space-y-2.5 sm:space-y-3">
@@ -142,7 +142,7 @@ export default function Footer() {
             href="https://server393.web-hosting.com:2096/"
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-3 font-bold text-[#fee11b] hover:text-white transition-colors"
+            className="ml-3 font-bold text-[#74f3be] hover:text-white transition-colors"
           >
             Webmail
           </a>

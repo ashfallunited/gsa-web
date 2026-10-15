@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --blue: #01255f;
-  --blue-dark: #011840;
-  --blue-mid: #1a3a7a;
-  --yellow: #fee11b;
-  --yellow-dark: #e5ca10;
-  --off-white: #f5f7fc;
+  --green: #026632;
+  --green-dark: #014a24;
+  --green-mid: #0b7a40;
+  --mint: #74f3be;
+  --mint-dark: #4fdca3;
+  --off-white: #f3f9f5;
   --text: #0d0d0d;
   --text-muted: #5a6478;
 }
@@ -14,9 +14,9 @@
 @theme inline {
   --color-background: #ffffff;
   --color-foreground: var(--text);
-  --color-blue: var(--blue);
-  --color-blue-dark: var(--blue-dark);
-  --color-yellow: var(--yellow);
+  --color-green: var(--green);
+  --color-green-dark: var(--green-dark);
+  --color-mint: var(--mint);
 }
 
 html {
@@ -63,7 +63,7 @@ body {
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
 
 /* Hide scrollbar for tab overflow on mobile */
 .scrollbar-hide {
@@ -78,9 +78,9 @@ body {
 .hero-overlay {
   background: linear-gradient(
     to right,
-    rgba(1, 37, 95, 0.92) 0%,
-    rgba(1, 37, 95, 0.7) 55%,
-    rgba(1, 37, 95, 0.25) 100%
+    rgba(2, 102, 50, 0.92) 0%,
+    rgba(2, 102, 50, 0.7) 55%,
+    rgba(2, 102, 50, 0.25) 100%
   );
 }
 
@@ -98,18 +98,18 @@ body {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--blue);
-  background: rgba(1, 37, 95, 0.07);
+  color: var(--green);
+  background: rgba(2, 102, 50, 0.07);
   padding: 4px 10px;
   margin-bottom: 1rem;
 }
 
 .label-light {
-  color: var(--yellow);
-  background: rgba(254, 225, 27, 0.12);
+  color: var(--mint);
+  background: rgba(116, 243, 190, 0.12);
 }
 
-/* Yellow underline heading */
+/* Accent underline heading */
 .heading-underline {
   position: relative;
   padding-bottom: 12px;
@@ -121,7 +121,7 @@ body {
   left: 0;
   width: 36px;
   height: 3px;
-  background: var(--yellow);
+  background: var(--mint);
 }
 .heading-underline.center::after {
   left: 50%;
@@ -167,7 +167,7 @@ body, html {
   font-size: 1.875rem;
   font-weight: 800;
   line-height: 1.2;
-  color: var(--blue);
+  color: var(--green);
 }
 
 .tiptap h2,
@@ -176,7 +176,7 @@ body, html {
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.25;
-  color: var(--blue);
+  color: var(--green);
 }
 
 .tiptap h3,
@@ -185,7 +185,7 @@ body, html {
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.3;
-  color: var(--blue);
+  color: var(--green);
 }
 
 .tiptap p,
@@ -219,7 +219,7 @@ body, html {
 
 .tiptap blockquote,
 .blog-content blockquote {
-  border-left: 4px solid var(--yellow);
+  border-left: 4px solid var(--mint);
   padding-left: 1rem;
   margin: 1em 0;
   color: var(--text-muted);
@@ -228,7 +228,7 @@ body, html {
 
 .tiptap a,
 .blog-content a {
-  color: var(--blue);
+  color: var(--green);
   text-decoration: underline;
 }
 

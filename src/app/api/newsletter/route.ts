@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
 
   if (!existing.empty) {
     return Response.json(
-      { success: true, message: 'You are already subscribed to the Asfall United newsletter.' },
+      { success: true, message: 'You are already subscribed to the Graceland Football Club newsletter.' },
       { status: 200 }
     )
   }
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
   revalidateNewsletter()
 
   return Response.json(
-    { success: true, message: 'You have been subscribed to the Asfall United newsletter.' },
+    { success: true, message: 'You have been subscribed to the Graceland Football Club newsletter.' },
     { status: 200 }
   )
 }

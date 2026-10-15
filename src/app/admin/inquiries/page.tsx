@@ -60,7 +60,7 @@ export default function AdminInquiriesPage() {
       <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
           <h1
-            className="text-xl sm:text-2xl font-bold text-[#01255f]"
+            className="text-xl sm:text-2xl font-bold text-[#026632]"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Inquiries
@@ -75,7 +75,7 @@ export default function AdminInquiriesPage() {
               onClick={() => setFilter(f)}
               className={`px-3 sm:px-4 py-2 text-xs font-bold uppercase tracking-widest border transition-colors ${
                 filter === f
-                  ? 'bg-[#01255f] text-white border-[#01255f]'
+                  ? 'bg-[#026632] text-white border-[#026632]'
                   : 'bg-white text-[#5a6478] border-gray-200'
               }`}
             >
@@ -94,14 +94,14 @@ export default function AdminInquiriesPage() {
           {filtered.map((inq) => (
             <div
               key={inq.id}
-              className={`bg-white border p-6 ${inq.read ? 'border-gray-100' : 'border-[#fee11b] border-l-4'}`}
+              className={`bg-white border p-6 ${inq.read ? 'border-gray-100' : 'border-[#74f3be] border-l-4'}`}
             >
               <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                 <div>
-                  <span className="text-[9px] uppercase tracking-widest font-bold text-[#fee11b] bg-[#01255f] px-2 py-0.5">
+                  <span className="text-[9px] uppercase tracking-widest font-bold text-[#74f3be] bg-[#026632] px-2 py-0.5">
                     {inq.inquiryType}
                   </span>
-                  <h2 className="font-bold text-[#01255f] mt-2">
+                  <h2 className="font-bold text-[#026632] mt-2">
                     {inq.firstName} {inq.lastName}
                   </h2>
                   <p className="text-sm text-[#5a6478]">
@@ -141,7 +141,7 @@ export default function AdminInquiriesPage() {
                 <button
                   type="button"
                   onClick={() => markRead(inq.id)}
-                  className="mt-4 text-xs font-bold text-[#01255f] underline"
+                  className="mt-4 text-xs font-bold text-[#026632] underline"
                 >
                   Mark as read
                 </button>

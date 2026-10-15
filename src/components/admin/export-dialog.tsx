@@ -33,8 +33,8 @@ export default function ExportDialog({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={onClose}>
       <div className="bg-white w-full max-w-sm p-5" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-[#01255f]">Export Report</h3>
-          <button type="button" onClick={onClose} className="text-[#5a6478] hover:text-[#01255f]">
+          <h3 className="font-bold text-[#026632]">Export Report</h3>
+          <button type="button" onClick={onClose} className="text-[#5a6478] hover:text-[#026632]">
             <X size={18} />
           </button>
         </div>
@@ -49,7 +49,7 @@ export default function ExportDialog({
                   type="button"
                   onClick={() => setFormat(f)}
                   className={`py-2 text-sm font-bold uppercase border transition-colors ${
-                    format === f ? 'bg-[#01255f] text-white border-[#01255f]' : 'bg-white text-[#5a6478] border-gray-200'
+                    format === f ? 'bg-[#026632] text-white border-[#026632]' : 'bg-white text-[#5a6478] border-gray-200'
                   }`}
                 >
                   {f.toUpperCase()}
@@ -66,7 +66,7 @@ export default function ExportDialog({
                 disabled={!playerSelected}
                 onClick={() => setScope('player')}
                 className={`py-2 text-sm font-bold border transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
-                  scope === 'player' ? 'bg-[#01255f] text-white border-[#01255f]' : 'bg-white text-[#5a6478] border-gray-200'
+                  scope === 'player' ? 'bg-[#026632] text-white border-[#026632]' : 'bg-white text-[#5a6478] border-gray-200'
                 }`}
               >
                 Player
@@ -75,7 +75,7 @@ export default function ExportDialog({
                 type="button"
                 onClick={() => setScope('team')}
                 className={`py-2 text-sm font-bold border transition-colors ${
-                  scope === 'team' ? 'bg-[#01255f] text-white border-[#01255f]' : 'bg-white text-[#5a6478] border-gray-200'
+                  scope === 'team' ? 'bg-[#026632] text-white border-[#026632]' : 'bg-white text-[#5a6478] border-gray-200'
                 }`}
               >
                 Team
@@ -95,7 +95,7 @@ export default function ExportDialog({
             type="button"
             disabled={!canExport || exporting}
             onClick={() => onExport(format, scope)}
-            className="w-full inline-flex items-center justify-center gap-2 bg-[#fee11b] text-[#01255f] px-4 py-2.5 text-sm font-black disabled:opacity-50"
+            className="w-full inline-flex items-center justify-center gap-2 bg-[#74f3be] text-[#026632] px-4 py-2.5 text-sm font-black disabled:opacity-50"
           >
             <Download size={15} /> {exporting ? 'Exporting…' : 'Download'}
           </button>

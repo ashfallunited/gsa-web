@@ -51,15 +51,15 @@ function StatRow({
   const pctA = (a / max) * 100
   const pctB = (b / max) * 100
   return (
-    <div className={`grid grid-cols-[1fr_auto_1fr] items-center gap-3 py-3 border-b border-gray-100 last:border-0 ${accent ? 'bg-[#fee11b]/5 -mx-4 px-4 sm:-mx-6 sm:px-6' : ''}`}>
+    <div className={`grid grid-cols-[1fr_auto_1fr] items-center gap-3 py-3 border-b border-gray-100 last:border-0 ${accent ? 'bg-[#74f3be]/5 -mx-4 px-4 sm:-mx-6 sm:px-6' : ''}`}>
       {/* Player A side */}
       <div className="flex flex-col items-end gap-1">
-        <span className="text-sm font-black text-[#01255f]">
+        <span className="text-sm font-black text-[#026632]">
           {format(a)}
         </span>
         <div className="w-full flex justify-end h-2">
           <div
-            className="h-2 rounded-sm transition-all duration-500 bg-[#01255f]"
+            className="h-2 rounded-sm transition-all duration-500 bg-[#026632]"
             style={{ width: `${pctA}%` }}
           />
         </div>
@@ -72,12 +72,12 @@ function StatRow({
 
       {/* Player B side */}
       <div className="flex flex-col gap-1">
-        <span className="text-sm font-black text-[#01255f]">
+        <span className="text-sm font-black text-[#026632]">
           {format(b)}
         </span>
         <div className="w-full h-2">
           <div
-            className="h-2 rounded-sm transition-all duration-500 bg-[#fee11b]"
+            className="h-2 rounded-sm transition-all duration-500 bg-[#74f3be]"
             style={{ width: `${pctB}%` }}
           />
         </div>
@@ -99,8 +99,8 @@ function PlayerPanel({
 
   if (!total) {
     return (
-      <div className={`flex-1 flex flex-col items-center justify-center p-8 ${isA ? 'bg-[#01255f]' : 'bg-[#fee11b]'} min-h-[200px]`}>
-        <p className={`text-sm font-bold ${isA ? 'text-white/40' : 'text-[#01255f]/40'}`}>
+      <div className={`flex-1 flex flex-col items-center justify-center p-8 ${isA ? 'bg-[#026632]' : 'bg-[#74f3be]'} min-h-[200px]`}>
+        <p className={`text-sm font-bold ${isA ? 'text-white/40' : 'text-[#026632]/40'}`}>
           Select Player {side}
         </p>
       </div>
@@ -108,22 +108,22 @@ function PlayerPanel({
   }
 
   return (
-    <div className={`flex-1 flex flex-col items-center justify-center p-6 sm:p-8 ${isA ? 'bg-[#01255f]' : 'bg-[#fee11b]'}`}>
-      <div className={`ring-4 ${isA ? 'ring-white/20' : 'ring-[#01255f]/20'} rounded-full`}>
+    <div className={`flex-1 flex flex-col items-center justify-center p-6 sm:p-8 ${isA ? 'bg-[#026632]' : 'bg-[#74f3be]'}`}>
+      <div className={`ring-4 ${isA ? 'ring-white/20' : 'ring-[#026632]/20'} rounded-full`}>
         <PlayerAvatar image={lookup?.image} name={total.playerName} size={80} />
       </div>
       <p
-        className={`mt-4 text-xl font-black text-center leading-tight ${isA ? 'text-white' : 'text-[#01255f]'}`}
+        className={`mt-4 text-xl font-black text-center leading-tight ${isA ? 'text-white' : 'text-[#026632]'}`}
         style={{ fontFamily: 'var(--font-heading)' }}
       >
         {total.playerName}
       </p>
-      <p className={`text-xs mt-1 ${isA ? 'text-white/60' : 'text-[#01255f]/60'}`}>
+      <p className={`text-xs mt-1 ${isA ? 'text-white/60' : 'text-[#026632]/60'}`}>
         #{total.playerNumber} · <span className="capitalize">{total.playerPosition}</span>
       </p>
       <span
         className={`mt-3 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 ${
-          isA ? 'bg-white/15 text-white' : 'bg-[#01255f]/15 text-[#01255f]'
+          isA ? 'bg-white/15 text-white' : 'bg-[#026632]/15 text-[#026632]'
         }`}
       >
         {total.team.replace(/-/g, ' ')}
@@ -243,7 +243,7 @@ export default function ComparisonPage() {
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-8">
         <h1
-          className="text-2xl sm:text-3xl font-black text-[#01255f]"
+          className="text-2xl sm:text-3xl font-black text-[#026632]"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           Comparison Matrix
@@ -320,7 +320,7 @@ export default function ComparisonPage() {
 
       {!loading && (!playerA || !playerB) && (
         <div className="bg-white border border-dashed border-gray-300 p-12 text-center">
-          <p className="text-[#01255f] font-bold">Select two players above to compare</p>
+          <p className="text-[#026632] font-bold">Select two players above to compare</p>
           <p className="text-sm text-[#5a6478] mt-1">Stats are shown side by side with per-90 breakdowns.</p>
         </div>
       )}
@@ -331,7 +331,7 @@ export default function ComparisonPage() {
             type="button"
             onClick={downloadPng}
             disabled={downloading}
-            className="inline-flex items-center gap-1.5 bg-[#01255f] hover:bg-[#011840] text-white px-4 py-2 text-xs font-bold disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 bg-[#026632] hover:bg-[#014a24] text-white px-4 py-2 text-xs font-bold disabled:opacity-50"
           >
             <Download size={14} /> {downloading ? 'Generating…' : 'Download PNG'}
           </button>
@@ -376,11 +376,11 @@ export default function ComparisonPage() {
           {/* Legend */}
           <div className="flex items-center justify-center gap-6 px-4 py-4 border-t border-gray-100 bg-gray-50">
             <div className="flex items-center gap-2">
-              <div className="w-5 h-2.5 bg-[#01255f] rounded-sm" />
+              <div className="w-5 h-2.5 bg-[#026632] rounded-sm" />
               <span className="text-xs font-bold text-[#5a6478]">{totalA.playerName}</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-5 h-2.5 bg-[#fee11b] rounded-sm" />
+              <div className="w-5 h-2.5 bg-[#74f3be] rounded-sm" />
               <span className="text-xs font-bold text-[#5a6478]">{totalB.playerName}</span>
             </div>
           </div>

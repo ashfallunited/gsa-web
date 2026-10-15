@@ -33,10 +33,10 @@ const POSITIONS: { key: Position | 'all'; label: string; short: string }[] = [
 ]
 
 const POSITION_COLORS: Record<Position, string> = {
-  goalkeeper: 'bg-[#fee11b] text-[#01255f]',
-  defender: 'bg-[#fee11b] text-[#01255f]',
-  midfielder: 'bg-[#fee11b] text-[#01255f]',
-  forward: 'bg-[#fee11b] text-[#01255f]',
+  goalkeeper: 'bg-[#74f3be] text-[#026632]',
+  defender: 'bg-[#74f3be] text-[#026632]',
+  midfielder: 'bg-[#74f3be] text-[#026632]',
+  forward: 'bg-[#74f3be] text-[#026632]',
 }
 
 export default function PlayerGrid({ players }: { players: Player[] }) {
@@ -62,8 +62,8 @@ export default function PlayerGrid({ players }: { players: Player[] }) {
             onClick={() => setActive(key)}
             className={`px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all ${
               active === key
-                ? 'bg-[#fee11b] text-[#01255f]'
-                : 'bg-white border border-gray-200 text-[#5a6478] hover:border-[#01255f] hover:text-[#01255f]'
+                ? 'bg-[#74f3be] text-[#026632]'
+                : 'bg-white border border-gray-200 text-[#5a6478] hover:border-[#026632] hover:text-[#026632]'
             }`}
           >
             <span className="hidden sm:inline">{label}</span>
@@ -80,7 +80,7 @@ export default function PlayerGrid({ players }: { players: Player[] }) {
           {filtered.map((player) => (
             <div
               key={player.id}
-              className="group relative bg-[#01255f] overflow-hidden"
+              className="group relative bg-[#026632] overflow-hidden"
             >
               {/* Jersey number watermark */}
               <div
@@ -100,14 +100,14 @@ export default function PlayerGrid({ players }: { players: Player[] }) {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                   onError={(e) => { e.currentTarget.src = PLACEHOLDER }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#01255f] via-[#01255f]/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#026632] via-[#026632]/20 to-transparent" />
               </div>
 
               {/* Info */}
               <div className="relative z-10 p-3 sm:p-4 -mt-8 sm:-mt-10">
                 <div className="flex items-end justify-between mb-1.5">
                   <span
-                    className="text-[#fee11b] font-black text-xl sm:text-2xl leading-none"
+                    className="text-[#74f3be] font-black text-xl sm:text-2xl leading-none"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
                     {player.number}
@@ -127,7 +127,7 @@ export default function PlayerGrid({ players }: { players: Player[] }) {
                 {player.stats && (player.stats.goals > 0 || player.stats.assists > 0) && (
                   <div className="flex gap-2 mt-2">
                     {player.stats.goals > 0 && (
-                      <span className="text-[9px] font-bold uppercase tracking-wider bg-[#fee11b]/20 text-[#fee11b] px-1.5 py-0.5">
+                      <span className="text-[9px] font-bold uppercase tracking-wider bg-[#74f3be]/20 text-[#74f3be] px-1.5 py-0.5">
                         {player.stats.goals}G
                       </span>
                     )}

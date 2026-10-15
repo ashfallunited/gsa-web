@@ -52,12 +52,12 @@ export default function PlayerPicker({
         type="button"
         disabled={disabled}
         onClick={() => (open ? close() : setOpen(true))}
-        className="w-full flex items-center gap-2 border border-gray-200 bg-white px-3 py-2 text-sm text-left focus:outline-none focus:border-[#01255f] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center gap-2 border border-gray-200 bg-white px-3 py-2 text-sm text-left focus:outline-none focus:border-[#026632] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {selected ? (
           <>
             <PlayerAvatar image={selected.image} name={selected.name} size={24} />
-            <span className="flex-1 min-w-0 truncate text-[#01255f] font-medium">#{selected.number} {selected.name}</span>
+            <span className="flex-1 min-w-0 truncate text-[#026632] font-medium">#{selected.number} {selected.name}</span>
           </>
         ) : (
           <span className="flex-1 text-[#5a6478]">{placeholder}</span>
@@ -74,7 +74,7 @@ export default function PlayerPicker({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search players…"
-              className="w-full border border-gray-200 px-2.5 py-1.5 text-sm focus:outline-none focus:border-[#01255f]"
+              className="w-full border border-gray-200 px-2.5 py-1.5 text-sm focus:outline-none focus:border-[#026632]"
             />
           </div>
           <ul className="overflow-y-auto">
@@ -90,11 +90,11 @@ export default function PlayerPicker({
                     close()
                   }}
                   className={`w-full flex items-center gap-2.5 px-3 py-2.5 text-left hover:bg-gray-50 transition-colors ${
-                    p.id === value ? 'bg-[#fee11b]/15' : ''
+                    p.id === value ? 'bg-[#74f3be]/15' : ''
                   }`}
                 >
                   <PlayerAvatar image={p.image} name={p.name} size={28} />
-                  <span className="min-w-0 truncate text-sm text-[#01255f] font-medium">#{p.number} {p.name}</span>
+                  <span className="min-w-0 truncate text-sm text-[#026632] font-medium">#{p.number} {p.name}</span>
                 </button>
               </li>
             ))}

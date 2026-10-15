@@ -62,14 +62,14 @@ export default function ImageUpload({
         onDragOver={(e) => e.preventDefault()}
         onClick={() => !uploading && inputRef.current?.click()}
         className={`border-2 border-dashed transition-colors cursor-pointer ${
-          uploading ? 'border-[#fee11b] bg-[#fee11b]/5' : 'border-gray-200 hover:border-[#01255f] hover:bg-[#f5f7fc]'
+          uploading ? 'border-[#74f3be] bg-[#74f3be]/5' : 'border-gray-200 hover:border-[#026632] hover:bg-[#f3f9f5]'
         }`}
       >
         {value ? (
-          <div className="relative bg-[#f5f7fc]">
+          <div className="relative bg-[#f3f9f5]">
             <img src={value} alt="Preview" className="w-full h-40 object-contain" />
             <div className="absolute inset-0 bg-black/0 hover:bg-black/30 transition-colors flex items-center justify-center group">
-              <span className="text-white text-xs font-bold opacity-0 group-hover:opacity-100 bg-[#01255f] px-3 py-1.5">
+              <span className="text-white text-xs font-bold opacity-0 group-hover:opacity-100 bg-[#026632] px-3 py-1.5">
                 {uploading ? 'Uploading…' : 'Replace image'}
               </span>
             </div>
@@ -78,7 +78,7 @@ export default function ImageUpload({
           <div className="py-8 text-center">
             {uploading ? (
               <div className="flex flex-col items-center gap-2">
-                <div className="w-5 h-5 border-2 border-[#01255f] border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-[#026632] border-t-transparent rounded-full animate-spin" />
                 <span className="text-xs text-[#5a6478]">Uploading…</span>
               </div>
             ) : (

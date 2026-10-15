@@ -77,17 +77,17 @@ export default function DonateShareCard({ variant, options, className = '' }: Pr
 
   const { title, subtitle } = headings[variant]
   const shareBtn =
-    'inline-flex items-center justify-center gap-2 border border-gray-200 bg-white px-3 py-2.5 text-xs font-bold text-[#01255f] hover:bg-[#f5f7fc] hover:border-[#01255f]/30 transition-colors min-h-[44px] w-full sm:w-auto'
+    'inline-flex items-center justify-center gap-2 border border-gray-200 bg-white px-3 py-2.5 text-xs font-bold text-[#026632] hover:bg-[#f3f9f5] hover:border-[#026632]/30 transition-colors min-h-[44px] w-full sm:w-auto'
 
   return (
     <div className={`bg-white border border-gray-100 p-4 sm:p-6 lg:p-8 min-w-0 ${className}`}>
       <div className="flex items-start gap-3 mb-4">
-        <div className="w-10 h-10 bg-[#01255f] flex items-center justify-center shrink-0">
-          <Share2 className="w-5 h-5 text-[#fee11b]" />
+        <div className="w-10 h-10 bg-[#026632] flex items-center justify-center shrink-0">
+          <Share2 className="w-5 h-5 text-[#74f3be]" />
         </div>
         <div>
           <h3
-            className="text-base font-bold text-[#01255f]"
+            className="text-base font-bold text-[#026632]"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             {title}

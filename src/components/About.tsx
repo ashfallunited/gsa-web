@@ -32,7 +32,7 @@ export default function About() {
           <div>
             <span className="label reveal opacity-0">Who We Are</span>
             <h2
-              className="reveal opacity-0 heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#01255f] leading-tight mb-7"
+              className="reveal opacity-0 heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#026632] leading-tight mb-7"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               Sport as a Tool
@@ -96,7 +96,7 @@ export default function About() {
           <div className="reveal opacity-0 sm:hidden relative h-52 overflow-hidden">
             <Image
               src="https://fckzyvkbthqvmmjpvfxr.supabase.co/storage/v1/object/public/website_files/IMG_4836_transcpr.jpg"
-              alt="Asfall United youth programme"
+              alt="Graceland Football Club youth programme"
               fill
               className="object-cover"
               sizes="100vw"

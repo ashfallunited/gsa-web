@@ -78,12 +78,12 @@ function testDonationReferenceIdFormat(): void {
 
 function testThankYouEmailSubjectGeneration(): void {
   // Test that the subject would be generated correctly
-  const orgName = 'Ashfall United'
+  const orgName = 'Graceland Football Club'
   const expectedSubject = `Thank You for Your Donation to ${orgName}`
 
   assert.strictEqual(
     expectedSubject,
-    'Thank You for Your Donation to Ashfall United',
+    'Thank You for Your Donation to Graceland Football Club',
     'subject should format correctly'
   )
 }

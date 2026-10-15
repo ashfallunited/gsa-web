@@ -36,8 +36,8 @@ function ToolbarButton({
       title={title}
       className={`w-7 h-7 flex items-center justify-center text-xs rounded transition-colors ${
         active
-          ? 'bg-[#01255f] text-white'
-          : 'text-[#5a6478] hover:bg-gray-100 hover:text-[#01255f]'
+          ? 'bg-[#026632] text-white'
+          : 'text-[#5a6478] hover:bg-gray-100 hover:text-[#026632]'
       }`}
     >
       {children}
@@ -56,7 +56,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: Props) 
       }),
       Underline,
       Image.configure({ inline: false, allowBase64: true }),
-      Link.configure({ openOnClick: false, HTMLAttributes: { class: 'text-[#01255f] underline' } }),
+      Link.configure({ openOnClick: false, HTMLAttributes: { class: 'text-[#026632] underline' } }),
       Placeholder.configure({ placeholder: placeholder ?? 'Write your content here…' }),
       TextAlign.configure({
         types: ['heading', 'paragraph'],
@@ -94,7 +94,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: Props) 
   if (!editor) return null
 
   return (
-    <div className="border border-gray-200 focus-within:border-[#01255f] transition-colors">
+    <div className="border border-gray-200 focus-within:border-[#026632] transition-colors">
       <div className="rich-text-toolbar flex flex-wrap items-center gap-0.5 px-3 py-2 border-b border-gray-100 bg-gray-50">
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}

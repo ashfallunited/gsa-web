@@ -15,15 +15,15 @@ const reasons = [
   },
   {
     title: 'Sport is Deeply Rooted',
-    body: 'Football is the most popular sport in Liberia, with communities organising informal games daily. Asfall United meets young people where they already are, turning that energy into structured opportunity.',
+    body: 'Football is the most popular sport in Liberia, with communities organising informal games daily. Graceland Football Club meets young people where they already are, turning that energy into structured opportunity.',
   },
   {
     title: 'Access Gaps are Acute',
-    body: 'Many youth in Monrovia face high out-of-school rates, limited healthcare access, and narrow economic prospects. Asfall United targets these gaps directly, using sport as the bridge.',
+    body: 'Many youth in Monrovia face high out-of-school rates, limited healthcare access, and narrow economic prospects. Graceland Football Club targets these gaps directly, using sport as the bridge.',
   },
   {
     title: 'Strong Local Leadership',
-    body: "Asfall United is Liberian-led. Our staff and coaches come from the communities we serve, ensuring the programme is grounded in local knowledge, culture, and trust.",
+    body: "Graceland Football Club is Liberian-led. Our staff and coaches come from the communities we serve, ensuring the programme is grounded in local knowledge, culture, and trust.",
   },
 ]
 
@@ -36,13 +36,13 @@ export default function LiberiaSection() {
         <div className="mb-10 sm:mb-14">
           <span className="label">Where We Work</span>
           <h2
-            className="heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#01255f] leading-tight"
+            className="heading-underline text-2xl sm:text-3xl lg:text-[2.4rem] font-bold text-[#026632] leading-tight"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Monrovia, Liberia
           </h2>
           <p className="mt-5 text-[#5a6478] text-sm sm:text-base max-w-xl">
-            Asfall United is based in Monrovia — the capital and largest city of Liberia — where we deliver all of our current programmes.
+            Graceland Football Club is based in Monrovia — the capital and largest city of Liberia — where we deliver all of our current programmes.
           </p>
         </div>
 
@@ -50,7 +50,7 @@ export default function LiberiaSection() {
           {facts.map((f) => (
             <div key={f.label} className="bg-white p-5 sm:p-6">
               <div
-                className="text-xl sm:text-2xl font-bold text-[#01255f] mb-0.5"
+                className="text-xl sm:text-2xl font-bold text-[#026632] mb-0.5"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 {f.value}
@@ -67,12 +67,12 @@ export default function LiberiaSection() {
           <div className="space-y-7 sm:space-y-8">
             {reasons.map((r, i) => (
               <div key={i} className="flex gap-4 sm:gap-5">
-                <div className="flex-shrink-0 w-6 h-6 bg-[#fee11b] flex items-center justify-center text-[#01255f] font-bold text-[10px] mt-0.5 min-w-[24px]">
+                <div className="flex-shrink-0 w-6 h-6 bg-[#74f3be] flex items-center justify-center text-[#026632] font-bold text-[10px] mt-0.5 min-w-[24px]">
                   {String(i + 1).padStart(2, '0')}
                 </div>
                 <div>
                   <h3
-                    className="font-bold text-[#01255f] text-sm sm:text-base mb-1.5"
+                    className="font-bold text-[#026632] text-sm sm:text-base mb-1.5"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
                     {r.title}

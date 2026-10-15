@@ -27,7 +27,7 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
       {videos.length > 0 && (
         <section className="mb-14 sm:mb-20">
           <h2
-            className="text-lg sm:text-xl font-bold text-[#01255f] mb-6"
+            className="text-lg sm:text-xl font-bold text-[#026632] mb-6"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Videos
@@ -38,7 +38,7 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
                 <div className="relative aspect-video bg-black">
                   <iframe
                     src={youtubeEmbedUrl(video.youtubeId!)}
-                    title={video.caption || 'Asfall United video'}
+                    title={video.caption || 'Graceland Football Club video'}
                     className="absolute inset-0 w-full h-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -61,7 +61,7 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
         <>
           {videos.length > 0 && (
             <h2
-              className="text-lg sm:text-xl font-bold text-[#01255f] mb-6"
+              className="text-lg sm:text-xl font-bold text-[#026632] mb-6"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               Photos
@@ -86,7 +86,7 @@ export default function GalleryClient({ items }: { items: GalleryItem[] }) {
                   priority={idx === 0}
                 />
                 {photo.caption && (
-                  <div className="absolute inset-0 bg-[#01255f]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                  <div className="absolute inset-0 bg-[#026632]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                     <p className="text-white text-xs font-medium leading-relaxed">{photo.caption}</p>
                   </div>
                 )}

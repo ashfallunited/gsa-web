@@ -146,14 +146,14 @@ export default function AnalyticsSquadPage() {
     <div className="p-5 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>
             Squad
           </h1>
         </div>
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="inline-flex items-center justify-center gap-2 bg-[#01255f] hover:bg-[#011840] text-white px-5 py-2.5 text-sm font-bold"
+          className="inline-flex items-center justify-center gap-2 bg-[#026632] hover:bg-[#014a24] text-white px-5 py-2.5 text-sm font-bold"
         >
           <Plus size={16} />
           Add Player
@@ -175,8 +175,8 @@ export default function AnalyticsSquadPage() {
               onClick={() => setStatusFilter(item)}
               className={`px-3 py-1.5 text-xs font-bold uppercase tracking-widest ${
                 statusFilter === item
-                  ? 'bg-[#01255f] text-white'
-                  : 'border border-gray-200 text-[#5a6478] hover:border-[#01255f]'
+                  ? 'bg-[#026632] text-white'
+                  : 'border border-gray-200 text-[#5a6478] hover:border-[#026632]'
               }`}
             >
               {item}
@@ -189,7 +189,7 @@ export default function AnalyticsSquadPage() {
 
       {showForm && (
         <div className="bg-white border border-gray-200 p-5 mb-6 space-y-4">
-          <h2 className="font-bold text-[#01255f]">New Player</h2>
+          <h2 className="font-bold text-[#026632]">New Player</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
               <label className={labelClass}>Full Name</label>
@@ -227,7 +227,7 @@ export default function AnalyticsSquadPage() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={addPlayer} disabled={saving} className="bg-[#01255f] text-white px-5 py-2 text-sm font-bold disabled:opacity-50">
+            <button type="button" onClick={addPlayer} disabled={saving} className="bg-[#026632] text-white px-5 py-2 text-sm font-bold disabled:opacity-50">
               {saving ? 'Saving…' : 'Save Player'}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="border border-gray-200 px-5 py-2 text-sm font-bold text-[#5a6478]">
@@ -245,9 +245,9 @@ export default function AnalyticsSquadPage() {
 
       {!loading && filteredPlayers.length === 0 && (
         <div className="bg-white border border-dashed border-gray-300 p-10 text-center">
-          <p className="text-[#01255f] font-bold mb-2">No players in this squad yet</p>
+          <p className="text-[#026632] font-bold mb-2">No players in this squad yet</p>
           <p className="text-sm text-[#5a6478] mb-4">Add players to start recording match stats.</p>
-          <button type="button" onClick={() => setShowForm(true)} className="bg-[#fee11b] text-[#01255f] px-5 py-2 text-sm font-bold">
+          <button type="button" onClick={() => setShowForm(true)} className="bg-[#74f3be] text-[#026632] px-5 py-2 text-sm font-bold">
             Add first player
           </button>
         </div>
@@ -255,7 +255,7 @@ export default function AnalyticsSquadPage() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
         {filteredPlayers.map((p) => (
-          <div key={p.id} className="group relative bg-[#01255f] overflow-hidden">
+          <div key={p.id} className="group relative bg-[#026632] overflow-hidden">
             {/* Jersey number watermark */}
             <div
               className="absolute bottom-2 right-2 text-[5rem] font-black text-white/10 leading-none select-none pointer-events-none z-0"
@@ -282,19 +282,19 @@ export default function AnalyticsSquadPage() {
                   onError={(e) => { e.currentTarget.style.display = 'none' }}
                 />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#01255f] via-[#01255f]/20 to-transparent z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#026632] via-[#026632]/20 to-transparent z-10" />
             </div>
 
             {/* Info */}
             <div className="relative z-10 p-3 sm:p-4 -mt-8 sm:-mt-10">
               <div className="flex items-end justify-between mb-1.5">
                 <span
-                  className="text-[#fee11b] font-black text-xl sm:text-2xl leading-none"
+                  className="text-[#74f3be] font-black text-xl sm:text-2xl leading-none"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   {p.number}
                 </span>
-                <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-[#fee11b] text-[#01255f]">
+                <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-[#74f3be] text-[#026632]">
                   {POS_LABELS[p.position] ?? p.position}
                 </span>
               </div>
@@ -360,10 +360,10 @@ export default function AnalyticsSquadPage() {
         return (
           <div ref={injuryFormRef} className="mt-4 bg-white border border-red-200 p-4 sm:p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <p className="font-bold text-[#01255f] text-sm">
+              <p className="font-bold text-[#026632] text-sm">
                 Mark Injured — <span className="text-red-600">{p.name}</span>
               </p>
-              <button onClick={() => setInjuryPlayerId(null)} className="text-[#5a6478] hover:text-[#01255f] p-1">
+              <button onClick={() => setInjuryPlayerId(null)} className="text-[#5a6478] hover:text-[#026632] p-1">
                 <X size={16} />
               </button>
             </div>

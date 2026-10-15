@@ -26,7 +26,7 @@ type Order = {
 }
 
 const empty: Omit<Product, 'id'> = { name: '', price: 0, image: '', description: '', category: 'Jersey', available: true, order: 99, sizes: [] }
-const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#01255f] transition-colors'
+const inputClass = 'w-full border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:border-[#026632] transition-colors'
 const labelClass = 'block text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-1.5'
 
 const STATUS_COLORS: Record<string, string> = {
@@ -110,7 +110,7 @@ function ProductForm({ initial, productId, onSaved, onCancel }: {
                     setData((d) => ({ ...d, sizes: sizes.filter((s) => s !== size) }))
                   }
                 }}
-                className="w-4 h-4 accent-[#01255f]"
+                className="w-4 h-4 accent-[#026632]"
               />
               <span className="text-sm text-[#5a6478]">{size}</span>
             </label>
@@ -123,15 +123,15 @@ function ProductForm({ initial, productId, onSaved, onCancel }: {
           id="available"
           checked={data.available}
           onChange={(e) => setData((d) => ({ ...d, available: e.target.checked }))}
-          className="w-4 h-4 accent-[#01255f]"
+          className="w-4 h-4 accent-[#026632]"
         />
         <label htmlFor="available" className="text-sm text-[#5a6478]">Available for purchase</label>
       </div>
       <div className="flex gap-3 pt-2">
-        <button onClick={save} disabled={saving} className="bg-[#01255f] hover:bg-[#011840] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50">
+        <button onClick={save} disabled={saving} className="bg-[#026632] hover:bg-[#014a24] text-white px-6 py-2.5 text-sm font-bold tracking-wide transition-colors disabled:opacity-50">
           {saving ? 'Saving…' : productId ? 'Update' : 'Add Product'}
         </button>
-        <button onClick={onCancel} disabled={saving} className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#01255f] hover:text-[#01255f] transition-colors disabled:opacity-50">
+        <button onClick={onCancel} disabled={saving} className="border border-gray-200 px-4 py-2.5 text-sm text-[#5a6478] hover:border-[#026632] hover:text-[#026632] transition-colors disabled:opacity-50">
           Cancel
         </button>
       </div>
@@ -183,11 +183,11 @@ export default function AdminShop() {
     <div className="p-4 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full">
       <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#01255f]" style={{ fontFamily: 'var(--font-heading)' }}>Shop</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#026632]" style={{ fontFamily: 'var(--font-heading)' }}>Shop</h1>
           <p className="text-[#5a6478] text-sm mt-1">Manage products and orders</p>
         </div>
         {tab === 'products' && !adding && !editing && (
-          <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-[#fee11b] hover:bg-[#e5ca10] text-[#01255f] px-5 py-2.5 text-sm font-bold transition-colors">
+          <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-[#74f3be] hover:bg-[#4fdca3] text-[#026632] px-5 py-2.5 text-sm font-bold transition-colors">
             <Plus size={16} />
             Add Product
           </button>
@@ -200,7 +200,7 @@ export default function AdminShop() {
           <button
             key={t}
             onClick={() => { setTab(t); setAdding(false); setEditing(null) }}
-            className={`px-5 py-2.5 text-sm font-bold capitalize transition-colors border-b-2 -mb-px ${tab === t ? 'border-[#01255f] text-[#01255f]' : 'border-transparent text-[#5a6478] hover:text-[#01255f]'}`}
+            className={`px-5 py-2.5 text-sm font-bold capitalize transition-colors border-b-2 -mb-px ${tab === t ? 'border-[#026632] text-[#026632]' : 'border-transparent text-[#5a6478] hover:text-[#026632]'}`}
           >
             {t}
           </button>
@@ -212,7 +212,7 @@ export default function AdminShop() {
         <>
           {(adding || editing) && (
             <div className="mb-8">
-              <h2 className="text-sm font-bold text-[#01255f] uppercase tracking-widest mb-4">{editing ? 'Edit Product' : 'New Product'}</h2>
+              <h2 className="text-sm font-bold text-[#026632] uppercase tracking-widest mb-4">{editing ? 'Edit Product' : 'New Product'}</h2>
               <ProductForm initial={editing ?? undefined} productId={editing?.id} onSaved={onSaved} onCancel={() => { setAdding(false); setEditing(null) }} />
             </div>
           )}
@@ -231,8 +231,8 @@ export default function AdminShop() {
             </div>
           ) : products.length === 0 && !adding ? (
             <div className="bg-white border border-dashed border-gray-300 p-12 text-center">
-              <p className="text-[#01255f] font-bold mb-2">No products yet</p>
-              <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-[#fee11b] text-[#01255f] px-5 py-2 text-sm font-bold">
+              <p className="text-[#026632] font-bold mb-2">No products yet</p>
+              <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-[#74f3be] text-[#026632] px-5 py-2 text-sm font-bold">
                 <Plus size={14} />Add the first one
               </button>
             </div>
@@ -253,14 +253,14 @@ export default function AdminShop() {
                     </span>
                   </div>
                   <div className="p-3 flex-1">
-                    <p className="font-black text-[#01255f] text-sm leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>{p.name}</p>
+                    <p className="font-black text-[#026632] text-sm leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>{p.name}</p>
                     <p className="text-[#5a6478] text-xs mt-0.5">{p.category}</p>
-                    <p className="text-[#01255f] font-bold text-sm mt-1">${p.price.toFixed(2)}</p>
+                    <p className="text-[#026632] font-bold text-sm mt-1">${p.price.toFixed(2)}</p>
                   </div>
                   <div className="flex border-t border-gray-100">
                     <button
                       onClick={() => { setEditing(p); setAdding(false) }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#01255f] hover:bg-[#01255f] hover:text-white transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold text-[#026632] hover:bg-[#026632] hover:text-white transition-colors"
                     >
                       <Pencil size={12} />Edit
                     </button>
@@ -291,11 +291,11 @@ export default function AdminShop() {
               {orders.map((o) => (
                 <div key={o.id} className="border-b border-gray-50 last:border-0">
                   <div
-                    className="flex items-center gap-4 px-6 py-4 hover:bg-[#f5f7fc] transition-colors cursor-pointer"
+                    className="flex items-center gap-4 px-6 py-4 hover:bg-[#f3f9f5] transition-colors cursor-pointer"
                     onClick={() => setExpandedOrder(expandedOrder === o.id ? null : o.id)}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-bold text-[#01255f] text-sm">{o.customerName}</p>
+                      <p className="font-bold text-[#026632] text-sm">{o.customerName}</p>
                       <p className="text-[#5a6478] text-xs">{o.email} · {o.items?.length ?? 0} items · ${o.total?.toFixed(2)}</p>
                     </div>
                     <span className={`text-[10px] font-bold px-2 py-0.5 capitalize ${STATUS_COLORS[o.status] ?? 'bg-gray-100 text-gray-600'}`}>
@@ -307,23 +307,23 @@ export default function AdminShop() {
                   </div>
 
                   {expandedOrder === o.id && (
-                    <div className="px-6 pb-5 bg-[#f5f7fc] border-t border-gray-100 space-y-3">
+                    <div className="px-6 pb-5 bg-[#f3f9f5] border-t border-gray-100 space-y-3">
                       <div className="grid sm:grid-cols-2 gap-3 pt-3 text-xs text-[#5a6478]">
-                        <div><span className="font-bold text-[#01255f]">Phone:</span> {o.phone || '—'}</div>
-                        <div><span className="font-bold text-[#01255f]">WhatsApp:</span> {o.whatsapp || '—'}</div>
-                        <div><span className="font-bold text-[#01255f]">Address:</span> {o.address || '—'}</div>
-                        <div><span className="font-bold text-[#01255f]">Preferred Contact:</span> {o.contactMethods?.length ? o.contactMethods.join(', ') : '—'}</div>
+                        <div><span className="font-bold text-[#026632]">Phone:</span> {o.phone || '—'}</div>
+                        <div><span className="font-bold text-[#026632]">WhatsApp:</span> {o.whatsapp || '—'}</div>
+                        <div><span className="font-bold text-[#026632]">Address:</span> {o.address || '—'}</div>
+                        <div><span className="font-bold text-[#026632]">Preferred Contact:</span> {o.contactMethods?.length ? o.contactMethods.join(', ') : '—'}</div>
                       </div>
                       {o.notes && (
                         <div>
                           <p className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-2">Notes</p>
-                          <p className="text-xs text-[#01255f] leading-relaxed">{o.notes}</p>
+                          <p className="text-xs text-[#026632] leading-relaxed">{o.notes}</p>
                         </div>
                       )}
                       <div>
                         <p className="text-[10px] uppercase tracking-widest font-bold text-[#5a6478] mb-2">Items</p>
                         {o.items?.map((item, i) => (
-                            <p key={i} className="text-xs text-[#01255f]">
+                            <p key={i} className="text-xs text-[#026632]">
                               {item.name} × {item.quantity}
                               {item.size ? ` (${item.size})` : ''}
                               {' '}— ${(item.price * item.quantity).toFixed(2)}
@@ -337,7 +337,7 @@ export default function AdminShop() {
                             <button
                               key={s}
                               onClick={() => updateOrderStatus(o.id, s)}
-                              className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition-colors ${o.status === s ? 'bg-[#01255f] text-white' : 'border border-gray-200 text-[#5a6478] hover:border-[#01255f]'}`}
+                              className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition-colors ${o.status === s ? 'bg-[#026632] text-white' : 'border border-gray-200 text-[#5a6478] hover:border-[#026632]'}`}
                             >
                               {s}
                             </button>

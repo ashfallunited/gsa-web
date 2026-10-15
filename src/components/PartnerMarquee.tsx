@@ -13,7 +13,7 @@ function PartnerLogoCell({ partner }: { partner: Partner }) {
 
   const content = (
     <div
-      className="flex h-24 w-44 shrink-0 items-center justify-center rounded-sm border border-gray-200/80 bg-white px-5 transition-colors hover:border-[#01255f]/20 hover:bg-white"
+      className="flex h-24 w-44 shrink-0 items-center justify-center rounded-sm border border-gray-200/80 bg-white px-5 transition-colors hover:border-[#026632]/20 hover:bg-white"
       title={partner.name}
     >
       {showImage ? (
@@ -27,7 +27,7 @@ function PartnerLogoCell({ partner }: { partner: Partner }) {
         />
       ) : (
         <span
-          className="line-clamp-2 text-center text-[10px] font-bold uppercase leading-tight tracking-wide text-[#01255f]/50"
+          className="line-clamp-2 text-center text-[10px] font-bold uppercase leading-tight tracking-wide text-[#026632]/50"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           {partner.name}
@@ -42,7 +42,7 @@ function PartnerLogoCell({ partner }: { partner: Partner }) {
         href={partner.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#01255f]"
+        className="shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#026632]"
         aria-label={`${partner.name} (opens in new tab)`}
       >
         {content}
@@ -66,11 +66,11 @@ export default function PartnerMarquee({ partners }: PartnerMarqueeProps) {
       aria-label="Partner organisations"
     >
       <div
-        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 sm:w-20 bg-gradient-to-r from-[#f5f7fc] to-transparent"
+        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 sm:w-20 bg-gradient-to-r from-[#f3f9f5] to-transparent"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 sm:w-20 bg-gradient-to-l from-[#f5f7fc] to-transparent"
+        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 sm:w-20 bg-gradient-to-l from-[#f3f9f5] to-transparent"
         aria-hidden
       />
 

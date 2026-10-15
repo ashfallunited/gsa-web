@@ -23,7 +23,7 @@ export default function PlayerAvatar({
   if (!image || err) {
     return (
       <div
-        className="shrink-0 rounded-full bg-[#01255f] flex items-center justify-center text-white font-bold select-none"
+        className="shrink-0 rounded-full bg-[#026632] flex items-center justify-center text-white font-bold select-none"
         style={{ width: size, height: size, fontSize: Math.round(size * 0.36) }}
       >
         {initials}
